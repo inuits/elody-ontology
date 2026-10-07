@@ -1,0 +1,11 @@
+{
+  "name": "elody-ui-ontology",
+  "version": "0.2.0",
+  "description": "The Elody UI vocabulary (elody:, https://elody.eu/ns/ui#) layered on SHACL 1.2 UI and DASH, and the meta-shapes a UI declaration must conform to.",
+  "license": "MIT",
+  "files": ["ontology", "README.md", "LICENSE"],
+  "exports": {
+    "./ontology/*": "./ontology/*",
+    "./package.json": "./package.json"
+  }
+}
