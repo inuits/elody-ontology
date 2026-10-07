@@ -29,8 +29,8 @@ when no `sh:`, `shui:` or `dash:` term carries the meaning, and its
 How Elody *implements* the vocabulary — the literal of an enumeration in the
 GraphQL schema, the PWA widget an editor renders as, the schema field of an
 element — changes with the platform, not with the vocabulary. Those bindings
-live with the generator, `elody-generator` (at the root of elody-common,
-`ontology/elody-ui.bindings.ttl`), which turns declarations into the GraphQL
+live with the generator, [`elody-generator`](https://github.com/inuits/elody-generator)
+(`ontology/elody-ui.bindings.ttl`), which turns declarations into the GraphQL
 documents the PWA renders. A declaration never states them, and validation
 does not need them.
 
