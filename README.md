@@ -29,8 +29,8 @@ when no `sh:`, `shui:` or `dash:` term carries the meaning, and its
 How Elody *implements* the vocabulary — the literal of an enumeration in the
 GraphQL schema, the PWA widget an editor renders as, the schema field of an
 element — changes with the platform, not with the vocabulary. Those bindings
-live with the generator, `modules/uiDeclarationModule`
-(`ontology/elody-ui.bindings.ttl`), which turns declarations into the GraphQL
+live with the generator, `elody-generator` (at the root of elody-common,
+`ontology/elody-ui.bindings.ttl`), which turns declarations into the GraphQL
 documents the PWA renders. A declaration never states them, and validation
 does not need them.
 
@@ -64,8 +64,9 @@ version at its `owl:versionIRI`. Until then the namespace IRIs do not resolve.
 ## Using it
 
 Consumers read the files from the installed package (`elody-ontology/ui/…`).
-Until the repository has a remote, `uiDeclarationModule` finds this checkout
-next to it in elody-common, or through `ELODY_ONTOLOGY`.
+`elody-generator` depends on a tagged version (`github:inuits/elody-ontology#v0.2.0`);
+to try an unreleased change it reads a checkout through `ELODY_ONTOLOGY`, or this
+checkout next to it at the root of elody-common.
 
 ## License
 

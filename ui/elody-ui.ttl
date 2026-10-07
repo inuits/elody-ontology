@@ -17,7 +17,7 @@
 # This is the vocabulary: what a declaration may say. How Elody implements it — the
 # literal of an enumeration in the GraphQL schema, the PWA widget an editor renders as,
 # the schema field of an element — lives with the generator, in the implementation
-# bindings (uiDeclarationModule, ontology/elody-ui.bindings.ttl), and changes with the
+# bindings (elody-generator, ontology/elody-ui.bindings.ttl), and changes with the
 # platform rather than with this vocabulary.
 
 @prefix elody:   <https://elody.eu/ns/ui#> .
