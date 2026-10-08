@@ -18,6 +18,7 @@ ui:WorkUi
   elody:emit "file" ;
   elody:listingCore true ;
   elody:typePills true ;
+  elody:form ui:CreateWork , ui:CreateWorkBasic ;
   elody:deleteOptions
     [ elody:deleteEntityLabel "bulk-operations.delete-labels.work" ;
       elody:deleteRelationsQuery "GetAuthorsInWorkDeleteQuery" ; elody:deleteRelationsFilters "GetAuthorsInDetailFilters" ;
@@ -60,3 +61,25 @@ ui:WorkUi-info
   elody:field em:title ;
   elody:element [ a elody:ListElement ; sh:order 1 ; elody:alias "Awards" ; elody:collapsed false ; elody:entityTypes "award" ; elody:relationType "refAwards" ;
     elody:disableLibraryBar true ; elody:customQuery "GetAwardsInDetail" ; elody:customQueryFilters "GetAwardsInEntityFilters" ] .
+
+ui:CreateWork
+  a elody:Form ;
+  elody:queryName "GetFullWorkCreateForm" ;
+  rdfs:label "navigation.create-work" ;
+  elody:alias "Work" ;
+  elody:fieldsSpread "basicCreateWorkFields" ;
+  elody:submit [ rdfs:label "actions.labels.create" ; elody:icon "Create" ; elody:actionQuery "CreateEntity" ; elody:creationType "work" ] ;
+  elody:shape [ sh:property [ sh:path em:record_type ; sh:name "record type"@en ; sh:order 1 ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path em:is_omnibus ; sh:name "omnibus"@en ; sh:order 2 ; sh:maxCount 1 ; sh:datatype xsd:boolean ; dash:hidden true ] ,
+    [ sh:path em:refWork ; sh:name "work"@en ; sh:order 3 ; sh:maxCount 1 ; elody:clientInputField "refWorkInReadingTypeField" ;
+      elody:validationRule "has_required_relation" ; elody:validationRelationType "refWork" ; elody:validationAmount 1 ; elody:validationExact true ] ] .
+
+ui:CreateWorkBasic
+  a elody:Form ;
+  elody:queryName "GetBasicWorkCreateForm" ;
+  rdfs:label "navigation.create-work" ;
+  elody:alias "Work" ;
+  elody:fieldsSpread "basicCreateWorkFields" ;
+  elody:copyFromParent [ elody:autoCopy true ; elody:copyKey [ sh:order 1 ; elody:key "ref_languages" ; elody:fromKey "ref_work_languages" ] ] ;
+  elody:submit [ rdfs:label "actions.labels.create" ; elody:icon "Create" ; elody:actionQuery "CreateEntity" ; elody:creationType "work" ] ;
+  elody:shape [ ] .

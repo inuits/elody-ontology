@@ -1673,3 +1673,42 @@ elody:detailLabelKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail label key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
   rdfs:comment "The translation key the detail panel labels the field with when it differs from the card's (elody:labelKey)."@en .
+
+# ---- 0.3.0, batch 9: several create forms per type, shared field fragments ----------------------
+
+elody:fieldsSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fields spread"@en ; rdfs:domain elody:Form ; rdfs:range xsd:string ;
+  rdfs:comment "The name of a hand-written fragment on FormFields spread among the form's fields (...basicCreateExpressionFields): fields several forms of a family share. A form may hold spreads only."@en .
+elody:CopyFromParent a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy from parent"@en ;
+  rdfs:comment "How a create form prefills its fields from the entity it is opened on (copyFromParent): all of them (elody:autoCopy) and/or a key map."@en .
+elody:copyFromParent a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy from parent"@en ; rdfs:domain elody:Form ; rdfs:range elody:CopyFromParent ;
+  rdfs:comment "The form's copyFromParent block."@en .
+elody:autoCopy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "auto copy"@en ; rdfs:domain elody:CopyFromParent ; rdfs:range xsd:boolean ;
+  rdfs:comment "true copies every field the parent shares (autoCopy)."@en .
+elody:copyKey a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy key"@en ; rdfs:domain elody:CopyFromParent ;
+  rdfs:comment "One keyMap entry: the field (elody:key) filled from the parent's key (elody:fromKey), in sh:order."@en .
+elody:fromKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "from key"@en ; rdfs:range xsd:string ;
+  rdfs:comment "The parent's key a copied field is filled from (keyMap.fromKey)."@en .
+elody:validationRelationType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation relation type"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:validationRule \"has_required_relation\": the relation that must be present (has_required_relation.relationType)."@en .
+elody:validationAmount a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation amount"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
+  rdfs:comment "With elody:validationRule \"has_required_relation\": how many related entities are required (has_required_relation.amount)."@en .
+elody:validationExact a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation exact"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "With elody:validationRule \"has_required_relation\": true requires exactly elody:validationAmount related entities (has_required_relation.exact)."@en .
