@@ -491,6 +491,7 @@ elody:SearchInputKind a owl:Class ; rdfs:label "search input kind"@en ;
 elody:AdvancedSearchInput   a elody:SearchInputKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:SimpleSearchInput     a elody:SearchInputKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:SavedSearchInput      a elody:SearchInputKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:AdvancedMediaFilesSearchInput a elody:SearchInputKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 
 elody:SortDirection a owl:Class ; rdfs:label "sort direction"@en ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
