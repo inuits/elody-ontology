@@ -414,6 +414,14 @@ elody:Picker a owl:Class ;
   rdfs:label "entity picker"@en ;
   rdfs:comment "A pick-from-listing modal: the result fragments per type and the scoping filters. The generator derives both its documents' names from the node."@en .
 
+elody:ListQuery a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "list query"@en ;
+  rdfs:comment "The entities document a list element loads, with its filters document: the result fragment per type (without results the entities document stays hand-written and only the filters document is generated) and the scoping filters (the type, the relation to the entity shown). Named by elody:queryName; the filters document by elody:filtersQuery, else the query name with Filters."@en .
+elody:listQuery a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "list query"@en ; rdfs:domain elody:ListElement ; rdfs:range elody:ListQuery ;
+  rdfs:comment "The declared entities and filters documents the list loads; sets customQuery and customQueryFilters."@en .
 elody:PickerResult a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "picker result"@en ;
@@ -589,8 +597,8 @@ elody:entitiesField a owl:DatatypeProperty ;
   rdfs:comment "The resolver field a listing reads instead of the standard Entities field."@en .
 elody:filtersQuery a owl:DatatypeProperty ; elody:directive true ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "filters query name"@en ; rdfs:domain elody:ListingUi ; rdfs:range xsd:string ;
-  rdfs:comment "Operation name of a listing's filters document."@en .
+  rdfs:label "filters query name"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "Operation name of a listing's, a picker's or a list query's filters document, when it is not the query name with Filters."@en .
 elody:rootFilter a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "root filter key"@en ; rdfs:domain elody:ListingUi ; rdfs:range xsd:string ;
@@ -706,7 +714,7 @@ elody:filter a owl:ObjectProperty ;
 elody:alias a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "alias"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "The GraphQL alias under which a filter, action, panel, element, form tab (on an elody:Form; default \"name\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
+  rdfs:comment "The GraphQL alias under which a filter (a filter without one is emitted unaliased), action, panel, element, form tab (on an elody:Form; default \"name\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
 elody:filterKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "filter kind"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterKind ;

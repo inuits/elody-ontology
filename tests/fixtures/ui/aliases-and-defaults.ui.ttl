@@ -30,7 +30,14 @@ ui:UserUi
         rdfs:label "window-element-labels.info-window" ;
         sh:order 1 ;
         elody:alias "info" ;
-        elody:panel ui:UserUi-info ] ] ] ;
+        elody:panel ui:UserUi-info ] ,
+        [ a elody:ListElement ;
+        rdfs:label "element-labels.tenants" ;
+        sh:order 2 ;
+        elody:alias "Tenants" ;
+        elody:entityTypes "tenant" ;
+        elody:relationType "hasTenant" ;
+        elody:listQuery ui:GetTenantsOfUser ] ] ] ;
   sh:property
     [ sh:path em:email ;
     sh:name "Email"@en ;
@@ -110,3 +117,13 @@ ui:CreateUser
     elody:creationType "user" ;
     elody:icon "Create" ;
     elody:showsFormErrors true ] .
+
+# the list's documents: GetTenantsOfUser (results per type) and GetTenantsOfUserFilters (the type, the relation)
+ui:GetTenantsOfUser
+  a elody:ListQuery ;
+  elody:queryName "GetTenantsOfUser" ;
+  elody:result [ elody:graphqlType "Tenant" ; sh:order 1 ; elody:fragment "minimalTenant" ] ;
+  elody:filter
+    [ sh:order 1 ; dash:hidden true ; sh:defaultValue "tenant" ; elody:filterKind elody:TypeFilter ] ,
+    [ sh:order 2 ; elody:alias "relation" ; elody:key "elody:1|identifiers" ; dash:hidden true ;
+      sh:defaultValue "$entity.relationValues.hasTenant.key" ; elody:filterKind elody:SelectionFilter ] .

@@ -128,7 +128,8 @@ meta:PropertyShapeShape a sh:NodeShape ;
 
 meta:FilterShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    # no alias: the one unaliased advancedFilter of its document
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filterKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:class elody:FilterKind ;
       sh:message "a filter's kind is an elody:FilterKind instance (elody:TextFilter, ...), not a string" ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -247,9 +248,17 @@ meta:FlowStepShape a sh:NodeShape ;
 
 # ------------------------------------------------------------------- pickers ---
 
+meta:ListQueryShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
+    [ sh:path elody:filter ; sh:node meta:FilterShape ] .
+
 meta:PickerShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:result ; sh:minCount 1 ; sh:node meta:PickerResultShape ] ,
+    [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] ,
     [ sh:path elody:filtersQueryName ; sh:maxCount 0 ; sh:message "elody:filtersQueryName is retired: the filters document is named after the picker" ] .
 
@@ -290,6 +299,7 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:customBulkOperations ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ;
       sh:message "a list element references its custom bulk operations as a node" ] ,
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:listQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFilters ; sh:maxCount 0 ; sh:message "elody:pickerFilters is retired: reference the picker node with elody:picker" ] .
