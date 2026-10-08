@@ -148,6 +148,7 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:optionsValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:selectionOption ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,

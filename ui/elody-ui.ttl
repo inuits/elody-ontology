@@ -786,6 +786,10 @@ elody:selectionOption a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "selection option"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
   rdfs:comment "How a selection filter offers its options (selectionOption: autocomplete, ...)."@en .
+elody:showTime a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show time"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "A date filter offers the time of day too (showTimeForDateFilter)."@en .
 elody:filterOperator a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "filter operator"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
