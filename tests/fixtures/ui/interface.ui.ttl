@@ -1,0 +1,61 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# 0.3.0, batch 11: a GraphQL interface its subtypes share: no listing of its own, but the
+# filters, sort options and bulk operations named after it, a fields fragment the subtypes'
+# create forms spread, an elements fragment their detail columns spread, and a values fragment
+# their detail values spread (with a card twin).
+
+ui:WorkUi
+  a elody:EntityUi ;
+  elody:graphqlType "Work" ;
+  elody:emit "file" ;
+  elody:interface true ;
+  elody:bulkOperations true ;
+  sh:property
+    [ sh:path em:title ; sh:name "title"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:sortable true ; elody:readsValue false ] ,
+    [ sh:path em:refUniformTitles ; sh:order 2 ; elody:relationType "refUniformTitles" ; elody:valueLabelKey "title" ; elody:labelKey "metadata.labels.uniform-title" ] ,
+    [ sh:path em:parallel_title_group ; sh:order 3 ; elody:labelKey "metadata.labels.parallel-title" ] ;
+  elody:filter
+    [ sh:order 1 ; elody:alias "title" ; rdfs:label "metadata.labels.title" ; elody:key "vlacc:1|metadata.title.value" ; elody:displayedByDefault true ; elody:filterKind elody:TextFilter ] ;
+  elody:bulkOperation
+    [ sh:order 1 ; rdfs:label "bulk-operations.edit" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ;
+      elody:context [ elody:activeViewMode elody:ReadMode ; elody:selection elody:SomeSelected ; elody:tooltipLabel "t" ] ;
+      elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:picker ui:SubjectsPicker ] ] ;
+  elody:listQuery ui:GetAuthorsInWorkDeleteQuery ;
+  elody:picker ui:SubjectsPicker ;
+  elody:fieldsFragment
+    [ elody:fragmentName "basicCreateWorkFields" ;
+      elody:shape [ sh:property [ sh:path em:original_headtitle ; sh:name "headtitle"@en ; sh:order 1 ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ; elody:labelKey "metadata.labels.headtitle" ] ] ] ;
+  elody:elementsFragment
+    [ elody:fragmentName "workTitleDataWindowElement" ;
+      elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.title-data" ; sh:order 1 ; elody:alias "titleData" ; elody:panel ui:WorkUi-titleData ] ] ;
+  elody:valuesFragment
+    [ elody:fragmentName "workTitleDataIntialValues" ; elody:cardFragmentName "workTitleDataTeaserMetadata" ; elody:field em:refUniformTitles , em:parallel_title_group ] .
+
+ui:WorkUi-titleData
+  a elody:Panel ;
+  rdfs:label "panel-labels.title-data" ;
+  sh:order 1 ;
+  elody:alias "titleData" ;
+  elody:collapsed false ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:refUniformTitles , em:parallel_title_group .
+
+ui:SubjectsPicker
+  a elody:Picker ;
+  elody:queryName "GetEntityPickerListForSubjectsInWork" ;
+  elody:filtersQuery "GetEntityPickerFiltersForSubjectsInWork" ;
+  elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "person" ; elody:filterKind elody:TypeFilter ] .
+
+ui:GetAuthorsInWorkDeleteQuery
+  a elody:ListQuery ;
+  elody:queryName "GetAuthorsInWorkDeleteQuery" ;
+  elody:filtersQuery "GetAuthorsInDetailFilters" ;
+  elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "person" ; elody:filterKind elody:TypeFilter ] .

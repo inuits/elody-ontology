@@ -427,8 +427,8 @@ elody:ListQuery a owl:Class ;
   rdfs:comment "The entities document a list element loads, with its filters document: the result fragment per type (without results the entities document stays hand-written and only the filters document is generated) and the scoping filters (the type, the relation to the entity shown). Named by elody:queryName; the filters document by elody:filtersQuery, else the query name with Filters."@en .
 elody:listQuery a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "list query"@en ; rdfs:domain elody:ListElement ; rdfs:range elody:ListQuery ;
-  rdfs:comment "The declared entities and filters documents the list loads; sets customQuery and customQueryFilters."@en .
+  rdfs:label "list query"@en ; rdfs:domain owl:Thing ; rdfs:range elody:ListQuery ;
+  rdfs:comment "The declared entities and filters documents the list loads; sets customQuery and customQueryFilters. On an EntityUi: list queries the type's documents name without a list element (the documents of the delete flow)."@en .
 elody:PickerResult a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "picker result"@en ;
@@ -769,7 +769,7 @@ elody:filter a owl:ObjectProperty ;
 elody:alias a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "alias"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "The GraphQL alias under which a filter (a filter without one is emitted unaliased), action, panel, element, form tab (on an elody:Form; default \"name\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
+  rdfs:comment "The GraphQL alias under which a filter (a filter without one is emitted unaliased), action, panel, element, form tab (on an elody:Form; default \"name\"), submit action (on an elody:submit node; default \"createAction\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
 elody:optionsType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "options type"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
@@ -1712,3 +1712,42 @@ elody:validationExact a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "validation exact"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "With elody:validationRule \"has_required_relation\": true requires exactly elody:validationAmount related entities (has_required_relation.exact)."@en .
+
+# ---- 0.3.0, batch 11: interface declarations and the fragments a type family shares ----------
+
+elody:interface a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "interface"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true declares a GraphQL interface its subtypes share (Work, Expression): no listing or detail fragment is generated, only the filters, sort options and bulk operations fragments named after it, its documents and the fragments its subtypes spread. Default false."@en .
+elody:fragmentName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fragment name"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "The GraphQL name of a shared fragment (basicCreateWorkFields, workTitleDataWindowElement, workTitleDataIntialValues)."@en .
+elody:cardFragmentName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card fragment name"@en ; rdfs:domain elody:ValuesFragment ; rdfs:range xsd:string ;
+  rdfs:comment "The name of the fragment on teaserMetadata showing the same fields on the card (relatedWorksTeaserMetadata), when there is one."@en .
+elody:FieldsFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fields fragment"@en ;
+  rdfs:comment "A named fragment on FormFields holding form fields several forms spread (elody:fieldsSpread): its fields are the property shapes of its elody:shape."@en .
+elody:fieldsFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fields fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:FieldsFragment ;
+  rdfs:comment "A fields fragment the type's file holds."@en .
+elody:ElementsFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "elements fragment"@en ;
+  rdfs:comment "A named fragment on EntityViewElements holding detail elements several types spread in a column (elody:elementSpread)."@en .
+elody:elementsFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "elements fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:ElementsFragment ;
+  rdfs:comment "An elements fragment the type's file holds; its panels reference the type's property shapes."@en .
+elody:ValuesFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "values fragment"@en ;
+  rdfs:comment "A named fragment on IntialValues reading some of the type's property shapes (elody:field), spread by other fragments (elody:detailValuesSpread), with an optional twin on teaserMetadata (elody:cardFragmentName)."@en .
+elody:valuesFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "values fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:ValuesFragment ;
+  rdfs:comment "A values fragment the type's file holds."@en .

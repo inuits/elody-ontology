@@ -32,6 +32,11 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:deleteOptions ; sh:maxCount 1 ; sh:node meta:DeleteOptionsShape ] ,
+    [ sh:path elody:interface ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:fieldsFragment ; sh:node meta:FieldsFragmentShape ] ,
+    [ sh:path elody:elementsFragment ; sh:node meta:ElementsFragmentShape ] ,
+    [ sh:path elody:valuesFragment ; sh:node meta:ValuesFragmentShape ] ,
+    [ sh:path elody:listQuery ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValuesSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailValuesSpread ; sh:datatype xsd:string ] ,
@@ -265,6 +270,7 @@ meta:BulkOperationModalShape a sh:NodeShape ;
     [ sh:path elody:modalKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ModalKind ;
       sh:message "a modal's kind is an elody:ModalKind instance" ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:picker ; sh:maxCount 1 ; sh:node meta:PickerShape ] ,
     [ sh:path elody:permission ; sh:maxCount 1 ; sh:class elody:Permission ] ,
     [ sh:path elody:closeConfirmation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:typeModal ; sh:maxCount 0 ; sh:message "elody:typeModal is retired: use elody:modalKind" ] ,
@@ -291,6 +297,22 @@ meta:FormShape a sh:NodeShape ;
   # a form holds fields of its own, or spreads a shared fields fragment
   sh:or ( [ sh:property [ sh:path ( elody:shape sh:property ) ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldsSpread ; sh:minCount 1 ] ] ) ;
   sh:message "a form holds at least one field or spreads a fields fragment" .
+
+meta:FieldsFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:shape ; sh:minCount 1 ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] .
+
+meta:ElementsFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:element ; sh:minCount 1 ; sh:node meta:ElementShape ] .
+
+meta:ValuesFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:field ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:message "a values fragment references the type's property shapes by their sh:path IRI" ] .
 
 meta:CopyFromParentShape a sh:NodeShape ;
   sh:property
