@@ -8,6 +8,8 @@
 @prefix em:     <https://elody.io/ns/metadata#> .
 
 # 0.3.0: a property read under another GraphQL alias (title: keyValue(key: "email")),
+# a card thumbnail, a panel laid out in several columns, a form tab alias and a submit that
+# shows form errors, a column without a size,
 # a field read on the detail page only, a sort option with its own label and position,
 # a type that reads no relation values and carries no bulk operations, a type without
 # view modes, and a hidden selection filter with an empty default list and a parent key.
@@ -18,6 +20,17 @@ ui:UserUi
   elody:emit "file" ;
   elody:relationValues false ;
   elody:bulkOperations false ;
+  elody:thumbnail [ elody:fromMediafile true ] ;
+  elody:form ui:CreateUser ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:element
+        [ a elody:WindowElement ;
+        rdfs:label "window-element-labels.info-window" ;
+        sh:order 1 ;
+        elody:alias "info" ;
+        elody:panel ui:UserUi-info ] ] ] ;
   sh:property
     [ sh:path em:email ;
     sh:name "Email"@en ;
@@ -75,3 +88,25 @@ ui:TenantUi
     sh:order 1 ;
     shui:propertyRole shui:LabelRole ;
     elody:labelKey "metadata.labels.name" ] .
+
+ui:UserUi-info
+  a elody:Panel ;
+  rdfs:label "panel-labels.user-info" ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:multipleColumns true ;
+  elody:field em:first_name .
+
+ui:CreateUser
+  a elody:Form ;
+  rdfs:label "navigation.create-user" ;
+  elody:queryName "GetUserCreateForm" ;
+  elody:alias "user" ;
+  elody:shape [ sh:property [ sh:path em:email ; sh:name "Email"@en ; sh:order 1 ; sh:datatype xsd:string ; sh:maxCount 1 ; sh:minCount 1 ] ] ;
+  elody:submit
+    [ rdfs:label "actions.labels.create" ;
+    elody:actionQuery "CreateEntity" ;
+    elody:creationType "user" ;
+    elody:icon "Create" ;
+    elody:showsFormErrors true ] .

@@ -25,6 +25,7 @@ meta:EntityUiShape a sh:NodeShape ;
     # no view mode: a type that is never listed on its own (a tenant, a media file in a panel)
     [ sh:path elody:viewMode ; sh:node meta:ViewModeSelectionShape ] ,
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:thumbnail ; sh:maxCount 1 ; sh:node meta:ThumbnailShape ] ,
     [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path sh:property ; sh:minCount 1 ; sh:node meta:PropertyShapeShape ;
       sh:message "an EntityUi declares at least one property shape" ] ,
@@ -264,9 +265,14 @@ meta:DetailLayoutShape a sh:NodeShape ;
     [ sh:path elody:column ; sh:minCount 1 ; sh:node meta:ColumnShape ] ,
     [ sh:path elody:shapeDriven ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
 
+meta:ThumbnailShape a sh:NodeShape ;
+  sh:or ( [ sh:property [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ]
+          [ sh:property [ sh:path elody:fromMediafile ; sh:hasValue true ] ] ) ;
+  sh:message "a thumbnail reads an initial value (elody:key) or the primary media file (elody:fromMediafile true)" .
+
 meta:ColumnShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:size ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ColumnSize ;
+    [ sh:path elody:size ; sh:maxCount 1 ; sh:class elody:ColumnSize ;
       sh:message "a column's size is an elody:ColumnSize instance (elody:Width70, ...)" ] ,
     [ sh:path elody:element ; sh:minCount 1 ; sh:node meta:ElementShape ] .
 
@@ -295,6 +301,7 @@ meta:PanelShape a sh:NodeShape ;
     [ sh:path elody:field ; sh:nodeKind sh:IRI ;
       sh:message "a panel field references a property shape by its sh:path IRI" ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:multipleColumns ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:panelType ; sh:maxCount 0 ; sh:message "elody:panelType is retired: use elody:panelKind" ] ,
     [ sh:path elody:editable ; sh:maxCount 0 ; sh:message "elody:editable is retired: use dash:readOnly" ] .
 

@@ -369,6 +369,22 @@ elody:SubmitAction a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "submit action"@en ;
   rdfs:comment "What a form's submit button does: label, icon, the platform mutation and the entity type it creates."@en .
+elody:showsFormErrors a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "shows form errors"@en ; rdfs:domain elody:SubmitAction ; rdfs:range xsd:boolean ;
+  rdfs:comment "Show the form's validation errors when the submit is refused (showsFormErrors). Default false."@en .
+elody:Thumbnail a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "thumbnail"@en ;
+  rdfs:comment "The picture on the card: read from an initial value (elody:key, e.g. the display filename read as \"thumbnail\") or from the entity's primary media file (elody:fromMediafile true)."@en .
+elody:thumbnail a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card thumbnail"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:Thumbnail ;
+  rdfs:comment "The card shows a thumbnail (teaserMetadata.thumbnail), before the fields."@en .
+elody:fromMediafile a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "from media file"@en ; rdfs:domain elody:Thumbnail ; rdfs:range xsd:boolean ;
+  rdfs:comment "The thumbnail is the entity's primary media file (filename(fromMediafile: true))."@en .
 
 elody:GuidedFlow a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -682,7 +698,7 @@ elody:filter a owl:ObjectProperty ;
 elody:alias a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "alias"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "The GraphQL alias under which a filter, action, panel, element or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
+  rdfs:comment "The GraphQL alias under which a filter, action, panel, element, form tab (on an elody:Form; default \"name\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
 elody:filterKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "filter kind"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterKind ;
@@ -953,7 +969,7 @@ elody:column a owl:ObjectProperty ;
 elody:size a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "size"@en ; rdfs:domain elody:Column ; rdfs:range elody:ColumnSize ;
-  rdfs:comment "Column width."@en .
+  rdfs:comment "Column width; without it the column takes what the layout gives."@en .
 elody:element a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "element"@en ; rdfs:domain elody:Column ; rdfs:range elody:Element ;
@@ -966,6 +982,10 @@ elody:collapsed a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "collapsed"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
   rdfs:comment "The element or panel starts collapsed."@en .
+elody:multipleColumns a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "multiple columns"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
+  rdfs:comment "The panel (or property group) may lay its fields out in several columns (canBeMultipleColumns)."@en .
 elody:showsUngrouped a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "shows ungrouped properties"@en ; rdfs:domain sh:PropertyGroup ; rdfs:range xsd:boolean ;
