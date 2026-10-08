@@ -547,6 +547,10 @@ elody:TypePillLabelSource a elody:ValueSource ;
 elody:TechnicalMetadataSource a elody:ValueSource ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:RelationMetadataSource  a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:RepeatableMetadataSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A value read from a repeatable metadata group (source: repeatableMetadata), the group's key in elody:repeatableMetadataKey."@en .
+elody:ParentRootSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A root field of the parent entity (source: parentRoot), reached over the relation in elody:parentRelationType."@en .
 
 # =============================================================================
 # 4. Properties — generator directives
@@ -1103,8 +1107,8 @@ elody:size a owl:ObjectProperty ;
   rdfs:comment "Column width; without it the column takes what the layout gives."@en .
 elody:element a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "element"@en ; rdfs:domain elody:Column ; rdfs:range elody:Element ;
-  rdfs:comment "An element in the column."@en .
+  rdfs:label "element"@en ; rdfs:domain owl:Thing ; rdfs:range elody:Element ;
+  rdfs:comment "An element in the column; on an elody:Panel, a list element shown among the panel's fields (a panel holding a filtered list of related entities)."@en .
 elody:expandButton a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "expand button"@en ; rdfs:domain elody:WindowElement ; rdfs:range xsd:boolean ;
@@ -1552,3 +1556,120 @@ elody:option a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "option"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterOption ;
   rdfs:comment "A fixed option of a selection filter, offered as declared instead of fetched (elody:optionsType). Its label is elody:labelKey, its value elody:value."@en .
+
+# ---- 0.3.0, batch 6: vlacc's listing structure and card keys --------------------------------
+
+elody:listingCore a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing core"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true splits the listing fragment in two: minimal<Type>Core holds the values and the card, minimal<Type> spreads it and adds the view modes, so other listings of the type can reuse the core. Default false."@en .
+elody:cardKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The key the card field reads its value under (key(input: ...)) when it is neither the metadata key nor the alias (\"typePill\" for the type pill, a raw key under a title alias)."@en .
+elody:selectionSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "selection spread"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The name of a shared fragment that is the filter's selection set (...advancedFilter) in place of the fields asked back one by one; fields with arguments (defaultValue, hidden, tooltip) are still emitted."@en .
+elody:elementSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "element spread"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "On a column: the name of a shared fragment on EntityViewElements spread among the column's elements (...entityHistoryVersionList)."@en .
+elody:repeatableMetadataKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "repeatable metadata key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:source elody:RepeatableMetadataSource: the key inside the repeatable group the value is read from (repeatableMetadataKey)."@en .
+elody:parentRelationType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "parent relation type"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:source elody:ParentRootSource: the relation over which the parent entity is reached (parentRelations: [{ relationType }])."@en .
+elody:containsRelationPropertyKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "contains relation property key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "On a relation-valued property: only the relations whose property with this key holds elody:containsRelationPropertyValue are read (containsRelationPropertyKey: \"main_author\")."@en .
+elody:containsRelationPropertyValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "contains relation property value"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The value elody:containsRelationPropertyKey selects on (containsRelationPropertyValue: \"true\")."@en .
+
+# ---- 0.3.0, batch 7: vlacc's detail extras -----------------------------------------------------
+
+elody:sortPrimary a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "primary sort option"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true marks the property's sort option as the primary one (primary: true). Default false."@en .
+elody:listingFormatter a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing formatter"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false reads the value in the listing fragment without its formatter (the detail page keeps it). Default true."@en .
+elody:hideInHistory a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "hide in history"@en ; rdfs:domain elody:Element ; rdfs:range xsd:boolean ;
+  rdfs:comment "true leaves the element out of the history view of the entity (hideInHistory(input: true)). Default false."@en .
+elody:disableLibraryBar a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "disable library bar"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:boolean ;
+  rdfs:comment "true hides the list's library bar (disableLibraryBar(input: true)). Default false."@en .
+elody:enableNavigation a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "enable navigation"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the list's items navigate to their detail page (enableNavigation(input: ...)). Unsaid leaves the PWA's default."@en .
+elody:libraryMode a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "library mode"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:string ;
+  rdfs:comment "The list's base library mode (baseLibraryMode(input: ...)). Open string: the modes are the PWA's."@en .
+elody:keys a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "keys"@en ; rdfs:domain elody:Filter ; rdfs:range rdf:List ;
+  rdfs:comment "An ordered RDF list of the keys a filter searches (key: [\"a\", \"b\"]) when there are several; elody:key holds one."@en .
+elody:requiresSameType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "requires same type"@en ; rdfs:domain elody:ActionContext ; rdfs:range xsd:boolean ;
+  rdfs:comment "true offers the bulk operation only when the selected items share a type (requiresSameType)."@en .
+elody:minSelectedItems a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "min selected items"@en ; rdfs:domain elody:ActionContext ; rdfs:range xsd:integer ;
+  rdfs:comment "The least items that must be selected for the bulk operation (minSelectedItems)."@en .
+elody:maxSelectedItems a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "max selected items"@en ; rdfs:domain elody:ActionContext ; rdfs:range xsd:integer ;
+  rdfs:comment "The most items that may be selected for the bulk operation (maxSelectedItems)."@en .
+elody:DeleteOptions a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "delete options"@en ;
+  rdfs:comment "How a type's entity is deleted from its detail page (deleteQueryOptions): the labels, the documents listing the relations to delete with it and the relations that block the deletion."@en .
+elody:deleteOptions a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "delete options"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:DeleteOptions ;
+  rdfs:comment "The deleteQueryOptions block of the detail fragment."@en .
+elody:deleteEntityLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "delete entity label"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the delete confirmation (deleteEntityLabel)."@en .
+elody:deleteRelationsQuery a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "delete relations query"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "The document listing the related entities deleted along (customQueryDeleteRelations)."@en .
+elody:deleteRelationsFilters a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "delete relations filters"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "Its filters document (customQueryDeleteRelationsFilters)."@en .
+elody:deleteRelationsTypes a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "delete relations types"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range rdf:List ;
+  rdfs:comment "An ordered RDF list of the entity types deleted along (customQueryEntityTypes)."@en .
+elody:deleteRelationsLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "delete relations label"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key naming the related entities (deleteRelationsLabel)."@en .
+elody:blockingRelationsQuery a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "blocking relations query"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "The document listing the related entities that block the deletion (customQueryBlockingRelations)."@en .
+elody:blockingRelationsFilters a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "blocking relations filters"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "Its filters document (customQueryBlockingRelationsFilters)."@en .
+elody:blockingRelationsTypes a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "blocking relations types"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range rdf:List ;
+  rdfs:comment "An ordered RDF list of the entity types that block the deletion (customQueryBlockingEntityTypes)."@en .
+elody:blockingRelationsLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "blocking relations label"@en ; rdfs:domain elody:DeleteOptions ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key naming the blocking entities (blockingRelationsLabel)."@en .
+elody:detailLabelKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail label key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key the detail panel labels the field with when it differs from the card's (elody:labelKey)."@en .

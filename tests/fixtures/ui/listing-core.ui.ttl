@@ -1,0 +1,62 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# 0.3.0, batch 6: a listing split into a core and a wrapper, a card key of its own, values read
+# from a repeatable group and from the parent entity, a relation filtered on a property, a filter
+# whose selection set is a shared fragment, a column spreading a shared element, a bulk operation
+# offered in every view mode.
+
+ui:WorkUi
+  a elody:EntityUi ;
+  elody:graphqlType "Work" ;
+  elody:emit "file" ;
+  elody:listingCore true ;
+  elody:typePills true ;
+  elody:deleteOptions
+    [ elody:deleteEntityLabel "bulk-operations.delete-labels.work" ;
+      elody:deleteRelationsQuery "GetAuthorsInWorkDeleteQuery" ; elody:deleteRelationsFilters "GetAuthorsInDetailFilters" ;
+      elody:deleteRelationsTypes ( "person" "corporation" ) ; elody:deleteRelationsLabel "bulk-operations.delete-labels.authors" ;
+      elody:blockingRelationsQuery "GetExpressionsBlockingRelations" ; elody:blockingRelationsFilters "GetExpressionsInWorkFilters" ;
+      elody:blockingRelationsTypes ( "reading" "listening" ) ; elody:blockingRelationsLabel "bulk-operations.delete-labels.expressions" ] ;
+  sh:property
+    [ sh:path em:type ; sh:order 1 ; elody:alias "typePillLabel" ; elody:cardKey "typePill" ; elody:source elody:TypePillLabelSource ; elody:index 0 ; elody:labelKey "metadata.labels.type" ] ,
+    [ sh:path em:title ; sh:name "title"@en ; sh:order 2 ; shui:propertyRole shui:LabelRole ; sh:maxCount 1 ; sh:datatype xsd:string ; elody:sortable true ; elody:sortPrimary true ] ,
+    [ sh:path em:status_field ; sh:order 6 ; elody:labelKey "metadata.labels.status" ; elody:detailLabelKey "metadata.labels.record-status" ; shui:viewer elody:PillViewer ; elody:listingFormatter false ] ,
+    [ sh:path em:isbn_group ; sh:order 3 ; elody:alias "isbns" ; elody:source elody:RepeatableMetadataSource ; elody:repeatableMetadataKey "isbn" ; elody:labelKey "metadata.labels.isbn" ] ,
+    [ sh:path em:id ; sh:order 4 ; elody:alias "navigate_to_id" ; elody:source elody:ParentRootSource ; elody:parentRelationType "refParentEntity" ; elody:teaser false ] ,
+    [ sh:path em:refAuthors ; sh:order 5 ; elody:relationType "refAuthors" ; elody:valueLabelKey "name" ; elody:containsRelationPropertyKey "main_author" ; elody:containsRelationPropertyValue "true" ; elody:labelKey "metadata.labels.main-author" ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:TableView ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ; elody:size elody:Width50 ; elody:elementSpread "entityHistoryVersionList" ;
+        elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.info-window" ; sh:order 1 ; elody:hideInHistory true ; elody:expandButton false ; elody:panel ui:WorkUi-info ] ,
+          [ a elody:ListElement ; rdfs:label "element-labels.subjects" ; sh:order 2 ; elody:alias "Subjects" ; elody:collapsed false ; elody:entityTypes "person" ;
+            elody:relationType "refSubjects" ; elody:disableLibraryBar true ; elody:enableNavigation false ; elody:libraryMode "basicBaseLibraryWithBorder" ;
+            elody:customQuery "GetSubjects" ; elody:customQueryFilters "GetSubjectsInWorkFilters" ] ] ,
+      [ sh:order 2 ; elody:elementSpread "entityHistoryVersionList" ] ] ;
+  elody:filter
+    [ sh:order 1 ; elody:alias "title" ; rdfs:label "metadata.labels.title" ; elody:key "vlacc:1|metadata.title.value" ; elody:displayedByDefault true ;
+      elody:filterKind elody:TextFilter ; elody:selectionSpread "advancedFilter" ; sh:defaultValue "$entity.intialValues.title" ] ,
+    [ sh:order 2 ; elody:alias "name" ; rdfs:label "metadata.labels.name" ; elody:keys ( "vlacc:1|properties.name.value" "vlacc:1|properties.non_preferred_name.value" ) ;
+      elody:filterOperator "or" ; elody:displayedByDefault true ; elody:filterKind elody:TextFilter ] ;
+  elody:bulkOperation
+    [ sh:order 1 ; rdfs:label "bulk-operations.edit" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ;
+      elody:context [ elody:selection elody:SomeSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.someselected" ;
+                      elody:requiresSameType true ; elody:minSelectedItems 2 ; elody:maxSelectedItems 2 ] ] .
+
+ui:WorkUi-info
+  a elody:Panel ;
+  rdfs:label "panel-labels.work-info" ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:collapsed false ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:title ;
+  elody:element [ a elody:ListElement ; sh:order 1 ; elody:alias "Awards" ; elody:collapsed false ; elody:entityTypes "award" ; elody:relationType "refAwards" ;
+    elody:disableLibraryBar true ; elody:customQuery "GetAwardsInDetail" ; elody:customQueryFilters "GetAwardsInEntityFilters" ] .

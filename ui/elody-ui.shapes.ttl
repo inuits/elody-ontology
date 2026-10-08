@@ -30,6 +30,8 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:excludeBaseSortOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filtersFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:deleteOptions ; sh:maxCount 1 ; sh:node meta:DeleteOptionsShape ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValuesSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailValuesSpread ; sh:datatype xsd:string ] ,
@@ -125,6 +127,14 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:validationRule ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:sortPrimary ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:listingFormatter ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:repeatableMetadataKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:containsRelationPropertyKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:containsRelationPropertyValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:validationValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -157,6 +167,8 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path elody:option ; sh:node meta:FilterOptionShape ] ,
+    [ sh:path elody:selectionSpread ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:keys ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:keys is an RDF list of key strings" ] ,
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -170,6 +182,18 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ]
     [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ] ) ;
   sh:message "a hidden filter carries a sh:defaultValue, or elody:defaultValueAsList true for an empty list" .
+
+meta:DeleteOptionsShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:deleteEntityLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:deleteRelationsQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:deleteRelationsFilters ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:deleteRelationsTypes ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:deleteRelationsLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:blockingRelationsQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:blockingRelationsFilters ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:blockingRelationsTypes ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:blockingRelationsLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:FilterOptionShape a sh:NodeShape ;
   sh:property
@@ -224,9 +248,13 @@ meta:BulkOperationShape a sh:NodeShape ;
 
 meta:BulkOperationContextShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:activeViewMode ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:InteractionMode ] ,
+    # no active view mode: the operation is offered in every mode
+    [ sh:path elody:activeViewMode ; sh:maxCount 1 ; sh:class elody:InteractionMode ] ,
     [ sh:path elody:selection ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:SelectionState ] ,
     [ sh:path elody:tooltipLabel ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:requiresSameType ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:minSelectedItems ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:maxSelectedItems ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:tooltipLabel" ] .
 
 meta:BulkOperationModalShape a sh:NodeShape ;
@@ -326,9 +354,13 @@ meta:ColumnShape a sh:NodeShape ;
   sh:property
     # no alias: the first column is emitted as column, the next ones as column2, column3, ...
     [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:elementSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:size ; sh:maxCount 1 ; sh:class elody:ColumnSize ;
       sh:message "a column's size is an elody:ColumnSize instance (elody:Width70, ...)" ] ,
-    [ sh:path elody:element ; sh:minCount 1 ; sh:node meta:ElementShape ] .
+    # a column may hold spread elements only
+    [ sh:path elody:element ; sh:node meta:ElementShape ] ;
+  sh:or ( [ sh:property [ sh:path elody:element ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:elementSpread ; sh:minCount 1 ] ] ) ;
+  sh:message "a column holds at least one element or spreads one" .
 
 meta:ElementShape a sh:NodeShape ;
   sh:property
@@ -346,6 +378,10 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:listQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:customQueryRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:editButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:hideInHistory ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:disableLibraryBar ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:enableNavigation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:libraryMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:listViewMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
@@ -363,6 +399,8 @@ meta:PanelShape a sh:NodeShape ;
     [ sh:path elody:multipleColumns ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:can ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:spread ; sh:datatype xsd:string ] ,
+    # a panel may hold list elements next to its fields
+    [ sh:path elody:element ; sh:node meta:ElementShape ] ,
     [ sh:path elody:panelType ; sh:maxCount 0 ; sh:message "elody:panelType is retired: use elody:panelKind" ] ,
     [ sh:path elody:editable ; sh:maxCount 0 ; sh:message "elody:editable is retired: use dash:readOnly" ] .
 
