@@ -21,6 +21,10 @@ ui:UserUi
   elody:relationValues false ;
   elody:bulkOperations false ;
   elody:thumbnail [ elody:fromMediafile true ] ;
+  elody:listingValuesSpread "vocabTeaserIntialValues" ;
+  elody:detailValuesSpread "entityAuditIntialValues" ;
+  elody:cardSpread "vocabTeaserMetadata" ;
+  elody:filtersSpread "entityAuditFilters" ;
   elody:form ui:CreateUser ;
   elody:detail
     [ elody:column
@@ -68,6 +72,14 @@ ui:UserUi
     elody:labelKey "metadata.labels.user.name" ;
     elody:sortable true ;
     elody:sortOrder 1 ;
+    elody:detailOnly true ] ,
+    [ sh:path em:language ;
+    sh:name "Language"@en ;
+    sh:order 6 ;
+    sh:class em:Language ;
+    elody:valueLabelKey "title" ;
+    elody:clientInputField "languageTypeField" ;
+    elody:labelKey "metadata.labels.language" ;
     elody:detailOnly true ] ;
   elody:filter
     [ sh:order 1 ;
@@ -75,6 +87,15 @@ ui:UserUi
     dash:hidden true ;
     sh:defaultValue "user" ;
     elody:filterKind elody:TypeFilter ] ,
+    [ rdfs:label "metadata.labels.language" ;
+    sh:order 3 ;
+    elody:alias "language" ;
+    elody:key "vliz:1|properties.has_language.value" ;
+    elody:displayedByDefault true ;
+    elody:optionsType "language" ;
+    elody:optionsKey "vliz:1|properties.title.value" ;
+    elody:filterKind elody:SelectionFilter ;
+    elody:showTooltip true ] ,
     [ sh:order 2 ;
     elody:alias "relation" ;
     elody:key "isTenantFor" ;
@@ -103,7 +124,8 @@ ui:UserUi-info
   elody:alias "info" ;
   elody:panelKind elody:MetadataPanel ;
   elody:multipleColumns true ;
-  elody:field em:first_name .
+  elody:spread "entityAuditMetadata" ;
+  elody:field em:first_name , em:language .
 
 ui:CreateUser
   a elody:Form ;

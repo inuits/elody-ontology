@@ -620,6 +620,26 @@ elody:relationValues a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "reads relation values"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the type's fragments read its relations (relationValues). Default: yes when a property reads a relation, a panel lists related entities or the card has a context menu; no otherwise. true or false overrides the default."@en .
+elody:listingValuesSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing values spread"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on IntialValues spread into the listing fragment's initial values (...vocabTeaserIntialValues): fields several types share."@en .
+elody:detailValuesSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail values spread"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on IntialValues spread into the detail fragment's initial values (...entityAuditIntialValues)."@en .
+elody:cardSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card spread"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on teaserMetadata spread into the card (...vocabTeaserMetadata)."@en .
+elody:filtersSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filters spread"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on AdvancedFilters spread into the type's filters (...entityAuditFilters)."@en .
+elody:spread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "spread"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on WindowElementPanel spread into the panel, after its fields (...entityAuditMetadata)."@en .
 elody:detailFormatters a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "formatters on the detail page"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
@@ -681,6 +701,10 @@ elody:sortOrder a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "sort order"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
   rdfs:comment "The position of the field among the listing's sort options when it differs from sh:order."@en .
+elody:clientInputField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "client input field"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The input field the client registers itself under this name (customInputFields; inputField(type: keywordTypeField)) for editing this property; the generator uses the name and mints no field. Prefer sh:class, sh:in or an editor, which generate the field."@en .
 elody:colSpan a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "column span"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
@@ -715,6 +739,22 @@ elody:alias a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "alias"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
   rdfs:comment "The GraphQL alias under which a filter (a filter without one is emitted unaliased), action, panel, element, form tab (on an elody:Form; default \"name\") or property is emitted. On a property shape: the field name the fragment reads the value under when it is not the metadata key (title: keyValue(key: \"email\")); several property shapes may share one sh:path under different aliases. Open string by design."@en .
+elody:optionsType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options type"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "A selection filter offers the entities of this type as its options (advancedFilterInputForRetrievingOptions: a text search on elody:optionsKey, scoped to the type)."@en .
+elody:optionsKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options key"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The key searched for the options of a selection filter (\"vliz:1|properties.title.value\")."@en .
+elody:optionsMatchExact a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options match exact"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the option search matches exactly (match_exact). Default false."@en .
+elody:optionsDistinctBy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options distinct by"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The key the option search is made distinct by (distinct_by)."@en .
 elody:filterKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "filter kind"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterKind ;
