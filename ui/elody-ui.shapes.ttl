@@ -22,8 +22,10 @@ meta:EntityUiShape a sh:NodeShape ;
       sh:message "elody:emit is \"file\" or \"regions\"" ] ,
     [ sh:path elody:documents ; sh:in ( "entities" "filters" "sortOptions" "bulkOperations" ) ;
       sh:message "elody:documents names a standard document" ] ,
-    [ sh:path elody:viewMode ; sh:minCount 1 ; sh:node meta:ViewModeSelectionShape ;
-      sh:message "an EntityUi declares at least one view mode" ] ,
+    # no view mode: a type that is never listed on its own (a tenant, a media file in a panel)
+    [ sh:path elody:viewMode ; sh:node meta:ViewModeSelectionShape ] ,
+    [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path sh:property ; sh:minCount 1 ; sh:node meta:PropertyShapeShape ;
       sh:message "an EntityUi declares at least one property shape" ] ,
     # a label role (the card title): direct on one property shape, or qualified with sh:order on several
@@ -103,7 +105,11 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:defaultSortDirection ; sh:maxCount 1 ; sh:class elody:SortDirection ] ,
     [ sh:path elody:source ; sh:maxCount 1 ; sh:class elody:ValueSource ] ,
     [ sh:path elody:teaser ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:sortLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -125,15 +131,17 @@ meta:FilterShape a sh:NodeShape ;
       sh:message "a filter's kind is an elody:FilterKind instance (elody:TextFilter, ...), not a string" ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:showTooltip ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:parentFilterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:hidden ; sh:maxCount 0 ; sh:message "elody:hidden is retired: use dash:hidden" ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:showTooltip" ] ,
     [ sh:path elody:defaultValue ; sh:maxCount 0 ; sh:message "elody:defaultValue is retired: use sh:defaultValue" ] ;
-  # a hidden filter needs a default (there is no UI to fill it in)
+  # a hidden filter needs a default (there is no UI to fill it in); an empty list is a default too
   sh:or (
     [ sh:property [ sh:path dash:hidden ; sh:maxCount 0 ] ]
     [ sh:property [ sh:path dash:hidden ; sh:hasValue false ] ]
-    [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ] ) ;
-  sh:message "a hidden filter carries a sh:defaultValue" .
+    [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ]
+    [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ] ) ;
+  sh:message "a hidden filter carries a sh:defaultValue, or elody:defaultValueAsList true for an empty list" .
 
 meta:VisibleFilterLabelShape a sh:NodeShape ;
   # a visible filter needs a label; expressed as a second shape so the message is specific

@@ -1,0 +1,77 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# 0.3.0: a property read under another GraphQL alias (title: keyValue(key: "email")),
+# a field read on the detail page only, a sort option with its own label and position,
+# a type that reads no relation values and carries no bulk operations, a type without
+# view modes, and a hidden selection filter with an empty default list and a parent key.
+
+ui:UserUi
+  a elody:EntityUi ;
+  elody:graphqlType "User" ;
+  elody:emit "file" ;
+  elody:relationValues false ;
+  elody:bulkOperations false ;
+  sh:property
+    [ sh:path em:email ;
+    sh:name "Email"@en ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.email" ;
+    elody:sortable true ;
+    elody:sortLabelKey "metadata.labels.user.email" ;
+    elody:sortOrder 2 ] ,
+    [ sh:path em:id ;
+    sh:order 2 ;
+    elody:alias "slug" ;
+    elody:source elody:RootSource ;
+    elody:teaser false ] ,
+    [ sh:path em:first_name ;
+    sh:name "First name"@en ;
+    sh:order 3 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    elody:labelKey "metadata.labels.firstName" ;
+    elody:detailOnly true ] ,
+    [ sh:path em:email ;
+    sh:order 4 ;
+    elody:alias "title" ;
+    elody:detailOnly true ] ,
+    [ sh:path em:name ;
+    sh:order 5 ;
+    elody:labelKey "metadata.labels.user.name" ;
+    elody:sortable true ;
+    elody:sortOrder 1 ;
+    elody:detailOnly true ] ;
+  elody:filter
+    [ sh:order 1 ;
+    elody:alias "type" ;
+    dash:hidden true ;
+    sh:defaultValue "user" ;
+    elody:filterKind elody:TypeFilter ] ,
+    [ sh:order 2 ;
+    elody:alias "relation" ;
+    elody:key "isTenantFor" ;
+    elody:parentFilterKey "relations" ;
+    dash:hidden true ;
+    elody:defaultValueAsList true ;
+    elody:showTooltip true ;
+    elody:filterKind elody:SelectionFilter ;
+    elody:keyAsList false ] .
+
+ui:TenantUi
+  a elody:EntityUi ;
+  elody:graphqlType "Tenant" ;
+  elody:emit "file" ;
+  sh:property
+    [ sh:path em:label ;
+    sh:name "Name"@en ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.name" ] .
