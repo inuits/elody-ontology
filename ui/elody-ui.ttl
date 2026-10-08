@@ -1751,3 +1751,18 @@ elody:valuesFragment a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "values fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:ValuesFragment ;
   rdfs:comment "A values fragment the type's file holds."@en .
+
+# ---- 0.3.0, batch 12: list query results selected inline ----------------------------------------
+
+elody:listing a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing"@en ; rdfs:domain owl:Thing ; rdfs:range elody:EntityUi ;
+  rdfs:comment "On a list query's or picker's result: an EntityUi with elody:emit \"inline\" whose listing (values, card, view modes) is rendered inside the result (... on Person { intialValues { ... } teaserMetadata { ... } }) instead of, or next to, a fragment spread (elody:fragment)."@en .
+elody:menuInButtons a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu in buttons"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:boolean ;
+  rdfs:comment "true emits the card's context menu in the newer form, buttons { contextMenu { ... } }, instead of contextMenuActions { ... }. Default false."@en .
+elody:actionForm a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "action form"@en ; rdfs:domain elody:Action ; rdfs:range xsd:string ;
+  rdfs:comment "The GraphQL field a context-menu action is emitted as: doElodyAction (default, with an elody:actionKind), doLinkAction (follow the entity's link: label and icon only), doGeneralAction or doCustomAction."@en .

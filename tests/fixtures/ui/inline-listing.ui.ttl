@@ -1,0 +1,50 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# 0.3.0, batch 12: a list query whose results are rendered inline, from a listing declared for
+# that document alone (elody:emit "inline"), next to a fragment spread.
+
+ui:WorkUi
+  a elody:EntityUi ;
+  elody:graphqlType "Work" ;
+  elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:name "title"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ] ;
+  elody:detail
+    [ elody:column [ sh:order 1 ; elody:element
+      [ a elody:ListElement ; rdfs:label "element-labels.authors" ; sh:order 1 ; elody:alias "Authors" ; elody:collapsed false ;
+        elody:entityTypes "person" ; elody:relationType "refAuthors" ; elody:listQuery ui:GetAuthors ] ] ] .
+
+ui:GetAuthors
+  a elody:ListQuery ;
+  elody:queryName "GetAuthors" ;
+  elody:filtersQuery "GetAuthorsInWorkFilters" ;
+  elody:relationValues true ;
+  elody:result
+    [ elody:graphqlType "Person" ; sh:order 1 ; elody:listing ui:PersonInGetAuthorsUi ] ,
+    [ elody:graphqlType "Corporation" ; sh:order 2 ; elody:fragment "minimalCorporation" ; elody:listing ui:CorporationInGetAuthorsUi ] ;
+  elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "person" ; elody:filterKind elody:TypeFilter ] .
+
+ui:PersonInGetAuthorsUi
+  a elody:EntityUi ;
+  elody:graphqlType "Person" ;
+  elody:documentName "PersonInGetAuthors" ;
+  elody:emit "inline" ;
+  elody:relationValues true ;
+  sh:property
+    [ sh:path em:name ; sh:name "name"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ] ,
+    [ sh:path em:life_dates ; sh:order 2 ; elody:labelKey "metadata.labels.life-dates" ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .
+
+ui:CorporationInGetAuthorsUi
+  a elody:EntityUi ;
+  elody:graphqlType "Corporation" ;
+  elody:documentName "CorporationInGetAuthors" ;
+  elody:emit "inline" ;
+  sh:property [ sh:path em:name ; sh:name "name"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ; elody:readsValue false ] ;
+  elody:contextMenu [ elody:menuInButtons true ; elody:action [ sh:order 1 ; elody:alias "doLinkAction" ; elody:actionForm "doLinkAction" ; rdfs:label "contextMenu.contextMenuLinkAction.followLink" ; elody:icon "AngleRight" ] ] .

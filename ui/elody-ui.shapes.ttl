@@ -18,8 +18,8 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:graphqlType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
       sh:message "an EntityUi names exactly one GraphQL type" ] ,
     [ sh:path elody:documentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
-    [ sh:path elody:emit ; sh:maxCount 1 ; sh:in ( "file" "regions" ) ;
-      sh:message "elody:emit is \"file\" or \"regions\"" ] ,
+    [ sh:path elody:emit ; sh:maxCount 1 ; sh:in ( "file" "regions" "inline" ) ;
+      sh:message "elody:emit is \"file\", \"regions\" or \"inline\" (a listing rendered inside a list query's results)" ] ,
     [ sh:path elody:documents ; sh:in ( "entities" "filters" "sortOptions" "bulkOperations" ) ;
       sh:message "elody:documents names a standard document" ] ,
     # no view mode: a type that is never listed on its own (a tenant, a media file in a panel)
@@ -231,17 +231,22 @@ meta:ContextMenuShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:action ; sh:node meta:ActionShape ] ,
     [ sh:path elody:forceShow ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
-    [ sh:path elody:includeBasicActions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+    [ sh:path elody:includeBasicActions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:menuInButtons ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
 
 meta:ActionShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path elody:actionKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ActionKind ;
+    [ sh:path elody:actionKind ; sh:maxCount 1 ; sh:class elody:ActionKind ;
       sh:message "an action's kind is an elody:ActionKind instance" ] ,
+    [ sh:path elody:actionForm ; sh:maxCount 1 ; sh:in ( "doElodyAction" "doLinkAction" "doGeneralAction" "doCustomAction" ) ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:formSourceRef ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:actionType ; sh:maxCount 0 ; sh:message "elody:actionType is retired: use elody:actionKind" ] ,
-    [ sh:path elody:formQuery ; sh:maxCount 0 ; sh:message "elody:formQuery is retired: reference the node with elody:form or elody:formSourceRef" ] .
+    [ sh:path elody:formQuery ; sh:maxCount 0 ; sh:message "elody:formQuery is retired: reference the node with elody:form or elody:formSourceRef" ] ;
+  # a link action has no platform action kind; the others do
+  sh:or ( [ sh:property [ sh:path elody:actionKind ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:actionForm ; sh:hasValue "doLinkAction" ] ] ) ;
+  sh:message "an action carries an elody:actionKind unless it is a doLinkAction" .
 
 # ----------------------------------------------------------- bulk operations ---
 
@@ -361,6 +366,8 @@ meta:ListQueryShape a sh:NodeShape ;
     [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    # relationValues read on every result, outside the per-type selections
+    [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] .
 
@@ -376,8 +383,12 @@ meta:PickerShape a sh:NodeShape ;
 meta:PickerResultShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:graphqlType ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path elody:fragment ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path elody:type ; sh:maxCount 0 ; sh:message "elody:type is retired: use elody:graphqlType" ] .
+    [ sh:path elody:fragment ; sh:datatype xsd:string ] ,
+    [ sh:path elody:listing ; sh:maxCount 1 ; sh:class elody:EntityUi ] ,
+    [ sh:path elody:type ; sh:maxCount 0 ; sh:message "elody:type is retired: use elody:graphqlType" ] ;
+  # a result spreads fragments, renders an inline listing, or both
+  sh:or ( [ sh:property [ sh:path elody:fragment ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:listing ; sh:minCount 1 ] ] ) ;
+  sh:message "a result spreads at least one fragment or renders an inline listing" .
 
 # -------------------------------------------------------------------- detail ---
 
