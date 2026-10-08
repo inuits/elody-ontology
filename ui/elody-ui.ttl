@@ -692,8 +692,8 @@ elody:key a owl:DatatypeProperty ;
   rdfs:comment "A platform key: a config entry's name, a filter's document key, a step's key, a card field's value key when it differs from sh:name."@en .
 elody:value a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "value"@en ; rdfs:domain elody:ConfigEntry ; rdfs:range rdfs:Literal ;
-  rdfs:comment "A config entry's value: string, number, boolean or an RDF list of strings."@en .
+  rdfs:label "value"@en ; rdfs:domain owl:Thing ; rdfs:range rdfs:Literal ;
+  rdfs:comment "A config entry's value: string, number, boolean or an RDF list of strings. On an elody:FilterOption: the option's value."@en .
 elody:edgeRelations a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "edge relations"@en ; rdfs:domain elody:ViewModeSelection ; rdfs:range rdf:List ;
@@ -917,7 +917,7 @@ elody:primary a owl:DatatypeProperty ;
 elody:can a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "required permission"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "A fine-grained permission string (\"update:pipeline:has-runner\"). Open string: permissions are client-defined."@en .
+  rdfs:comment "A fine-grained permission string (\"update:pipeline:has-runner\"). On a bulk operation or a list element: the permissions it needs; on a panel: the permission editing it needs (can(input: \"update:feedback\")). Open string: permissions are client-defined."@en .
 elody:context a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "context"@en ; rdfs:domain elody:BulkOperation ; rdfs:range elody:BulkOperationContext ;
@@ -1524,3 +1524,31 @@ elody:parentFilterKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "parent filter key"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
   rdfs:comment "On a filter: the parentKey argument of a selection filter (\"relations\"). On a comments element: the filter key that ties comments to this entity."@en .
+
+# ---- 0.3.0, batch 5: validation rules, permissions, typed filter documents, static filter options,
+#      column aliases, panel permissions (askforceone) ------------------------------------------
+
+elody:validationRule a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation rule"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "A validation the field's input runs beyond required (validation(input: { value: url }): url, email, regex, customValue, has_required_relation, ...). sh:minCount 1 says required; this says the rest. Open string: the rules are the PWA's."@en .
+elody:validationValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation value"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The argument of the validation rule (customValue: \"min_value:1\", the pattern of a regex)."@en .
+elody:readsPermissions a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "reads permissions"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads canUpdate and canDelete with the detail page's initial values: the PWA shows the edit and delete actions by them. Default false."@en .
+elody:filtersType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filters type"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "On a list query or picker: the GraphQL type its filters document narrows to (EntityTypeFilters { ... on QuestionInstance { advancedFilters { ... } } }). Without it the filters are selected on EntityTypeFilters itself."@en .
+elody:FilterOption a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter option"@en ;
+  rdfs:comment "One fixed option of a selection filter (options: [{ label, value }]): a label key and a value, in sh:order."@en .
+elody:option a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "option"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterOption ;
+  rdfs:comment "A fixed option of a selection filter, offered as declared instead of fetched (elody:optionsType). Its label is elody:labelKey, its value elody:value."@en .

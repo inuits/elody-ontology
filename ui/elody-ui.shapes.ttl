@@ -29,6 +29,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:excludeBaseSortOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filtersFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValuesSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailValuesSpread ; sh:datatype xsd:string ] ,
@@ -123,6 +124,8 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:valueLabelRootKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:validationRule ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:validationValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     # retired terms on a property shape
@@ -153,6 +156,7 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
+    [ sh:path elody:option ; sh:node meta:FilterOptionShape ] ,
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -166,6 +170,12 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ]
     [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ] ) ;
   sh:message "a hidden filter carries a sh:defaultValue, or elody:defaultValueAsList true for an empty list" .
+
+meta:FilterOptionShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:labelKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:value ; sh:minCount 1 ; sh:maxCount 1 ] ,
+    [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:LookupShape a sh:NodeShape ;
   sh:property
@@ -281,6 +291,7 @@ meta:ListQueryShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] .
 
@@ -289,6 +300,7 @@ meta:PickerShape a sh:NodeShape ;
     # no results: the picker's list document is hand-written, only its name (and filters) are declared
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] ,
     [ sh:path elody:filtersQueryName ; sh:maxCount 0 ; sh:message "elody:filtersQueryName is retired: the filters document is named after the picker" ] .
 
@@ -312,6 +324,8 @@ meta:ThumbnailShape a sh:NodeShape ;
 
 meta:ColumnShape a sh:NodeShape ;
   sh:property
+    # no alias: the first column is emitted as column, the next ones as column2, column3, ...
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:size ; sh:maxCount 1 ; sh:class elody:ColumnSize ;
       sh:message "a column's size is an elody:ColumnSize instance (elody:Width70, ...)" ] ,
     [ sh:path elody:element ; sh:minCount 1 ; sh:node meta:ElementShape ] .
@@ -347,6 +361,7 @@ meta:PanelShape a sh:NodeShape ;
       sh:message "a panel field references a property shape by its sh:path IRI" ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:multipleColumns ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:can ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:spread ; sh:datatype xsd:string ] ,
     [ sh:path elody:panelType ; sh:maxCount 0 ; sh:message "elody:panelType is retired: use elody:panelKind" ] ,
     [ sh:path elody:editable ; sh:maxCount 0 ; sh:message "elody:editable is retired: use dash:readOnly" ] .

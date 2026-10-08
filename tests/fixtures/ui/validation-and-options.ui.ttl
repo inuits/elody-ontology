@@ -1,0 +1,72 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# 0.3.0, batch 5: a validation rule beyond required (url, customValue with its argument),
+# a type that reads its permissions with the detail values, a list query whose filters
+# document narrows to a type, a selection filter with fixed options, a selection filter that
+# fetches its options with a type only, a column with an alias and a panel that needs a permission.
+
+ui:TipUi
+  a elody:EntityUi ;
+  elody:graphqlType "Tip" ;
+  elody:emit "file" ;
+  elody:readsPermissions true ;
+  elody:form ui:CreateTip ;
+  sh:property
+    [ sh:path em:title ; sh:name "title"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path em:link ; sh:name "link"@en ; sh:order 2 ; sh:maxCount 1 ; sh:datatype xsd:string ; elody:validationRule "url" ] ,
+    [ sh:path em:readMinutes ; sh:name "read minutes"@en ; sh:order 3 ; sh:maxCount 1 ; sh:datatype xsd:integer ;
+      shui:editor shui:NumberFieldEditor ; elody:validationRule "customValue" ; elody:validationValue "min_value:1" ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ; elody:alias "tipColumn" ; elody:size elody:Width70 ;
+        elody:element
+          [ a elody:WindowElement ; rdfs:label "window-element-labels.tip" ; sh:order 1 ; elody:alias "tip" ; elody:panel ui:TipUi-tip ] ,
+          [ a elody:ListElement ; rdfs:label "element-labels.instances" ; sh:order 2 ; elody:alias "instances" ;
+            elody:collapsed false ; elody:entityTypes "tipInstance" ; elody:relationType "hasInstance" ;
+            elody:searchInput elody:AdvancedSearchInput ; elody:listQuery ui:GetInstancesOfTip ] ] ] ;
+  elody:filter
+    [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "tip" ; elody:filterKind elody:TypeFilter ] ,
+    [ sh:order 2 ; elody:alias "usageState" ; rdfs:label "metadata.labels.usage-state" ; elody:key "elody:1|metadata.usageState.value" ;
+      elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:showTooltip true ;
+      elody:option [ sh:order 1 ; elody:labelKey "metadata.options.usage-state.NOT_USED" ; elody:value "NOT_USED" ] ,
+                   [ sh:order 2 ; elody:labelKey "metadata.options.usage-state.USED" ; elody:value "USED" ] ] ,
+    [ sh:order 3 ; elody:alias "tenant" ; rdfs:label "metadata.labels.tenant" ; elody:key "elody:1|relations.isIn.key" ;
+      elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:selectionOption "checkboxlist" ;
+      elody:optionsLabel "intialValues.title" ; elody:optionsValue "intialValues.id" ; elody:optionsType "tenant" ] .
+
+ui:TipUi-tip
+  a elody:Panel ;
+  rdfs:label "panel-labels.tip" ;
+  sh:order 1 ;
+  elody:alias "tip" ;
+  elody:collapsed false ;
+  elody:can "update:tip" ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:title , em:link , em:readMinutes .
+
+ui:CreateTip
+  a elody:Form ;
+  elody:queryName "GetTipCreateForm" ;
+  rdfs:label "form-labels.tip" ;
+  elody:alias "tip" ;
+  elody:submit [ rdfs:label "actions.create" ; elody:icon "Create" ; elody:actionQuery "CreateEntity" ; elody:creationType "tip" ; elody:showsFormErrors true ] ;
+  elody:shape [ sh:property
+    [ sh:path em:title ; sh:name "title"@en ; sh:order 1 ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path em:link ; sh:name "link"@en ; sh:order 2 ; sh:maxCount 1 ; sh:datatype xsd:string ; elody:validationRule "url" ] ] .
+
+ui:GetInstancesOfTip
+  a elody:ListQuery ;
+  elody:queryName "GetEntities" ;
+  elody:filtersQuery "GetInstancesOfTipFilters" ;
+  elody:filtersType "TipInstance" ;
+  elody:filter
+    [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "tipInstance" ; elody:filterKind elody:TypeFilter ] ,
+    [ sh:order 2 ; elody:alias "tip" ; elody:key "elody:1|relations.hasTip.key" ; dash:hidden true ;
+      sh:defaultValue "$entity.intialValues.id" ; elody:filterKind elody:SelectionFilter ] .
