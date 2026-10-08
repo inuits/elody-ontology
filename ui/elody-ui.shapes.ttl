@@ -311,6 +311,8 @@ meta:ElementShape a sh:NodeShape ;
       sh:message "a list element references its custom bulk operations as a node" ] ,
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:listQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
+    [ sh:path elody:customQueryRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFilters ; sh:maxCount 0 ; sh:message "elody:pickerFilters is retired: reference the picker node with elody:picker" ] .

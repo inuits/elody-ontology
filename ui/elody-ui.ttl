@@ -1356,8 +1356,12 @@ elody:TaggingExtension    a elody:WysiwygExtension ; rdfs:isDefinedBy <https://e
 elody:mediaKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "media kind"@en ; rdfs:range elody:MediaElementKind ;
-  rdfs:domain [ owl:unionOf ( elody:MediaFileElement elody:SingleMediaFileElement ) ] ;
-  rdfs:comment "Whether the media element shows the mediafiles or their locations."@en .
+  rdfs:domain [ owl:unionOf ( elody:MediaFileElement elody:SingleMediaFileElement elody:ListElement ) ] ;
+  rdfs:comment "Whether the media element shows the mediafiles or their locations; on a list element, that the list is one of media files (type(input: media))."@en .
+elody:customQueryRelationType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "custom query relation type"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:string ;
+  rdfs:comment "The relation the list's entities document is scoped by on the related side (customQueryRelationType), when it differs from the list's relation."@en .
 
 elody:mapType a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
