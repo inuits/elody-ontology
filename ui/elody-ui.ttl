@@ -693,6 +693,14 @@ elody:detailOnly a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail only"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "true reads the field on the detail page only: it is left out of the listing fragment's initial values, and off the card. Default false: a field is read in the listing and on the detail page."@en .
+elody:listingOnly a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing only"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads the field in the listing fragment only, not on the detail page (a card thumbnail, a size). Default false."@en .
+elody:readsValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "reads value"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false reads no initial value for the field: a spread fragment or the platform provides it, the declaration only shows or sorts it (a panel field of a shared vocabulary fragment, a sort option on a key the fragments do not read). Default true."@en .
 elody:sortLabelKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "sort label key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;

@@ -73,6 +73,16 @@ ui:UserUi
     elody:sortable true ;
     elody:sortOrder 1 ;
     elody:detailOnly true ] ,
+    [ sh:path em:avatar ;
+    sh:order 7 ;
+    elody:source elody:RootSource ;
+    elody:listingOnly true ;
+    elody:teaser false ] ,
+    [ sh:path em:prefLabel ;
+    sh:order 8 ;
+    elody:labelKey "metadata.labels.pref-label" ;
+    elody:readsValue false ;
+    elody:detailOnly true ] ,
     [ sh:path em:language ;
     sh:name "Language"@en ;
     sh:order 6 ;
@@ -125,7 +135,7 @@ ui:UserUi-info
   elody:panelKind elody:MetadataPanel ;
   elody:multipleColumns true ;
   elody:spread "entityAuditMetadata" ;
-  elody:field em:first_name , em:language .
+  elody:field em:first_name , em:language , em:prefLabel .
 
 ui:CreateUser
   a elody:Form ;

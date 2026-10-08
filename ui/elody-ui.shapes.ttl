@@ -112,6 +112,8 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:source ; sh:maxCount 1 ; sh:class elody:ValueSource ] ,
     [ sh:path elody:teaser ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:listingOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:readsValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:clientInputField ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
