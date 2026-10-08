@@ -651,6 +651,10 @@ elody:detailFormatters a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "formatters on the detail page"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the detail fragment reads values with their viewer's formatter too (formatter: \"pill\"), as the listing does. Default true; false reads the raw values on the detail page."@en .
+elody:filtersFragmentName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filters fragment name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The name of the type's filters fragment when it is not filtersFor<Type> (a client that names them <type>Filters)."@en .
 elody:excludeBaseSortOptions a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "exclude base sort options"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
@@ -712,6 +716,10 @@ elody:readsValue a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "reads value"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "false reads no initial value for the field: a spread fragment or the platform provides it, the declaration only shows or sorts it (a panel field of a shared vocabulary fragment, a sort option on a key the fragments do not read). Default true."@en .
+elody:valueLabelRootKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "value label root key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "A relation-valued property labels the related entity by this root field (rootKeyAsLabel: \"display_filename\") instead of a metadata key."@en .
 elody:sortLabelKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "sort label key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
@@ -786,6 +794,34 @@ elody:selectionOption a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "selection option"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
   rdfs:comment "How a selection filter offers its options (selectionOption: autocomplete, ...)."@en .
+elody:matchersType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "matchers type"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "Which matchers the filter offers (matchersType: selectionForMetadata, ...)."@en .
+elody:Lookup a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup"@en ;
+  rdfs:comment "A join a filter needs: the collection looked up, the local and the foreign field, and the name the joined documents get (lookup: { from, local_field, foreign_field, as })."@en .
+elody:lookup a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup"@en ; rdfs:domain elody:Filter ; rdfs:range elody:Lookup ;
+  rdfs:comment "The join the filter needs before it can match."@en .
+elody:lookupFrom a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup from"@en ; rdfs:domain elody:Lookup ; rdfs:range xsd:string ;
+  rdfs:comment "The collection looked up."@en .
+elody:lookupLocalField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup local field"@en ; rdfs:domain elody:Lookup ; rdfs:range xsd:string ;
+  rdfs:comment "The field on this side of the join."@en .
+elody:lookupForeignField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup foreign field"@en ; rdfs:domain elody:Lookup ; rdfs:range xsd:string ;
+  rdfs:comment "The field on the looked-up side of the join."@en .
+elody:lookupAs a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup as"@en ; rdfs:domain elody:Lookup ; rdfs:range xsd:string ;
+  rdfs:comment "The name the joined documents get."@en .
 elody:showTime a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "show time"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
@@ -1073,6 +1109,14 @@ elody:expandButton a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "expand button"@en ; rdfs:domain elody:WindowElement ; rdfs:range xsd:boolean ;
   rdfs:comment "Offer the expand-to-full-screen button."@en .
+elody:editButton a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "edit button"@en ; rdfs:domain elody:WindowElement ; rdfs:range xsd:boolean ;
+  rdfs:comment "The window offers the edit-metadata button (editMetadataButton)."@en .
+elody:listViewMode a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "list view mode"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:string ;
+  rdfs:comment "How the list shows its entities (viewMode(input: Library), ...)."@en .
 elody:collapsed a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "collapsed"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;

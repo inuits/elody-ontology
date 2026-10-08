@@ -28,6 +28,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:thumbnail ; sh:maxCount 1 ; sh:node meta:ThumbnailShape ] ,
     [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:excludeBaseSortOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:filtersFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValuesSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailValuesSpread ; sh:datatype xsd:string ] ,
@@ -119,6 +120,7 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:clientInputField ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:sortLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:valueLabelRootKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -149,6 +151,8 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:selectionOption ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -162,6 +166,13 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ]
     [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ] ) ;
   sh:message "a hidden filter carries a sh:defaultValue, or elody:defaultValueAsList true for an empty list" .
+
+meta:LookupShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:lookupFrom ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:lookupLocalField ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:lookupForeignField ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:lookupAs ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:VisibleFilterLabelShape a sh:NodeShape ;
   # a visible filter needs a label; expressed as a second shape so the message is specific
@@ -220,7 +231,8 @@ meta:BulkOperationModalShape a sh:NodeShape ;
 
 meta:CustomBulkOperationsShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:operation ; sh:minCount 1 ; sh:node meta:BulkOperationShape ] .
+    # no operation: the set is declared empty (options(input: []))
+    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] .
 
 # --------------------------------------------------------------------- forms ---
 
@@ -319,6 +331,8 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:listQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:customQueryRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:editButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:listViewMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
