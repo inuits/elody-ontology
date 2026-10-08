@@ -27,6 +27,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:thumbnail ; sh:maxCount 1 ; sh:node meta:ThumbnailShape ] ,
     [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path sh:property ; sh:minCount 1 ; sh:node meta:PropertyShapeShape ;
       sh:message "an EntityUi declares at least one property shape" ] ,
     # a label role (the card title): direct on one property shape, or qualified with sh:order on several

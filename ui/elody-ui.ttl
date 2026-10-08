@@ -343,6 +343,9 @@ elody:ConfirmModal          a elody:ModalKind ; rdfs:isDefinedBy <https://elody.
 elody:DeleteModal           a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:EntityDetailModal     a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:EntityEditModal       a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:BulkOperationsModal   a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:GuidedFlowModal       a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MergeModal            a elody:ModalKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 
 elody:Permission a owl:Class ; rdfs:label "permission"@en ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -608,6 +611,10 @@ elody:relationValues a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "reads relation values"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the type's fragments read its relations (relationValues). Default: yes when a property reads a relation, a panel lists related entities or the card has a context menu; no otherwise. true or false overrides the default."@en .
+elody:detailFormatters a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "formatters on the detail page"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the detail fragment reads values with their viewer's formatter too (formatter: \"pill\"), as the listing does. Default true; false reads the raw values on the detail page."@en .
 elody:bulkOperations a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "carries bulk operations"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
