@@ -300,6 +300,13 @@ elody:DeleteEntitiesOperation   a elody:BulkOperationKind ; rdfs:isDefinedBy <ht
 elody:DeleteRelationsOperation  a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:EditOperation             a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:ExportCsvOperation        a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:DownloadMediafilesDirectlyOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:ExportXlsxOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:ExportCsvOfMediafilesOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:BulkUpdateMetadataOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MarkAsSeenOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MarkAsUnseenOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MergeEntitiesOperation a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:DownloadMediafilesOperation a elody:BulkOperationKind ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:ReorderEntitiesOperation  a elody:BulkOperationKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
@@ -644,6 +651,10 @@ elody:detailFormatters a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "formatters on the detail page"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the detail fragment reads values with their viewer's formatter too (formatter: \"pill\"), as the listing does. Default true; false reads the raw values on the detail page."@en .
+elody:excludeBaseSortOptions a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "exclude base sort options"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "The listing offers only the declared sort options, not the platform's (excludeBaseSortOptions)."@en .
 elody:bulkOperations a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "carries bulk operations"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
@@ -763,6 +774,22 @@ elody:optionsDistinctBy a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "options distinct by"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
   rdfs:comment "The key the option search is made distinct by (distinct_by)."@en .
+elody:optionsLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options label"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "Where a selection filter's option takes its label from (filterOptionsMapping.label, e.g. \"intialValues.access\")."@en .
+elody:optionsValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options value"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "Where a selection filter's option takes its value from (filterOptionsMapping.value)."@en .
+elody:selectionOption a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "selection option"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "How a selection filter offers its options (selectionOption: autocomplete, ...)."@en .
+elody:filterOperator a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter operator"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "How the filter's values combine (operator: or, and)."@en .
 elody:filterKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "filter kind"@en ; rdfs:domain elody:Filter ; rdfs:range elody:FilterKind ;

@@ -27,6 +27,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:thumbnail ; sh:maxCount 1 ; sh:node meta:ThumbnailShape ] ,
     [ sh:path elody:bulkOperations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:excludeBaseSortOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValuesSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailValuesSpread ; sh:datatype xsd:string ] ,
@@ -143,6 +144,10 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:showTooltip ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:parentFilterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:selectionOption ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -268,7 +273,8 @@ meta:ListQueryShape a sh:NodeShape ;
 
 meta:PickerShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:result ; sh:minCount 1 ; sh:node meta:PickerResultShape ] ,
+    # no results: the picker's list document is hand-written, only its name (and filters) are declared
+    [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] ,
     [ sh:path elody:filtersQueryName ; sh:maxCount 0 ; sh:message "elody:filtersQueryName is retired: the filters document is named after the picker" ] .

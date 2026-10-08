@@ -20,6 +20,7 @@ ui:UserUi
   elody:emit "file" ;
   elody:relationValues false ;
   elody:bulkOperations false ;
+  elody:excludeBaseSortOptions true ;
   elody:thumbnail [ elody:fromMediafile true ] ;
   elody:listingValuesSpread "vocabTeaserIntialValues" ;
   elody:detailValuesSpread "entityAuditIntialValues" ;
@@ -104,6 +105,10 @@ ui:UserUi
     elody:displayedByDefault true ;
     elody:optionsType "language" ;
     elody:optionsKey "vliz:1|properties.title.value" ;
+    elody:optionsLabel "intialValues.title" ;
+    elody:optionsValue "intialValues.title" ;
+    elody:selectionOption "autocomplete" ;
+    elody:filterOperator "or" ;
     elody:filterKind elody:SelectionFilter ;
     elody:showTooltip true ] ,
     [ sh:order 2 ;
