@@ -25,6 +25,7 @@ ui:GetAuthors
   elody:queryName "GetAuthors" ;
   elody:filtersQuery "GetAuthorsInWorkFilters" ;
   elody:relationValues true ;
+  elody:readsHost true ;
   elody:result
     [ elody:graphqlType "Person" ; sh:order 1 ; elody:listing ui:PersonInGetAuthorsUi ] ,
     [ elody:graphqlType "Corporation" ; sh:order 2 ; elody:fragment "minimalCorporation" ; elody:listing ui:CorporationInGetAuthorsUi ] ;
@@ -38,7 +39,12 @@ ui:PersonInGetAuthorsUi
   elody:relationValues true ;
   sh:property
     [ sh:path em:name ; sh:name "name"@en ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ] ,
-    [ sh:path em:life_dates ; sh:order 2 ; elody:labelKey "metadata.labels.life-dates" ] ;
+    [ sh:path em:life_dates ; sh:order 2 ; elody:labelKey "metadata.labels.life-dates" ] ,
+    [ sh:path em:main_author ; sh:order 3 ; elody:source elody:RelationMetadataSource ; elody:relationKey "refAuthors" ; elody:readsHost true ; elody:labelKey "metadata.labels.main-author" ] ,
+    [ sh:path em:volume ; sh:order 4 ; elody:source elody:RelationMetadataSource ; elody:relationKey "refSeries" ; elody:readsHost true ; elody:relationDirection "fromRelatedEntity" ; elody:teaser false ] ,
+    [ sh:path em:domein ; sh:order 5 ; elody:key "title" ; elody:alias "domein" ; elody:source elody:ParentMetadataSource ; elody:parentEntityType "zizo" ; elody:parentKey "vlacc:1|properties.ref_sub_zizos.value" ; elody:teaser false ] ,
+    [ sh:path em:roles ; sh:order 6 ; elody:source elody:RelationRootdataSource ; elody:relationKey "isUserFor" ; elody:readsHost true ; elody:cardField "relationRootData" ; elody:cardEditable true ; elody:clientInputField "rolesTypeField" ; elody:labelKey "metadata.labels.roles" ] ,
+    [ sh:path em:function_indication ; sh:order 7 ; sh:minCount 1 ; elody:source elody:RelationMetadataSource ; elody:relationKey "refAuthors" ; elody:readsHost true ; elody:cardField "relationMetaData" ; elody:cardEditable true ; elody:clientInputField "workFunctionTypeField" ; elody:labelKey "metadata.labels.function-indication" ] ;
   elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .
 
 ui:CorporationInGetAuthorsUi

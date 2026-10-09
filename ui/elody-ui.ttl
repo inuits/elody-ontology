@@ -551,6 +551,10 @@ elody:RepeatableMetadataSource a elody:ValueSource ; rdfs:isDefinedBy <https://e
   rdfs:comment "A value read from a repeatable metadata group (source: repeatableMetadata), the group's key in elody:repeatableMetadataKey."@en .
 elody:ParentRootSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:comment "A root field of the parent entity (source: parentRoot), reached over the relation in elody:parentRelationType."@en .
+elody:ParentMetadataSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A metadata value of the parent entity (source: parentMetadata), reached over elody:parentRelationType or over elody:parentEntityType and elody:parentKey."@en .
+elody:RelationRootdataSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A root field of the relation itself (source: relationRootdata), the relation named in elody:relationKey."@en .
 
 # =============================================================================
 # 4. Properties — generator directives
@@ -1766,3 +1770,34 @@ elody:actionForm a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "action form"@en ; rdfs:domain elody:Action ; rdfs:range xsd:string ;
   rdfs:comment "The GraphQL field a context-menu action is emitted as: doElodyAction (default, with an elody:actionKind), doLinkAction (follow the entity's link: label and icon only), doGeneralAction or doCustomAction."@en .
+
+# ---- 0.3.0, batch 13: values read on a relation, from the host entity, from the parent; editable card fields ----
+
+elody:relationKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:source elody:RelationMetadataSource or elody:RelationRootdataSource: the relation whose own metadata the value is read from (relationKey: \"refAuthors\")."@en .
+elody:readsHost a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "reads host"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
+  rdfs:comment "On a property shape: true reads the value relative to the entity the list is shown on (the keyValue takes uuid: $userUuid). On a list query or picker: the document declares $userUuid: String! (derived too from a result listing that reads the host). Default false."@en .
+elody:relationDirection a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation direction"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The direction the relation is read in (relationDirection: fromRelatedEntity). Open string: the directions are the PWA's."@en .
+elody:parentEntityType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "parent entity type"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "With a parent source: the type of the parent entity when it is found by a key rather than a relation (parentRelations: [{ entityType: zizo, key: [...] }]), with elody:parentKey."@en .
+elody:parentKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "parent key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The document key the parent entity is found by (parentRelations[].key), with elody:parentEntityType."@en .
+elody:cardField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card field"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The field the card shows the property as when not metaData: relationRootData (a root field of the relation the card stands for) or relationMetaData (metadata of that relation)."@en .
+elody:cardEditable a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card editable"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true edits the property on the card itself: the card field carries the property's input field (inputField(type: ...) { ...inputfield }). Default false."@en .

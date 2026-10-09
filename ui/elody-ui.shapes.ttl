@@ -133,6 +133,13 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:validationRule ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:cardKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:readsHost ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:relationDirection ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentEntityType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardField ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardEditable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:sortPrimary ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:listingFormatter ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -368,6 +375,8 @@ meta:ListQueryShape a sh:NodeShape ;
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     # relationValues read on every result, outside the per-type selections
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    # the document declares $userUuid (also derived from a result listing reading the host)
+    [ sh:path elody:readsHost ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] .
 
