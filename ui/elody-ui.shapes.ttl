@@ -187,6 +187,9 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:optionsKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsTypeOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsInput ; sh:node meta:OptionsInputShape ] ,
     [ sh:path elody:hidden ; sh:maxCount 0 ; sh:message "elody:hidden is retired: use dash:hidden" ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:showTooltip" ] ,
     [ sh:path elody:defaultValue ; sh:maxCount 0 ; sh:message "elody:defaultValue is retired: use sh:defaultValue" ] ;
@@ -278,6 +281,18 @@ meta:BulkOperationContextShape a sh:NodeShape ;
     [ sh:path elody:maxSelectedItems ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:matchMetadataValue ; sh:node meta:MetadataMatchShape ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:tooltipLabel" ] .
+
+meta:OptionsInputShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:inputKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:FilterKind ;
+      sh:message "an options input's kind is an elody:FilterKind instance" ] ,
+    [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:value ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrLiteral ;
+      sh:message "an options input's value is a string or an RDF list of strings" ] ,
+    [ sh:path elody:inputMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:inputDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:inputOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:MetadataMatchShape a sh:NodeShape ;
   sh:property

@@ -777,7 +777,7 @@ elody:alias a owl:DatatypeProperty ;
 elody:optionsType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "options type"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
-  rdfs:comment "A selection filter offers the entities of this type as its options (advancedFilterInputForRetrievingOptions: a text search on elody:optionsKey, scoped to the type)."@en .
+  rdfs:comment "A selection filter offers the entities of this type as its options (advancedFilterInputForRetrievingOptions: a text search on elody:optionsKey, scoped to the type). Left out when the search is scoped by elody:optionsInput nodes alone."@en .
 elody:optionsKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "options key"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
@@ -1893,3 +1893,38 @@ elody:matchValue a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "match value"@en ; rdfs:domain elody:MetadataMatch ; rdfs:range xsd:string ;
   rdfs:comment "The value the key must hold, as a string (matchValue)."@en .
+
+# ---- 0.3.0, batch 16: option retrieval with several inputs and operators (G-034) ---------------
+
+elody:optionsOperator a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options operator"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The operator of the option search on elody:optionsKey (advancedFilterInputForRetrievingOptions[].operator: or, and)."@en .
+elody:optionsTypeOperator a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options type operator"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The operator of the type input scoping the option search ({ type: type, value: ..., operator: and })."@en .
+elody:OptionsInput a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options input"@en ;
+  rdfs:comment "A further input narrowing a selection filter's option search (advancedFilterInputForRetrievingOptions beyond the search on elody:optionsKey and the type): a key, the value it must hold (a string or an RDF list of strings), and how it matches."@en .
+elody:optionsInput a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options input"@en ; rdfs:domain elody:Filter ; rdfs:range elody:OptionsInput ;
+  rdfs:comment "A further input of the option search, in sh:order, rendered between the search on elody:optionsKey and the type input. elody:key and elody:value say what it matches."@en .
+elody:inputKind a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "input kind"@en ; rdfs:domain elody:OptionsInput ; rdfs:range elody:FilterKind ;
+  rdfs:comment "The kind of the input (type: text, selection, ...), an elody:FilterKind instance."@en .
+elody:inputMatchExact a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "input match exact"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the input matches exactly (match_exact)."@en .
+elody:inputDistinctBy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "input distinct by"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:string ;
+  rdfs:comment "The key the input's matches are made distinct by (distinct_by)."@en .
+elody:inputOperator a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "input operator"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:string ;
+  rdfs:comment "The input's operator (operator: or, and)."@en .

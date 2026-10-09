@@ -39,7 +39,21 @@ ui:TipUi
                    [ sh:order 2 ; elody:labelKey "metadata.options.usage-state.USED" ; elody:value "USED" ] ] ,
     [ sh:order 3 ; elody:alias "tenant" ; rdfs:label "metadata.labels.tenant" ; elody:key "elody:1|relations.isIn.key" ;
       elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:selectionOption "checkboxlist" ;
-      elody:optionsLabel "intialValues.title" ; elody:optionsValue "intialValues.id" ; elody:optionsType "tenant" ] .
+      elody:optionsLabel "intialValues.title" ; elody:optionsValue "intialValues.id" ; elody:optionsType "tenant" ] ,
+    [ sh:order 4 ; elody:alias "code" ; rdfs:label "metadata.labels.code" ; elody:key "elody:1|properties.code.value" ;
+      elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:selectionOption "auto" ;
+      elody:optionsLabel "intialValues.code" ; elody:optionsValue "intialValues.code" ;
+      elody:optionsType "zizo" ; elody:optionsTypeOperator "and" ;
+      elody:optionsKey "elody:1|properties.code.value" ; elody:optionsDistinctBy "properties.code.value" ; elody:optionsMatchExact false ; elody:optionsOperator "or" ;
+      elody:optionsInput [ sh:order 1 ; elody:inputKind elody:SelectionFilter ; elody:key "elody:1|properties.level.value" ; elody:value ( "Rug" "Groeirubriek" ) ;
+                           elody:inputDistinctBy "properties.level.value" ; elody:inputMatchExact true ] ,
+                         [ sh:order 2 ; elody:inputKind elody:TextFilter ; elody:key "elody:1|properties.target_audience.value" ; elody:value "ZIZO jeugd" ;
+                           elody:inputMatchExact true ; elody:inputOperator "or" ] ] ,
+    [ sh:order 5 ; elody:alias "life_dates" ; rdfs:label "metadata.labels.life-dates" ; elody:key "elody:1|properties.life_dates.value" ;
+      elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:selectionOption "auto" ;
+      elody:optionsLabel "intialValues.life_dates" ; elody:optionsValue "intialValues.life_dates" ;
+      elody:optionsKey "elody:1|properties.life_dates.value" ; elody:optionsDistinctBy "properties.life_dates.value" ; elody:optionsMatchExact false ;
+      elody:optionsInput [ sh:order 1 ; elody:inputKind elody:SelectionFilter ; elody:key "type" ; elody:value ( "person" "corporation" ) ] ] .
 
 ui:TipUi-tip
   a elody:Panel ;
