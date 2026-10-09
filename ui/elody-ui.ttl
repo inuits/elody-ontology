@@ -1801,3 +1801,14 @@ elody:cardEditable a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "card editable"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "true edits the property on the card itself: the card field carries the property's input field (inputField(type: ...) { ...inputfield }). Default false."@en .
+
+# ---- 0.3.0, batch 14: sub-operations and where a modal navigates after creating ----------------
+
+elody:subOperation a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sub-operation"@en ; rdfs:domain elody:BulkOperation ; rdfs:range elody:BulkOperation ;
+  rdfs:comment "A bulk operation offered under this one (subOptions: a dropdown of operations, the parent usually of kind elody:OpenDropdownOperation), in sh:order."@en .
+elody:navigateAfterCreation a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "navigate after creation"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:string ;
+  rdfs:comment "Where the PWA goes once the modal's form created the entity (pageToNavigateToAfterCreation: detailPage). Open string: the pages are the PWA's."@en .

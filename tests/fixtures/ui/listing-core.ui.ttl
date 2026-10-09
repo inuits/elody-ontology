@@ -49,7 +49,14 @@ ui:WorkUi
   elody:bulkOperation
     [ sh:order 1 ; rdfs:label "bulk-operations.edit" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ;
       elody:context [ elody:selection elody:SomeSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.someselected" ;
-                      elody:requiresSameType true ; elody:minSelectedItems 2 ; elody:maxSelectedItems 2 ] ] .
+                      elody:requiresSameType true ; elody:minSelectedItems 2 ; elody:maxSelectedItems 2 ] ] ,
+    [ sh:order 2 ; rdfs:label "bulk-operations.create-work" ; elody:icon "PlusCircle" ; elody:operationKind elody:OpenDropdownOperation ; elody:primary true ;
+      elody:context [ elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+      elody:subOperation
+        [ sh:order 1 ; rdfs:label "bulk-operations.create-word" ; elody:icon "PlusCircle" ; elody:operationKind elody:CreateEntityOperation ;
+          elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:CreateWork ; elody:closeConfirmation true ; elody:permission elody:CanCreate ; elody:navigateAfterCreation "detailPage" ] ] ,
+        [ sh:order 2 ; rdfs:label "bulk-operations.create-map" ; elody:icon "PlusCircle" ; elody:operationKind elody:CreateEntityOperation ;
+          elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:CreateWorkBasic ; elody:navigateAfterCreation "detailPage" ] ] ] .
 
 ui:WorkUi-info
   a elody:Panel ;

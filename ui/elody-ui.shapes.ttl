@@ -264,6 +264,7 @@ meta:BulkOperationShape a sh:NodeShape ;
     [ sh:path elody:context ; sh:maxCount 1 ; sh:node meta:BulkOperationContextShape ] ,
     [ sh:path elody:modal ; sh:maxCount 1 ; sh:node meta:BulkOperationModalShape ] ,
     [ sh:path elody:primary ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:subOperation ; sh:node meta:BulkOperationShape ] ,
     [ sh:path elody:value ; sh:maxCount 0 ; sh:message "elody:value on a bulk operation is retired: use elody:operationKind" ] .
 
 meta:BulkOperationContextShape a sh:NodeShape ;
@@ -283,6 +284,7 @@ meta:BulkOperationModalShape a sh:NodeShape ;
       sh:message "a modal's kind is an elody:ModalKind instance" ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:node meta:PickerShape ] ,
+    [ sh:path elody:navigateAfterCreation ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:permission ; sh:maxCount 1 ; sh:class elody:Permission ] ,
     [ sh:path elody:closeConfirmation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:typeModal ; sh:maxCount 0 ; sh:message "elody:typeModal is retired: use elody:modalKind" ] ,
