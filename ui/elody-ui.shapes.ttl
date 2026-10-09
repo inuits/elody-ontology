@@ -276,19 +276,41 @@ meta:BulkOperationContextShape a sh:NodeShape ;
     [ sh:path elody:requiresSameType ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:minSelectedItems ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:maxSelectedItems ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:matchMetadataValue ; sh:node meta:MetadataMatchShape ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:tooltipLabel" ] .
+
+meta:MetadataMatchShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:matchKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:matchValue ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:BulkOperationModalShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:modalKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ModalKind ;
       sh:message "a modal's kind is an elody:ModalKind instance" ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:forms ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:forms is an RDF list of form nodes" ] ,
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:node meta:PickerShape ] ,
     [ sh:path elody:navigateAfterCreation ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:skipRelatedItems ; sh:datatype xsd:string ] ,
+    [ sh:path elody:imageCrop ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:cropCoordinatesKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:replaceExistingRelations ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:selectionLimit ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:survivorSuggestion ; sh:maxCount 1 ; sh:node meta:SurvivorSuggestionShape ] ,
     [ sh:path elody:permission ; sh:maxCount 1 ; sh:class elody:Permission ] ,
     [ sh:path elody:closeConfirmation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:typeModal ; sh:maxCount 0 ; sh:message "elody:typeModal is retired: use elody:modalKind" ] ,
     [ sh:path elody:formQuery ; sh:maxCount 0 ; sh:message "elody:formQuery is retired: reference the form node with elody:form" ] .
+
+meta:SurvivorSuggestionShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:survivorStrategy ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:SurvivorStrategy ;
+      sh:message "a survivor suggestion names its elody:SurvivorStrategy" ] ,
+    [ sh:path elody:autoSelectSurvivor ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:requireRecommendedSurvivor ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:hiddenVerdict ; sh:class elody:MergeVerdict ] .
 
 meta:CustomBulkOperationsShape a sh:NodeShape ;
   sh:property

@@ -50,6 +50,19 @@ ui:WorkUi
     [ sh:order 1 ; rdfs:label "bulk-operations.edit" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ;
       elody:context [ elody:selection elody:SomeSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.someselected" ;
                       elody:requiresSameType true ; elody:minSelectedItems 2 ; elody:maxSelectedItems 2 ] ] ,
+    [ sh:order 3 ; rdfs:label "bulk-operations.merge" ; elody:operationKind elody:MergeEntitiesOperation ; elody:primary false ;
+      elody:context [ elody:selection elody:SomeSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-someselected" ;
+                      elody:requiresSameType true ; elody:minSelectedItems 2 ; elody:maxSelectedItems 2 ] ;
+      elody:modal [ elody:modalKind elody:MergeModal ; elody:closeConfirmation true ; elody:permission elody:CanUpdate ;
+                    elody:survivorSuggestion [ elody:survivorStrategy elody:IdentifierIntegrityStrategy ; elody:autoSelectSurvivor true ;
+                                               elody:requireRecommendedSurvivor true ; elody:hiddenVerdict elody:InvalidVerdict ] ] ] ,
+    [ sh:order 4 ; rdfs:label "bulk-operations.delete-selected" ; elody:operationKind elody:DeleteEntitiesOperation ; elody:primary false ;
+      elody:modal [ elody:modalKind elody:DeleteEntitiesModal ; elody:form ui:CreateWorkBasic ; elody:closeConfirmation false ; elody:skipRelatedItems "isAssetFor" ] ] ,
+    [ sh:order 5 ; rdfs:label "bulk-operations.bulk-edit-works" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ;
+      elody:context [ elody:activeViewMode elody:ReadMode ; elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.ocr-locked" ;
+                      elody:matchMetadataValue [ elody:matchKey "ocr_locked" ; elody:matchValue "false" ] ] ;
+      elody:modal [ elody:modalKind elody:BulkEditModal ; elody:forms ( ui:CreateWork ui:CreateWorkBasic ) ; elody:closeConfirmation true ; elody:permission elody:CanUpdate ;
+                    elody:imageCrop true ; elody:cropCoordinatesKey "coordinates" ; elody:replaceExistingRelations true ; elody:selectionLimit 1 ] ] ,
     [ sh:order 2 ; rdfs:label "bulk-operations.create-work" ; elody:icon "PlusCircle" ; elody:operationKind elody:OpenDropdownOperation ; elody:primary true ;
       elody:context [ elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
       elody:subOperation

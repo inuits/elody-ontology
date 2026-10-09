@@ -1812,3 +1812,84 @@ elody:navigateAfterCreation a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "navigate after creation"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:string ;
   rdfs:comment "Where the PWA goes once the modal's form created the entity (pageToNavigateToAfterCreation: detailPage). Open string: the pages are the PWA's."@en .
+
+# ---- 0.3.0, batch 15: the remaining bulk option settings (G-032) ---------------------------------
+
+elody:skipRelatedItems a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "skip related items"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:string ;
+  rdfs:comment "A relation type whose holders a bulk delete leaves alone (skipItemsWithRelationDuringBulkDelete), one per value."@en .
+elody:imageCrop a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "image crop"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:boolean ;
+  rdfs:comment "true lets the modal crop the chosen image (enableImageCrop); elody:cropCoordinatesKey says where the crop is kept."@en .
+elody:cropCoordinatesKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "crop coordinates key"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key the crop coordinates are saved under (keyToSaveCropCoordinates)."@en .
+elody:replaceExistingRelations a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "replace existing relations"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:boolean ;
+  rdfs:comment "true replaces the relations the modal's flow sets instead of adding to them (replaceExistingRelations)."@en .
+elody:selectionLimit a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "selection limit"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:integer ;
+  rdfs:comment "The most entities the modal's picker lets the user choose (selectionLimit)."@en .
+elody:forms a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "forms"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range rdf:List ;
+  rdfs:comment "The forms a modal may open, as an RDF list of form nodes in the order offered (formQueries with several names: a bulk edit over several subtypes). A modal opening one form uses elody:form."@en .
+
+elody:SurvivorSuggestion a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "survivor suggestion"@en ;
+  rdfs:comment "How a merge modal suggests which of the selected entities survives (survivorSuggestion)."@en .
+elody:survivorSuggestion a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "survivor suggestion"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range elody:SurvivorSuggestion ;
+  rdfs:comment "The merge modal's survivor suggestion."@en .
+elody:SurvivorStrategy a owl:Class ; rdfs:label "survivor strategy"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of the ways a merge picks its recommended survivor."@en .
+elody:IdentifierIntegrityStrategy a elody:SurvivorStrategy ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "The entity whose identifiers stay intact survives."@en .
+elody:survivorStrategy a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "survivor strategy"@en ; rdfs:domain elody:SurvivorSuggestion ; rdfs:range elody:SurvivorStrategy ;
+  rdfs:comment "The strategy the suggestion follows (strategy)."@en .
+elody:autoSelectSurvivor a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "auto-select survivor"@en ; rdfs:domain elody:SurvivorSuggestion ; rdfs:range xsd:boolean ;
+  rdfs:comment "true preselects the recommended survivor (autoSelect)."@en .
+elody:requireRecommendedSurvivor a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "require recommended survivor"@en ; rdfs:domain elody:SurvivorSuggestion ; rdfs:range xsd:boolean ;
+  rdfs:comment "true only lets the recommended survivor be chosen (requireRecommendedSurvivor)."@en .
+elody:MergeVerdict a owl:Class ; rdfs:label "merge verdict"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of the verdicts a merge evaluation gives a candidate."@en .
+elody:ValidVerdict   a elody:MergeVerdict ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:InvalidVerdict a elody:MergeVerdict ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:UnknownVerdict a elody:MergeVerdict ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:hiddenVerdict a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "hidden verdict"@en ; rdfs:domain elody:SurvivorSuggestion ; rdfs:range elody:MergeVerdict ;
+  rdfs:comment "A verdict the merge modal does not show (hiddenVerdicts), one per value."@en .
+
+elody:MetadataMatch a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "metadata match"@en ;
+  rdfs:comment "A metadata key and the value it must hold for a bulk operation to be offered (matchMetadataValue)."@en .
+elody:matchMetadataValue a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "match metadata value"@en ; rdfs:domain elody:ActionContext ; rdfs:range elody:MetadataMatch ;
+  rdfs:comment "A metadata match the action context requires, one per node, in sh:order."@en .
+elody:matchKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "match key"@en ; rdfs:domain elody:MetadataMatch ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key matched (matchKey)."@en .
+elody:matchValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "match value"@en ; rdfs:domain elody:MetadataMatch ; rdfs:range xsd:string ;
+  rdfs:comment "The value the key must hold, as a string (matchValue)."@en .
