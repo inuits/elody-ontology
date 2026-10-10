@@ -33,13 +33,20 @@ ui:WorkUi
     [ sh:path em:id ; sh:order 4 ; elody:alias "navigate_to_id" ; elody:source elody:ParentRootSource ; elody:parentRelationType "refParentEntity" ; elody:teaser false ] ,
     [ sh:path em:refAuthors ; sh:order 5 ; elody:relationType "refAuthors" ; elody:valueLabelKey "name" ; elody:containsRelationPropertyKey "main_author" ; elody:containsRelationPropertyValue "true" ; elody:labelKey "metadata.labels.main-author" ] ;
   elody:viewMode [ sh:order 1 ; elody:mode elody:TableView ] ;
+  elody:mapFeatureField em:status_field , em:refAuthors ;
   elody:detail
     [ elody:column
       [ sh:order 1 ; elody:size elody:Width50 ; elody:elementSpread "entityHistoryVersionList" ;
-        elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.info-window" ; sh:order 1 ; elody:hideInHistory true ; elody:expandButton false ; elody:panel ui:WorkUi-info ] ,
+        elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.info-window" ; sh:order 1 ; elody:hideInHistory true ; elody:expandButton false ;
+            elody:windowStatus [ elody:labelKey "metadata.labels.status" ; elody:statusKey "status_field" ; elody:statusInputField "recordVerifiedStatusTypeField" ] ;
+            elody:panel ui:WorkUi-info ] ,
           [ a elody:ListElement ; rdfs:label "element-labels.subjects" ; sh:order 2 ; elody:alias "Subjects" ; elody:collapsed false ; elody:entityTypes "person" ;
             elody:relationType "refSubjects" ; elody:disableLibraryBar true ; elody:enableNavigation false ; elody:libraryMode "basicBaseLibraryWithBorder" ;
-            elody:customQuery "GetSubjects" ; elody:customQueryFilters "GetSubjectsInWorkFilters" ] ] ,
+            elody:customQuery "GetSubjects" ; elody:customQueryFilters "GetSubjectsInWorkFilters" ; elody:addEntitiesToForms true ;
+            elody:actionsOnResult [ elody:resultKind elody:NoResult ;
+              elody:operation [ sh:order 1 ; rdfs:label "bulk-operations.create-person" ; elody:icon "PlusCircle" ; elody:operationKind elody:AddRelationOperation ; elody:primary true ;
+                elody:context [ elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+                elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:CreateWorkBasic ; elody:formRelationType "refSubjects" ; elody:closeConfirmation true ; elody:permission elody:CanCreate ] ] ] ] ] ,
       [ sh:order 2 ; elody:elementSpread "entityHistoryVersionList" ] ] ;
   elody:filter
     [ sh:order 1 ; elody:alias "title" ; rdfs:label "metadata.labels.title" ; elody:key "vlacc:1|metadata.title.value" ; elody:displayedByDefault true ;
@@ -79,7 +86,7 @@ ui:WorkUi-info
   elody:collapsed false ;
   elody:panelKind elody:MetadataPanel ;
   elody:field em:title ;
-  elody:element [ a elody:ListElement ; sh:order 1 ; elody:alias "Awards" ; elody:collapsed false ; elody:entityTypes "award" ; elody:relationType "refAwards" ;
+  elody:element [ a elody:ListElement ; sh:order 2 ; elody:alias "Awards" ; elody:collapsed false ; elody:entityTypes "award" ; elody:relationType "refAwards" ;
     elody:disableLibraryBar true ; elody:customQuery "GetAwardsInDetail" ; elody:customQueryFilters "GetAwardsInEntityFilters" ] .
 
 ui:CreateWork

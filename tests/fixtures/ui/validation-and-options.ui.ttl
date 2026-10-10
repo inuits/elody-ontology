@@ -30,7 +30,14 @@ ui:TipUi
           [ a elody:WindowElement ; rdfs:label "window-element-labels.tip" ; sh:order 1 ; elody:alias "tip" ; elody:panel ui:TipUi-tip ] ,
           [ a elody:ListElement ; rdfs:label "element-labels.instances" ; sh:order 2 ; elody:alias "instances" ;
             elody:collapsed false ; elody:entityTypes "tipInstance" ; elody:relationType "hasInstance" ;
-            elody:searchInput elody:AdvancedSearchInput ; elody:listQuery ui:GetInstancesOfTip ] ] ] ;
+            elody:searchInput elody:AdvancedSearchInput ; elody:listQuery ui:GetInstancesOfTip ] ,
+          [ a elody:SingleMediaFileElement ; rdfs:label "element-labels.media-element" ; sh:order 3 ; elody:collapsed false ] ,
+          [ a elody:MapElement ; rdfs:label "element-labels.map-element" ; sh:order 4 ; elody:collapsed false ; elody:mapType elody:WktMap ; elody:center "gps_coordinates" ; elody:wktKey "map_location" ;
+            elody:config [ elody:key "overlayWkt" ; elody:value [ elody:config [ elody:key "query" ; elody:value "GetTipSitesWkt" ] , [ elody:key "entityType" ; elody:value "site" ] ] ] ] ,
+          [ a elody:ListElement ; rdfs:label "element-labels.media-element" ; sh:order 5 ; elody:alias "mediafiles" ; elody:collapsed false ; elody:mediaKind elody:MediaKindMedia ;
+            elody:entityTypes "mediafile" ; elody:relationType "refMediafiles" ; elody:cropCoordinatesKey "coordinates" ] ] ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ,
+    [ sh:order 2 ; elody:mode elody:MapView ; elody:config [ elody:key "mapType" ; elody:value elody:WktMap ] , [ elody:key "mapView" ; elody:value elody:SatelliteView ] , [ elody:key "mapMode" ; elody:value elody:PointsMode ] , [ elody:key "useFilters" ; elody:value false ] ] ;
   elody:filter
     [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "tip" ; elody:filterKind elody:TypeFilter ] ,
     [ sh:order 2 ; elody:alias "usageState" ; rdfs:label "metadata.labels.usage-state" ; elody:key "elody:1|metadata.usageState.value" ;

@@ -30,6 +30,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:excludeBaseSortOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filtersFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:mapFeatureField ; sh:nodeKind sh:IRI ; sh:message "a map feature field references a property shape by its sh:path IRI" ] ,
     [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:deleteOptions ; sh:maxCount 1 ; sh:node meta:DeleteOptionsShape ] ,
     [ sh:path elody:interface ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -484,9 +485,25 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:libraryMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:listViewMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
+    [ sh:path elody:windowStatus ; sh:maxCount 1 ; sh:node meta:WindowStatusShape ] ,
+    [ sh:path elody:actionsOnResult ; sh:maxCount 1 ; sh:node meta:ActionsOnResultShape ] ,
+    [ sh:path elody:addEntitiesToForms ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:cropCoordinatesKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFilters ; sh:maxCount 0 ; sh:message "elody:pickerFilters is retired: reference the picker node with elody:picker" ] .
+
+meta:WindowStatusShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:statusKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:statusInputField ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:ActionsOnResultShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:resultKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ResultKind ;
+      sh:message "the actions on a result name the result with an elody:ResultKind instance" ] ,
+    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] .
 
 meta:PanelShape a sh:NodeShape ;
   sh:property
@@ -576,7 +593,9 @@ meta:MapElementShape a sh:NodeShape ; sh:targetClass elody:MapElement ;
   sh:property
     [ sh:path elody:mapType ; sh:maxCount 1 ; sh:class elody:MapType ;
       sh:message "a map element's type is an elody:MapType instance" ] ,
-    [ sh:path elody:center ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+    [ sh:path elody:center ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:wktKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:config ; sh:node meta:ConfigEntryShape ] .
 
 meta:GraphElementShape a sh:NodeShape ; sh:targetClass elody:GraphElement ;
   sh:property

@@ -701,7 +701,7 @@ elody:key a owl:DatatypeProperty ;
 elody:value a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "value"@en ; rdfs:domain owl:Thing ; rdfs:range rdfs:Literal ;
-  rdfs:comment "A config entry's value: string, number, boolean or an RDF list of strings. On an elody:FilterOption: the option's value."@en .
+  rdfs:comment "A config entry's value: string, number, boolean, an RDF list of strings, a node holding elody:config entries (an object value), or an elody: enumeration instance (rendered as its enum value, e.g. elody:WktMap). On an elody:FilterOption: the option's value."@en .
 elody:edgeRelations a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "edge relations"@en ; rdfs:domain elody:ViewModeSelection ; rdfs:range rdf:List ;
@@ -912,8 +912,8 @@ elody:customBulkOperations a owl:ObjectProperty ;
   rdfs:comment "A named operation set (on an EntityUi: declares it; on a list element: uses it, as a node reference)."@en .
 elody:operation a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "operation"@en ; rdfs:domain elody:CustomBulkOperations ; rdfs:range elody:BulkOperation ;
-  rdfs:comment "An operation in a custom set."@en .
+  rdfs:label "operation"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:CustomBulkOperations elody:ActionsOnResult ) ] ; rdfs:range elody:BulkOperation ;
+  rdfs:comment "An operation in a custom set, or offered on a list's result (elody:ActionsOnResult)."@en .
 elody:operationKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "operation kind"@en ; rdfs:domain elody:BulkOperation ; rdfs:range elody:BulkOperationKind ;
@@ -1112,7 +1112,7 @@ elody:size a owl:ObjectProperty ;
 elody:element a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "element"@en ; rdfs:domain owl:Thing ; rdfs:range elody:Element ;
-  rdfs:comment "An element in the column; on an elody:Panel, a list element shown among the panel's fields (a panel holding a filtered list of related entities)."@en .
+  rdfs:comment "An element in the column; on an elody:Panel, a list element shown among the panel's fields (a panel holding a filtered list of related entities): its sh:order is its position among the panel's items, fields and elements together, counting from 1."@en .
 elody:expandButton a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "expand button"@en ; rdfs:domain elody:WindowElement ; rdfs:range xsd:boolean ;
@@ -1825,8 +1825,8 @@ elody:imageCrop a owl:DatatypeProperty ;
   rdfs:comment "true lets the modal crop the chosen image (enableImageCrop); elody:cropCoordinatesKey says where the crop is kept."@en .
 elody:cropCoordinatesKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "crop coordinates key"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:string ;
-  rdfs:comment "The metadata key the crop coordinates are saved under (keyToSaveCropCoordinates)."@en .
+  rdfs:label "crop coordinates key"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:BulkOperationModal elody:ListElement ) ] ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key the crop coordinates are saved under: on a modal keyToSaveCropCoordinates, on a media list cropMediafileCoordinatesKey."@en .
 elody:replaceExistingRelations a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "replace existing relations"@en ; rdfs:domain elody:BulkOperationModal ; rdfs:range xsd:boolean ;
@@ -1928,3 +1928,65 @@ elody:inputOperator a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "input operator"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:string ;
   rdfs:comment "The input's operator (operator: or, and)."@en .
+
+# ---- 0.3.0, batch 17: window status, actions on a list's result, media and map elements (G-025) --
+
+elody:WindowStatus a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "window status"@en ;
+  rdfs:comment "A status shown and edited in a window element's header (windowElementStatus): a metadata key with its input field."@en .
+elody:windowStatus a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "window status"@en ; rdfs:domain elody:WindowElement ; rdfs:range elody:WindowStatus ;
+  rdfs:comment "The window's status (windowElementStatus(windowElementStatusInput: ...))."@en .
+elody:statusKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "status key"@en ; rdfs:domain elody:WindowStatus ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key holding the status (statusMetadataKey)."@en .
+elody:statusInputField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "status input field"@en ; rdfs:domain elody:WindowStatus ; rdfs:range xsd:string ;
+  rdfs:comment "The input field type editing the status (statusInputFieldType), a BaseFieldType value the client may extend."@en .
+
+elody:ActionsOnResult a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "actions on result"@en ;
+  rdfs:comment "Operations a list offers on its result (actionsOnResult): for instance a create button when the list is empty."@en .
+elody:actionsOnResult a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "actions on result"@en ; rdfs:domain elody:ListElement ; rdfs:range elody:ActionsOnResult ;
+  rdfs:comment "The list's actions on its result, with elody:operation nodes in sh:order."@en .
+elody:ResultKind a owl:Class ; rdfs:label "result kind"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of the results a list's actions answer to (ActionsOnResultTypes)."@en .
+elody:NoResult a elody:ResultKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "The list is empty."@en .
+elody:resultKind a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "result kind"@en ; rdfs:domain elody:ActionsOnResult ; rdfs:range elody:ResultKind ;
+  rdfs:comment "The result the actions answer to (type(input: NoResult))."@en .
+elody:addEntitiesToForms a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "add entities to forms"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:boolean ;
+  rdfs:comment "true passes the list's entities to the forms opened from it (addEntitiesToForms)."@en .
+
+elody:mapFeatureField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "map feature field"@en ; rdfs:domain elody:EntityUi ; rdfs:range sh:PropertyShape ;
+  rdfs:comment "A property shown in the entity's popup on the map view (mapElement { mapFeatureMetadata { ... } } in the listing), referenced by its sh:path, in declaration order."@en .
+elody:wktKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "WKT key"@en ; rdfs:domain elody:MapElement ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key holding the WKT geometry the map element draws (wkt: metaData { key(input: ...) })."@en .
+
+elody:MapViewKind a owl:Class ; rdfs:label "map view kind"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of the base layers a map view shows (MapViews), a view mode config value (mapView)."@en .
+elody:SatelliteView a elody:MapViewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:StandardView  a elody:MapViewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MapModeKind a owl:Class ; rdfs:label "map mode kind"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of the ways a map view draws its entities (MapModes), a view mode config value (mapMode)."@en .
+elody:HeatMode    a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:DefaultMode a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:PointsMode  a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
