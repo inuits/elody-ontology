@@ -868,8 +868,8 @@ elody:showTooltip a owl:DatatypeProperty ;
 # -- context menu and actions ----------------------------------------------------
 elody:contextMenu a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "context menu"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:WindowElement ) ] ; rdfs:range elody:ContextMenu ;
-  rdfs:comment "The card's context menu; on an elody:WindowElement, the window's (contextMenuActions)."@en .
+  rdfs:label "context menu"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:WindowElement elody:ValuesFragment ) ] ; rdfs:range elody:ContextMenu ;
+  rdfs:comment "The card's context menu; on an elody:WindowElement, the window's (contextMenuActions); on an elody:ValuesFragment, the menu of its card twin."@en .
 elody:forceShow a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "force show"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:boolean ;
@@ -2201,3 +2201,58 @@ elody:hostOptional a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "host optional"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:boolean ;
   rdfs:comment "true declares the host's uuid as a nullable variable ($userUuid: String) on a list query that reads the host (elody:readsHost)."@en .
+
+# ---- 0.3.0, batch 21: shared fragments of their own (G-020) -----------------------------------
+
+elody:fragmentsOnly a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fragments only"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true declares a file of shared fragments alone (values, panel, filters, fields and elements fragments other types spread): no listing, detail or documents of its own; elody:graphqlType is the anchor type."@en .
+elody:filePath a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "file path"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The file the documents are written to, relative to src/ (default queries/entities/<name>.queries.ts)."@en .
+elody:PanelFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel fragment"@en ;
+  rdfs:comment "A shared fragment on WindowElementPanel: panel fields other types spread into a panel (elody:spread)."@en .
+elody:panelFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:PanelFragment ;
+  rdfs:comment "A panel fields fragment the file holds: elody:fragmentName and the property shapes shown, by their sh:path."@en .
+elody:FiltersFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filters fragment"@en ;
+  rdfs:comment "A shared fragment on AdvancedFilters: filters other types spread into theirs (elody:filtersSpread)."@en .
+elody:filtersFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filters fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:FiltersFragment ;
+  rdfs:comment "A filters fragment the file holds: elody:fragmentName and its elody:filter nodes."@en .
+elody:cardMenuSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card menu spread"@en ; rdfs:domain elody:PickerResult ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written menu fragment spread on the result's card next to its listing fragment (teaserMetadata { buttons { contextMenu { ...X } } })."@en .
+elody:valuesField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "values field"@en ; rdfs:domain elody:ValuesFragment ; rdfs:range xsd:string ;
+  rdfs:comment "A plain field of IntialValues the fragment reads next to its keyValues (lockedProperties), one per value."@en .
+elody:fieldAlias a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "field alias"@en ; rdfs:domain elody:ValuesFragment ; rdfs:range xsd:string ;
+  rdfs:comment "A property shape the fragment reads, referenced by its elody:alias (when several shapes share a key, e.g. two type pills over the type)."@en .
+elody:menuSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu spread"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment of menu actions spread in the menu (...linkAndDeleteEntityContextMenuActions); elody:includeBasicActions is the platform's own."@en .
+elody:bareValues a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bare values"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:boolean ;
+  rdfs:comment "true writes the input's values as enum values (value: [asset, institution]) rather than strings."@en .
+elody:optionsTypeBare a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options type bare"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "true writes elody:optionsType as an enum value ({ type: type, value: user }) rather than a string."@en .
+elody:cardShows a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card shows"@en ; rdfs:domain elody:ValuesFragment ; rdfs:range xsd:string ;
+  rdfs:comment "A value (by its alias, else its key) the card twin shows, one per value; without it the card shows every value the fragment reads."@en .

@@ -32,6 +32,10 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:mapFeatureField ; sh:nodeKind sh:IRI ; sh:message "a map feature field references a property shape by its sh:path IRI" ] ,
     [ sh:path elody:idField ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:fragmentsOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:filePath ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelFragment ; sh:node meta:PanelFragmentShape ] ,
+    [ sh:path elody:filtersFragment ; sh:node meta:FiltersFragmentShape ] ,
     [ sh:path elody:viewModesOnDetail ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:idValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -52,13 +56,6 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path sh:property ;
       sh:qualifiedValueShape [ sh:or (
           [ sh:property [ sh:path shui:propertyRole ; sh:hasValue shui:LabelRole ] ]
-          [ sh:property [ sh:path dash:propertyRole ; sh:hasValue dash:LabelRole ] ]
-          [ sh:property [ sh:path ( shui:propertyRole shui:propertyRole ) ; sh:hasValue shui:LabelRole ] ] ) ] ;
-      sh:qualifiedMinCount 1 ;
-      sh:message "a property shape carries the LabelRole (the card title)" ] ,
-    [ sh:path sh:property ;
-      sh:qualifiedValueShape [ sh:or (
-          [ sh:property [ sh:path shui:propertyRole ; sh:hasValue shui:LabelRole ] ]
           [ sh:property [ sh:path dash:propertyRole ; sh:hasValue dash:LabelRole ] ] ) ] ;
       sh:qualifiedMaxCount 1 ;
       sh:message "at most one property shape carries a direct LabelRole; use qualified roles with sh:order for precedence" ] ,
@@ -76,7 +73,16 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:ports ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     # retired terms on the entity
     [ sh:path elody:createForm ; sh:maxCount 0 ; sh:message "elody:createForm is retired: declare an elody:Form and reference it with elody:form" ] ,
-    [ sh:path elody:repetitiveForm ; sh:maxCount 0 ; sh:message "elody:repetitiveForm is retired: use elody:guidedFlow" ] .
+    [ sh:path elody:repetitiveForm ; sh:maxCount 0 ; sh:message "elody:repetitiveForm is retired: use elody:guidedFlow" ] ;
+  # a card title, unless the declaration holds shared fragments alone
+  sh:or ( [ sh:property [ sh:path elody:fragmentsOnly ; sh:hasValue true ] ]
+          [ sh:property [ sh:path sh:property ;
+              sh:qualifiedValueShape [ sh:or (
+                  [ sh:property [ sh:path shui:propertyRole ; sh:hasValue shui:LabelRole ] ]
+                  [ sh:property [ sh:path dash:propertyRole ; sh:hasValue dash:LabelRole ] ]
+                  [ sh:property [ sh:path ( shui:propertyRole shui:propertyRole ) ; sh:hasValue shui:LabelRole ] ] ) ] ;
+              sh:qualifiedMinCount 1 ] ] ) ;
+  sh:message "a property shape carries the LabelRole (the card title), unless elody:fragmentsOnly" .
 
 meta:ViewModeSelectionShape a sh:NodeShape ;
   sh:property
@@ -219,6 +225,7 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:optionsDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsTypeOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:optionsTypeBare ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:optionsInput ; sh:node meta:OptionsInputShape ] ,
     [ sh:path elody:hidden ; sh:maxCount 0 ; sh:message "elody:hidden is retired: use dash:hidden" ] ,
     [ sh:path elody:tooltip ; sh:maxCount 0 ; sh:message "elody:tooltip is retired: use elody:showTooltip" ] ,
@@ -270,6 +277,7 @@ meta:VisibleFilterLabelShape a sh:NodeShape ;
 meta:ContextMenuShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:action ; sh:node meta:ActionShape ] ,
+    [ sh:path elody:menuSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:forceShow ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:includeBasicActions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:menuInButtons ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
@@ -326,6 +334,7 @@ meta:OptionsInputShape a sh:NodeShape ;
     [ sh:path elody:inputMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:inputDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:inputOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:bareValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:MetadataMatchShape a sh:NodeShape ;
@@ -393,11 +402,27 @@ meta:ElementsFragmentShape a sh:NodeShape ;
     [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:element ; sh:minCount 1 ; sh:node meta:ElementShape ] .
 
+meta:PanelFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:field ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:message "a panel fragment references the property shapes by their sh:path IRI" ] .
+
+meta:FiltersFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filter ; sh:minCount 1 ; sh:node meta:FilterShape ] .
+
 meta:ValuesFragmentShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:cardFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
-    [ sh:path elody:field ; sh:minCount 1 ; sh:nodeKind sh:IRI ; sh:message "a values fragment references the type's property shapes by their sh:path IRI" ] .
+    [ sh:path elody:contextMenu ; sh:maxCount 1 ; sh:node meta:ContextMenuShape ] ,
+    [ sh:path elody:field ; sh:nodeKind sh:IRI ; sh:message "a values fragment references the type's property shapes by their sh:path IRI" ] ,
+    [ sh:path elody:fieldAlias ; sh:datatype xsd:string ] ,
+    [ sh:path elody:valuesField ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardShows ; sh:datatype xsd:string ] ;
+  sh:or ( [ sh:property [ sh:path elody:field ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldAlias ; sh:minCount 1 ] ] ) ;
+  sh:message "a values fragment reads at least one property shape, by its sh:path or by its alias" .
 
 meta:CopyFromParentShape a sh:NodeShape ;
   sh:property
@@ -485,6 +510,7 @@ meta:PickerResultShape a sh:NodeShape ;
     [ sh:path elody:graphqlType ; sh:minCount 1 ; sh:maxCount 1 ] ,
     [ sh:path elody:fragment ; sh:datatype xsd:string ] ,
     [ sh:path elody:listing ; sh:maxCount 1 ; sh:class elody:EntityUi ] ,
+    [ sh:path elody:cardMenuSpread ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:type ; sh:maxCount 0 ; sh:message "elody:type is retired: use elody:graphqlType" ] ;
   # a result spreads fragments, renders an inline listing, or both
   sh:or ( [ sh:property [ sh:path elody:fragment ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:listing ; sh:minCount 1 ] ] ) ;
