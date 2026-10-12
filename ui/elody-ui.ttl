@@ -557,6 +557,8 @@ elody:ParentRootSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/
   rdfs:comment "A root field of the parent entity (source: parentRoot), reached over the relation in elody:parentRelationType."@en .
 elody:ParentMetadataSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:comment "A metadata value of the parent entity (source: parentMetadata), reached over elody:parentRelationType or over elody:parentEntityType and elody:parentKey."@en .
+elody:ParentRelationsSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A relation of the parent entity (source: parentRelations), the parent reached over elody:parentRelationType."@en .
 elody:RelationRootdataSource a elody:ValueSource ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:comment "A root field of the relation itself (source: relationRootdata), the relation named in elody:relationKey."@en .
 
@@ -1589,7 +1591,7 @@ elody:repeatableMetadataKey a owl:DatatypeProperty ;
   rdfs:comment "With elody:source elody:RepeatableMetadataSource: the key inside the repeatable group the value is read from (repeatableMetadataKey)."@en .
 elody:parentRelationType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "parent relation type"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:label "parent relation type"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:ParentRelation ) ] ; rdfs:range xsd:string ;
   rdfs:comment "With elody:source elody:ParentRootSource: the relation over which the parent entity is reached (parentRelations: [{ relationType }])."@en .
 elody:containsRelationPropertyKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -1791,11 +1793,11 @@ elody:relationDirection a owl:DatatypeProperty ;
   rdfs:comment "The direction the relation is read in (relationDirection: fromRelatedEntity). Open string: the directions are the PWA's."@en .
 elody:parentEntityType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "parent entity type"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:label "parent entity type"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:ParentRelation ) ] ; rdfs:range xsd:string ;
   rdfs:comment "With a parent source: the type of the parent entity when it is found by a key rather than a relation (parentRelations: [{ entityType: zizo, key: [...] }]), with elody:parentKey."@en .
 elody:parentKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "parent key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:label "parent key"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:ParentRelation ) ] ; rdfs:range xsd:string ;
   rdfs:comment "The document key the parent entity is found by (parentRelations[].key), with elody:parentEntityType."@en .
 elody:cardField a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2184,3 +2186,18 @@ elody:showOnlyInEditMode a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "show only in edit mode"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the panel field is shown in edit mode only (showOnlyInEditMode)."@en .
+
+# ---- 0.3.0, batch 20: a value through several parent relations, an optional host (G-026) --------
+
+elody:ParentRelation a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "parent relation"@en ;
+  rdfs:comment "One step to a parent entity (an entry of parentRelations): a relation type, or an entity type with the key the parent is found by."@en .
+elody:parentRelation a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "parent relation"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:ParentRelation ;
+  rdfs:comment "A step to the parent the value is read from, in sh:order (parentRelations with several entries); one step is said with elody:parentRelationType or elody:parentEntityType + elody:parentKey on the shape itself."@en .
+elody:hostOptional a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "host optional"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:boolean ;
+  rdfs:comment "true declares the host's uuid as a nullable variable ($userUuid: String) on a list query that reads the host (elody:readsHost)."@en .

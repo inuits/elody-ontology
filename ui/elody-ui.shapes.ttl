@@ -173,6 +173,7 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:listingFormatter ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:repeatableMetadataKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:parentRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentRelation ; sh:node meta:ParentRelationShape ] ,
     [ sh:path elody:containsRelationPropertyKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:containsRelationPropertyValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:validationValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -466,6 +467,7 @@ meta:ListQueryShape a sh:NodeShape ;
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     # the document declares $userUuid (also derived from a result listing reading the host)
     [ sh:path elody:readsHost ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:hostOptional ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] .
 
@@ -543,6 +545,15 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFilters ; sh:maxCount 0 ; sh:message "elody:pickerFilters is retired: reference the picker node with elody:picker" ] .
+
+meta:ParentRelationShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:parentRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentEntityType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:parentKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:or ( [ sh:property [ sh:path elody:parentRelationType ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:parentEntityType ; sh:minCount 1 ] ] ) ;
+  sh:message "a parent relation names a relation type or an entity type" .
 
 meta:PanelFieldShape a sh:NodeShape ;
   sh:property
