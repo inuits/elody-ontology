@@ -1,0 +1,46 @@
+# 0.3.0 batch 24 (G-019): a type's other card, its orphan documents, and the signed-in user.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:MediafileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "Mediafile" ; elody:emit "file" ;
+  sh:property [ sh:path em:filename ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.filename" ] .
+
+# the card the platform's preview query shows: another EntityUi of the type, with the fragment's own name
+ui:MediafileAsPreviewUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "MediafileAsPreview" ; elody:cardName "mediafileAsPreview" ; elody:emit "file" ;
+  sh:property [ sh:path em:original_filename ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.filename" ] ,
+              [ sh:path em:mimetype ; sh:order 2 ; elody:teaser false ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .
+
+ui:UserUi a elody:EntityUi ; elody:graphqlType "User" ; elody:emit "file" ; elody:documents "currentUser" ;
+  sh:property [ sh:path em:email ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.email" ] .
+
+ui:CommentUi a elody:EntityUi ; elody:graphqlType "Comment" ; elody:emit "file" ;
+  sh:property [ sh:path em:body ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.body" ] ;
+  # the documents of the comments page: nothing in the GraphQL references them, the PWA does
+  elody:listQuery ui:GetCommentsPage , ui:GetAdvancedFiltersForMyCommentsPage ;
+  elody:customBulkOperations ui:GetBulkOperationsForSubComments ;
+  elody:sortDocument [ elody:queryName "GetSortOptionsForComments" ;
+    elody:sortOption [ sh:order 1 ; elody:icon "NoIcon" ; elody:labelKey "comments.last-activity" ; elody:value "properties.last_activity_at.value" ; elody:primary true ] ,
+                     [ sh:order 2 ; elody:icon "NoIcon" ; elody:labelKey "metadata.labels.status" ; elody:value "properties.status.value" ] ] .
+
+ui:GetCommentsPage a elody:ListQuery ; elody:queryName "GetCommentsPage" ;
+  elody:result [ sh:order 1 ; elody:graphqlType "Comment" ; elody:fragment "minimalComment" ] .
+ui:GetAdvancedFiltersForMyCommentsPage a elody:ListQuery ; elody:filtersQuery "GetAdvancedFiltersForMyCommentsPage" ;
+  elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "comment" ; elody:filterKind elody:TypeFilter ] ,
+    # hidden, its default resolved from the option search (the groups the signed-in user is in)
+    [ sh:order 2 ; rdfs:label "metadata.labels.tagged-group" ; elody:alias "taggedByGroup" ; elody:key "vlacc:1|properties.thread_tagged_groups.value" ; dash:hidden true ; elody:keepDefaultValue true ; elody:displayedByDefault true ;
+      elody:selectionOption "auto" ; elody:filterOperator "or" ; elody:selectionSpread "advancedFilter" ; elody:optionsType "group" ;
+      elody:optionsInput [ sh:order 1 ; elody:inputKind elody:SelectionFilter ; elody:key "vlacc:1|properties.ref_users.value" ; elody:value "session-$id" ; elody:inputMatchExact false ; elody:inputResolveDefaultValueToOptionIds true ] ;
+      elody:filterKind elody:SelectionFilter ] .
+ui:GetBulkOperationsForSubComments elody:queryName "GetBulkOperationsForSubComments" ;
+  elody:operation [ sh:order 1 ; rdfs:label "bulk-operations.add-new-relation" ; elody:icon "Create" ; elody:operationKind elody:AddRelationOperation ; elody:primary true ;
+    elody:context [ elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+    elody:modal [ elody:closeConfirmation true ; elody:form ui:GetCommentCreateForm ; elody:formRelationType "ref_sub_comment" ; elody:modalKind elody:DynamicFormModal ; elody:permission elody:CanUpdate ] ] .
+ui:GetCommentCreateForm a elody:Form ; elody:queryName "GetCommentCreateForm" ; elody:alias "comment" ;
+  elody:shape [ sh:property [ sh:path em:body ; sh:order 1 ; sh:datatype xsd:string ] ] .

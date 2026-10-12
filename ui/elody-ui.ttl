@@ -432,7 +432,7 @@ elody:ListQuery a owl:Class ;
 elody:listQuery a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "list query"@en ; rdfs:domain owl:Thing ; rdfs:range elody:ListQuery ;
-  rdfs:comment "The declared entities and filters documents the list loads; sets customQuery and customQueryFilters. On an EntityUi: list queries the type's documents name without a list element (the documents of the delete flow)."@en .
+  rdfs:comment "The declared entities and filters documents the list loads; sets customQuery and customQueryFilters. On an EntityUi: list queries the type's documents name without a list element (the documents of the delete flow), and the type's orphan documents, an entities or filters document nothing references but the client keeps; a filters document alone names only elody:filtersQuery."@en .
 elody:PickerResult a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "picker result"@en ;
@@ -594,7 +594,7 @@ elody:documents a owl:DatatypeProperty ; elody:directive true ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "standard documents"@en ;
   rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
-  rdfs:comment "Which standard documents to emit for the type: entities, filters, sortOptions, bulkOperations. Directive: derivable from what the declaration contains."@en .
+  rdfs:comment "Which standard documents to emit for the type: entities, filters, sortOptions, bulkOperations, and currentUser (the getElodyUser document reading the signed-in user as this type). Directive: derivable from what the declaration contains."@en .
 
 elody:fragment a owl:DatatypeProperty ; elody:directive true ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -926,8 +926,8 @@ elody:operationKind a owl:ObjectProperty ;
   rdfs:comment "Which platform bulk operation. Replaces the string elody:value on bulk operations."@en .
 elody:primary a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "primary"@en ; rdfs:domain elody:BulkOperation ; rdfs:range xsd:boolean ;
-  rdfs:comment "Render as the primary button."@en .
+  rdfs:label "primary"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:BulkOperation elody:SortOption ) ] ; rdfs:range xsd:boolean ;
+  rdfs:comment "Render as the primary button; on a sort option, the option selected by default."@en .
 elody:can a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "required permission"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
@@ -2406,3 +2406,34 @@ elody:creatableType a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "creatable type"@en ; rdfs:domain elody:FlowStep ; rdfs:range elody:CreatableType ;
   rdfs:comment "A type the step may create, in sh:order: elody:labelKey, elody:entityType and the elody:form that creates it."@en .
+
+# ---- 0.3.0, batch 24: a type's other cards, its orphan documents, the signed-in user (G-019) ----
+
+elody:cardName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The listing fragment's own name when the client does not call it minimal<X>: a second card of a type for another place (mediafileAsPreview, the card the platform's GetMediafilesAsPreview shows), declared as another EntityUi of the GraphQL type with its own elody:documentName."@en .
+elody:SortDocument a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort options document"@en ;
+  rdfs:comment "A sort options document of its own (EntityTypeSortOptions with its options inline), for a page the type's standard sort options do not serve (GetSortOptionsForComments)."@en .
+elody:sortDocument a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort document"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:SortDocument ;
+  rdfs:comment "A sort options document of the type with options of its own: elody:queryName names it, elody:sortOption lists the options in sh:order."@en .
+elody:SortOption a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort option"@en ;
+  rdfs:comment "An option of a sort options document: elody:labelKey, elody:value (the sort key), elody:primary, elody:icon."@en .
+elody:sortOption a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort option"@en ; rdfs:domain elody:SortDocument ; rdfs:range elody:SortOption ;
+  rdfs:comment "An option of the document, in sh:order."@en .
+elody:inputResolveDefaultValueToOptionIds a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "input resolves default value to option ids"@en ; rdfs:domain elody:OptionsInput ; rdfs:range xsd:boolean ;
+  rdfs:comment "true resolves the input's value (session-$id) to the ids of the options it matches, which become the filter's default (resolveDefaultValueToOptionIds)."@en .
+elody:keepDefaultValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "keep default value"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "true keeps the filter's default value when the user changes the filters (doNotOverrideDefaultValue)."@en .

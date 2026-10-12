@@ -20,7 +20,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:documentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:emit ; sh:maxCount 1 ; sh:in ( "file" "regions" "inline" ) ;
       sh:message "elody:emit is \"file\", \"regions\" or \"inline\" (a listing rendered inside a list query's results)" ] ,
-    [ sh:path elody:documents ; sh:in ( "entities" "filters" "sortOptions" "bulkOperations" ) ;
+    [ sh:path elody:documents ; sh:in ( "entities" "filters" "sortOptions" "bulkOperations" "currentUser" ) ;
       sh:message "elody:documents names a standard document" ] ,
     # no view mode: a type that is never listed on its own (a tenant, a media file in a panel)
     [ sh:path elody:viewMode ; sh:node meta:ViewModeSelectionShape ] ,
@@ -66,6 +66,8 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:form ; sh:class elody:Form ; sh:node meta:FormShape ] ,
     [ sh:path elody:guidedFlow ; sh:node meta:GuidedFlowShape ] ,
     [ sh:path elody:picker ; sh:node meta:PickerShape ] ,
+    [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:sortDocument ; sh:node meta:SortDocumentShape ] ,
     [ sh:path elody:detail ; sh:maxCount 1 ; sh:node meta:DetailLayoutShape ] ,
     [ sh:path elody:formSource ; sh:node meta:FormSourceShape ] ,
     [ sh:path elody:typePills ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -213,6 +215,7 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:optionsLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:selectionOption ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:keepDefaultValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -243,8 +246,9 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:property [ sh:path dash:hidden ; sh:maxCount 0 ] ]
     [ sh:property [ sh:path dash:hidden ; sh:hasValue false ] ]
     [ sh:property [ sh:path sh:defaultValue ; sh:minCount 1 ] ]
-    [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ] ) ;
-  sh:message "a hidden filter carries a sh:defaultValue, or elody:defaultValueAsList true for an empty list" .
+    [ sh:property [ sh:path elody:defaultValueAsList ; sh:hasValue true ] ]
+    [ sh:property [ sh:path elody:optionsInput ; sh:qualifiedValueShape [ sh:property [ sh:path elody:inputResolveDefaultValueToOptionIds ; sh:hasValue true ] ] ; sh:qualifiedMinCount 1 ] ] ) ;
+  sh:message "a hidden filter carries a sh:defaultValue, elody:defaultValueAsList true for an empty list, or an option input resolving its value to option ids" .
 
 meta:DeleteOptionsShape a sh:NodeShape ;
   sh:property
@@ -358,6 +362,7 @@ meta:OptionsInputShape a sh:NodeShape ;
       sh:message "an options input's value is a string or an RDF list of strings" ] ,
     [ sh:path elody:inputMatchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:inputDistinctBy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:inputResolveDefaultValueToOptionIds ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:inputOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:bareValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:valueMapping ; sh:node meta:ValueMappingShape ] ,
@@ -550,9 +555,25 @@ meta:FlowStepShape a sh:NodeShape ;
 
 # ------------------------------------------------------------------- pickers ---
 
-meta:ListQueryShape a sh:NodeShape ;
+meta:SortDocumentShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:sortOption ; sh:minCount 1 ; sh:node meta:SortOptionShape ] .
+
+meta:SortOptionShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:labelKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:value ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:primary ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:icon ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:ListQueryShape a sh:NodeShape ;
+  # a list query names its entities document, or a filters document alone (an orphan filters document)
+  sh:or ( [ sh:property [ sh:path elody:queryName ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:filtersQuery ; sh:minCount 1 ] ] ) ;
+  sh:message "a list query names its entities document (elody:queryName) or its filters document (elody:filtersQuery)" ;
+  sh:property
+    [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     # relationValues read on every result, outside the per-type selections
