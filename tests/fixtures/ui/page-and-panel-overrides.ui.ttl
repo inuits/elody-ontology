@@ -1,0 +1,35 @@
+# 0.3.0 batch 19 (G-028): a value read differently per page, a field shown differently per panel.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:AreaUi a elody:EntityUi ; elody:graphqlType "Area" ; elody:emit "file" ; elody:viewModesOnDetail true ;
+  sh:property
+    [ sh:path em:name ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ; sh:maxCount 1 ; sh:datatype xsd:string ; shui:editor shui:TextFieldEditor ] ,
+    [ sh:path em:refRegion ; sh:order 2 ; elody:relationType "refRegion" ; elody:labelKey "metadata.labels.region" ; elody:valueLabelKey "" ; elody:listingValueLabelKey "name" ;
+      shui:viewer elody:LinkViewer ; elody:viewerArgument "region" ; elody:listingFormatter false ] ,
+    [ sh:path em:refMediafiles ; sh:order 3 ; elody:relationType "refMediafiles" ; elody:labelKey "metadata.labels.mediafiles" ; elody:valueLabelRootKey "filename" ; elody:listingValueLabelRootKey "display_filename" ] ,
+    [ sh:path em:status ; sh:order 4 ; elody:labelKey "metadata.labels.status" ; shui:viewer elody:PillViewer ; elody:detailFormatter false ] ,
+    [ sh:path em:refAuthors ; sh:order 5 ; elody:relationType "refAuthors" ; elody:labelKey "metadata.labels.authors" ; elody:valueLabelKey "name" ;
+      elody:containsRelationPropertyKey "main_author" ; elody:containsRelationPropertyValue "true" ; elody:detailContainsRelation false ] ,
+    [ sh:path em:vlacc_number ; sh:order 6 ; elody:labelKey "metadata.labels.vlacc-nr" ; sh:maxCount 1 ; sh:datatype xsd:string ; shui:editor shui:TextFieldEditor ; elody:teaser false ;
+      elody:readOnlyUnless "update:area:field:vlacc_number" ; elody:showOnlyInEditMode false ] ,
+    [ sh:path em:technical ; sh:order 7 ; elody:labelKey "metadata.labels.technical" ; elody:teaser false ; elody:readsValue false ] ,
+    [ sh:path em:download_url ; sh:order 8 ; elody:relationType "hasMediafile" ; elody:labelKey "metadata.labels.url" ; elody:valueLabelRootKey "original_file_location" ; elody:technicalOrigin "download" ; elody:teaser false ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ;
+  elody:detail [ elody:column [ sh:order 1 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "w" ; elody:panel ui:AreaUi-info , ui:AreaUi-ids , ui:AreaUi-tech ; elody:panelSpread "areaIdsGroupPanel" ;
+                    elody:contextMenu [ elody:action [ sh:order 1 ; elody:alias "refreshData" ; elody:actionForm "doCustomAction" ; elody:actionKind elody:EndpointCallAction ; rdfs:label "contextMenu.refresh-data" ;
+                                                       elody:icon "Bolt" ; elody:endpointUrl "api/entities/$id/sync-origins" ; elody:endpointMethod "POST" ; elody:can "create:area" ] ] ] ,
+                  [ a elody:EntityViewerElement ; sh:order 2 ; rdfs:label "Shared entity" ; elody:relationType "hasInstitution" ] ] ] .
+
+ui:AreaUi-info a elody:Panel ; elody:alias "info" ; rdfs:label "p" ; sh:order 1 ; elody:panelKind elody:MetadataPanel ; elody:field em:name , em:vlacc_number ;
+  elody:panelField [ elody:field em:vlacc_number ; elody:panelWidget false ] .
+ui:AreaUi-ids a elody:Panel ; elody:alias "ids" ; rdfs:label "i" ; sh:order 2 ; elody:panelKind elody:MetadataPanel ; elody:field em:vlacc_number ;
+  elody:panelField [ elody:field em:vlacc_number ; elody:labelKey "metadata.labels.vlacc-number" ; elody:alias "vlacc_number_system" ] .
+ui:AreaUi-tech a elody:Panel ; elody:alias "technical_metadata" ; rdfs:label "t" ; sh:order 3 ; elody:panelKind elody:BulkDataPanel ; dash:readOnly true ; elody:bulkDataSource "technical_metadata" .

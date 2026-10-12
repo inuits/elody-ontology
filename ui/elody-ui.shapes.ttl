@@ -32,6 +32,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:mapFeatureField ; sh:nodeKind sh:IRI ; sh:message "a map feature field references a property shape by its sh:path IRI" ] ,
     [ sh:path elody:idField ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:viewModesOnDetail ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:idValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:deleteOptions ; sh:maxCount 1 ; sh:node meta:DeleteOptionsShape ] ,
@@ -135,6 +136,13 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:cardLineClamp ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:listingValueLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:technicalOrigin ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:readOnlyUnless ; sh:datatype xsd:string ] ,
+    [ sh:path elody:showOnlyInEditMode ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:listingValueLabelRootKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:detailFormatter ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailContainsRelation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:panelLineClamp ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:panelAlias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:highlightIfPrimaryThumbnail ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -527,12 +535,21 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:listViewMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
     [ sh:path elody:windowStatus ; sh:maxCount 1 ; sh:node meta:WindowStatusShape ] ,
+    [ sh:path elody:contextMenu ; sh:maxCount 1 ; sh:node meta:ContextMenuShape ] ,
+    [ sh:path elody:panelSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:actionsOnResult ; sh:maxCount 1 ; sh:node meta:ActionsOnResultShape ] ,
     [ sh:path elody:addEntitiesToForms ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:cropCoordinatesKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:searchInputType ; sh:maxCount 0 ; sh:message "elody:searchInputType is retired: use elody:searchInput" ] ,
     [ sh:path elody:pickerList ; sh:maxCount 0 ; sh:message "elody:pickerList is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFilters ; sh:maxCount 0 ; sh:message "elody:pickerFilters is retired: reference the picker node with elody:picker" ] .
+
+meta:PanelFieldShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:field ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:IRI ; sh:message "a panel field names the property shape by its sh:path IRI" ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelWidget ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
 
 meta:WindowStatusShape a sh:NodeShape ;
   sh:property
@@ -553,6 +570,8 @@ meta:PanelShape a sh:NodeShape ;
     [ sh:path elody:panelKind ; sh:maxCount 1 ; sh:class elody:PanelKind ;
       sh:message "a panel's kind is an elody:PanelKind instance (elody:MetadataPanel, ...)" ] ,
     [ sh:path elody:editableDefault ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:bulkDataSource ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelField ; sh:node meta:PanelFieldShape ] ,
     [ sh:path elody:repetitionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:displayConditionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:field ; sh:nodeKind sh:IRI ;

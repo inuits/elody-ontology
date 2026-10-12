@@ -866,8 +866,8 @@ elody:showTooltip a owl:DatatypeProperty ;
 # -- context menu and actions ----------------------------------------------------
 elody:contextMenu a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "context menu"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:ContextMenu ;
-  rdfs:comment "The card's context menu."@en .
+  rdfs:label "context menu"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:WindowElement ) ] ; rdfs:range elody:ContextMenu ;
+  rdfs:comment "The card's context menu; on an elody:WindowElement, the window's (contextMenuActions)."@en .
 elody:forceShow a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "force show"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:boolean ;
@@ -2059,8 +2059,8 @@ elody:cardValidates a owl:DatatypeProperty ;
   rdfs:comment "false leaves the validation off the card's input field (elody:cardEditable). Default true."@en .
 elody:panelWidget a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "panel widget"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
-  rdfs:comment "true gives the panel field its input field even in a read-only panel."@en .
+  rdfs:label "panel widget"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:PanelField ) ] ; rdfs:range xsd:boolean ;
+  rdfs:comment "true gives the panel field its input field even in a read-only panel; on an elody:PanelField, true or false for that panel alone."@en .
 elody:SortPage a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "sort page"@en ;
@@ -2133,3 +2133,54 @@ elody:endpointMethod a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "endpoint method"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
   rdfs:comment "The HTTP method of the call (endpointMethod: POST)."@en .
+
+# ---- 0.3.0, batch 19: a value read differently per page, a field shown differently per panel (G-028) ----
+
+elody:listingValueLabelKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing value label key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key labelling the relation in the listing when it differs from elody:valueLabelKey (the detail page's); \"\" reads it without a label key there."@en .
+elody:listingValueLabelRootKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing value label root key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The root key labelling the relation in the listing when it differs from elody:valueLabelRootKey; \"\" reads it without a root key there."@en .
+elody:detailFormatter a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail formatter"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false reads the raw value on the detail page while the listing reads it with the viewer's formatter (the counterpart of elody:listingFormatter). Default true."@en .
+elody:detailContainsRelation a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail contains relation"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false reads the relation on the detail page without the containsRelationProperty filter the listing applies. Default true."@en .
+elody:viewModesOnDetail a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "view modes on detail"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads the allowed view modes in the detail fragment too (allowedViewModes inside fullX)."@en .
+elody:bulkDataSource a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk data source"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key a bulk-data panel shows as a whole (bulkData(bulkDataSource: ...))."@en .
+elody:PanelField a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel field"@en ;
+  rdfs:comment "How one panel shows one of its fields when that differs from the property shape: its own label key, alias or widget."@en .
+elody:panelField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel field"@en ; rdfs:domain elody:Panel ; rdfs:range elody:PanelField ;
+  rdfs:comment "A field shown differently in this panel: elody:field names the property shape by its sh:path, elody:labelKey, elody:alias and elody:panelWidget say what differs."@en .
+elody:panelSpread a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel spread"@en ; rdfs:domain elody:WindowElement ; rdfs:range xsd:string ;
+  rdfs:comment "A hand-written fragment on WindowElement spread among the window's panels (...manifestationEanGroupPanel)."@en .
+elody:technicalOrigin a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "technical origin"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The technical origin the value is read for (keyValue technicalOrigin: \"download\")."@en .
+elody:readOnlyUnless a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "read-only unless"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "A permission that unlocks editing the panel field (readOnly(input: [...])), one per value; without it the field stays read-only."@en .
+elody:showOnlyInEditMode a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show only in edit mode"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the panel field is shown in edit mode only (showOnlyInEditMode)."@en .
