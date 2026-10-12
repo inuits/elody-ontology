@@ -280,6 +280,10 @@ elody:DeleteRelationAction a elody:ActionKind ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:ShareAction          a elody:ActionKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:EndpointCallAction   a elody:ActionKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:SetPrimaryThumbnailAction a elody:ActionKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A general action (doGeneralAction): make the entity the primary thumbnail."@en .
+elody:SetPrimaryMediafileAction a elody:ActionKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "A general action (doGeneralAction): make the entity the primary media file."@en .
 elody:DownloadQueryResultAction a elody:ActionKind ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:CreateEntityFromExternalSourceAction a elody:ActionKind ;
@@ -1990,3 +1994,142 @@ elody:MapModeKind a owl:Class ; rdfs:label "map mode kind"@en ;
 elody:HeatMode    a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:DefaultMode a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
 elody:PointsMode  a elody:MapModeKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+
+# ---- 0.3.0, batch 18: card, panel, form, menu and sort-option extras (G-029) --------------------
+
+elody:cardLineClamp a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card line clamp"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The lines the value is clamped to on the card (lineClamp(input: \"3\"))."@en .
+elody:panelLineClamp a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel line clamp"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The lines the value is clamped to in the panel (lineClamp(input: \"3\"))."@en .
+elody:panelAlias a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel alias"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The GraphQL alias the panel field is shown under when it differs from the value's."@en .
+elody:highlightIfPrimaryThumbnail a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "highlight if primary thumbnail"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true highlights the card field when the entity is the primary thumbnail (highlightIfPrimaryThumbnail)."@en .
+elody:validationMessage a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation message"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the message shown while the value fails the rule (fastValidationMessage)."@en .
+elody:filterAggregation a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter aggregation"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The aggregation a number filter applies to a looked-up list (aggregation: \"size\")."@en .
+elody:permitted a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "permitted"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "A permission the panel field needs (permitted(input: [...])), one per value."@en .
+elody:linkText a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "link text"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the text shown for a link value in the panel (linkText)."@en .
+elody:copyToClipboard a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy to clipboard"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true offers a copy button next to the value in the panel (copyToClipboard)."@en .
+elody:nonEditable a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "non-editable"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true keeps the field read-only in an editable panel (nonEditableField)."@en .
+elody:tooltipKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tooltip key"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the tooltip shown with a panel or form field (tooltip(input: ...))."@en .
+elody:panelShowsUnit a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel shows unit"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false leaves elody:unit off the panel field (the card still shows it). Default true."@en .
+elody:valueTranslationKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "value translation key"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key pattern the value is shown through (valueTranslationKey(input: \"access-levels.$value\"))."@en .
+elody:cardAlias a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card alias"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The GraphQL alias the card field is shown under when it differs from the value's (title: metaData { key(input: \"subdomain\") })."@en .
+elody:cardValidates a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card validates"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "false leaves the validation off the card's input field (elody:cardEditable). Default true."@en .
+elody:panelWidget a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel widget"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true gives the panel field its input field even in a read-only panel."@en .
+elody:SortPage a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort page"@en ;
+  rdfs:comment "A page a sort option is offered on (availableInPages): a route and the entity type shown there."@en .
+elody:sortPage a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort page"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:SortPage ;
+  rdfs:comment "A page the property's sort option is offered on, one per node."@en .
+elody:routeName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "route name"@en ; rdfs:domain elody:SortPage ; rdfs:range xsd:string ;
+  rdfs:comment "The PWA route (routeName: SingleEntity), an open string of the PWA's."@en .
+elody:routeEntityType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "route entity type"@en ; rdfs:domain elody:SortPage ; rdfs:range xsd:string ;
+  rdfs:comment "The entity type shown on the route (entityType: asset)."@en .
+elody:virtualKeyboardLayouts a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "virtual keyboard layouts"@en ; rdfs:domain sh:PropertyShape ; rdfs:range rdf:List ;
+  rdfs:comment "The on-screen keyboard layouts a text field offers (virtualKeyboardConfig: layouts), an RDF list of names; on a form field or on a property shape edited in a panel."@en .
+elody:PickerSearch a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "picker search"@en ;
+  rdfs:comment "How an entity picker field searches (entityPickerSearchConfig): a mode, the keys searched and the types accepted."@en .
+elody:pickerSearch a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "picker search"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:PickerSearch ;
+  rdfs:comment "The search configuration of an entity picker form field."@en .
+elody:pickerSearchMode a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "picker search mode"@en ; rdfs:domain elody:PickerSearch ; rdfs:range xsd:string ;
+  rdfs:comment "The search mode (mode: Search), an open string of the platform's."@en .
+elody:noWidget a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "no widget"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true leaves the form field without an input field: a label the form shows (a bulk delete's list of items)."@en .
+elody:submitAction a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "submit action"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "What the form's submit does (actionType: submit, ocr, submitWithUpload). Default submit."@en .
+elody:showAsButton a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show as button"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
+  rdfs:comment "true shows the menu action as a button of its own (showAsButton)."@en .
+elody:repetitionKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "repetition key"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:string ;
+  rdfs:comment "The panel repeats per entry of this metadata key (repetitionConfig(repetitionKey: ...))."@en .
+elody:displayConditionKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "display condition key"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:string ;
+  rdfs:comment "The panel is shown only when the entity holds this key (displayCondition { key(input: ...) })."@en .
+elody:editableDefault a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "editable default"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:boolean ;
+  rdfs:comment "true leaves isEditable unsaid, to the platform's default; a panel without elody:panelKind leaves panelType unsaid likewise."@en .
+elody:idField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "id field"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads the entity's id at the top of the listing fragment (id before intialValues)."@en .
+elody:idValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "id value"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads the id among the listing's initial values (intialValues { id ... })."@en .
+elody:endpointUrl a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "endpoint URL"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "The API path a custom menu action calls (doCustomAction: endpointUrl), with $id for the entity."@en .
+elody:endpointMethod a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "endpoint method"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
+  rdfs:comment "The HTTP method of the call (endpointMethod: POST)."@en .

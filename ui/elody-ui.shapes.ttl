@@ -31,6 +31,8 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:filtersFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:mapFeatureField ; sh:nodeKind sh:IRI ; sh:message "a map feature field references a property shape by its sh:path IRI" ] ,
+    [ sh:path elody:idField ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:idValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingCore ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:deleteOptions ; sh:maxCount 1 ; sh:node meta:DeleteOptionsShape ] ,
     [ sh:path elody:interface ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -132,6 +134,23 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:valueLabelRootKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortOrder ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:cardLineClamp ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelLineClamp ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelAlias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:highlightIfPrimaryThumbnail ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:validationMessage ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:virtualKeyboardLayouts ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:virtualKeyboardLayouts is an RDF list of layout names" ] ,
+    [ sh:path elody:permitted ; sh:datatype xsd:string ] ,
+    [ sh:path elody:linkText ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:copyToClipboard ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:nonEditable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:tooltipKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panelShowsUnit ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:valueTranslationKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardAlias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:cardValidates ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:panelWidget ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:sortPage ; sh:node meta:SortPageShape ] ,
     [ sh:path elody:validationRule ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:cardKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:relationKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -174,6 +193,7 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:showTooltip ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:parentFilterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filterAggregation ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:optionsValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -251,6 +271,10 @@ meta:ActionShape a sh:NodeShape ;
     [ sh:path elody:actionKind ; sh:maxCount 1 ; sh:class elody:ActionKind ;
       sh:message "an action's kind is an elody:ActionKind instance" ] ,
     [ sh:path elody:actionForm ; sh:maxCount 1 ; sh:in ( "doElodyAction" "doLinkAction" "doGeneralAction" "doCustomAction" ) ] ,
+    [ sh:path elody:can ; sh:datatype xsd:string ] ,
+    [ sh:path elody:showAsButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:endpointUrl ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:endpointMethod ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:formSourceRef ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:actionType ; sh:maxCount 0 ; sh:message "elody:actionType is retired: use elody:actionKind" ] ,
@@ -382,9 +406,26 @@ meta:FormFieldsShape a sh:NodeShape ;
     [ sh:path sh:property ; sh:node meta:FormFieldShape ] .
 
 # a form field: the widget comes from the SHACL 1.2 UI scoring (text field when nothing scores)
+meta:SortPageShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:routeName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:routeEntityType ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:PickerSearchShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:pickerSearchMode ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:keys ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:keys is an RDF list of key strings" ] ,
+    [ sh:path elody:acceptedTypes ; sh:datatype xsd:string ] .
+
 meta:FormFieldShape a sh:NodeShape ;
   sh:property
     [ sh:path sh:name ; sh:uniqueLang true ] ,
+    [ sh:path elody:tooltipKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:virtualKeyboardLayouts ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:virtualKeyboardLayouts is an RDF list of layout names" ] ,
+    [ sh:path elody:pickerSearch ; sh:maxCount 1 ; sh:node meta:PickerSearchShape ] ,
+    [ sh:path elody:noWidget ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:validationMessage ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path sh:defaultValue ; sh:maxCount 1 ] ,
     [ sh:path rdfs:label ; sh:maxCount 0 ;
       sh:message "rdfs:label on a form field: use sh:name for the label text, elody:labelKey for an Elody translation key" ] ,
     [ sh:path elody:inputType ; sh:maxCount 0 ; sh:message "elody:inputType is retired: use sh:datatype / sh:class / sh:node / sh:in or shui:editor" ] ,
@@ -508,8 +549,12 @@ meta:ActionsOnResultShape a sh:NodeShape ;
 meta:PanelShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ] ,
-    [ sh:path elody:panelKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:PanelKind ;
+    # no panel kind: panelType is left to the platform's default
+    [ sh:path elody:panelKind ; sh:maxCount 1 ; sh:class elody:PanelKind ;
       sh:message "a panel's kind is an elody:PanelKind instance (elody:MetadataPanel, ...)" ] ,
+    [ sh:path elody:editableDefault ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:repetitionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:displayConditionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:field ; sh:nodeKind sh:IRI ;
       sh:message "a panel field references a property shape by its sh:path IRI" ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,

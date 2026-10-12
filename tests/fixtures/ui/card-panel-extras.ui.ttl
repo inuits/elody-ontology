@@ -1,0 +1,45 @@
+# 0.3.0 batch 18 (G-029): card, panel, form, menu and sort-option extras.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:NoteUi a elody:EntityUi ; elody:graphqlType "Note" ; elody:emit "file" ; elody:idField true ; elody:idValue true ;
+  sh:property
+    [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ; sh:maxCount 1 ; sh:datatype xsd:string ;
+      elody:cardLineClamp "3" ; elody:panelLineClamp "2" ; elody:tooltipKey "tooltip.metadata.title" ; elody:cardAlias "heading" ; elody:sortable true ;
+      elody:highlightIfPrimaryThumbnail true ; elody:validationMessage "validation.title-error" ; elody:validationRule "customValue" ; elody:validationValue "between:1,80" ;
+      elody:virtualKeyboardLayouts ( "Arabic" ) ; elody:panelAlias "heading_in_panel" ;
+      elody:sortPage [ elody:routeName "SingleEntity" ; elody:routeEntityType "note" ] ] ,
+    [ sh:path em:note ; sh:order 5 ; elody:labelKey "metadata.labels.note" ; sh:datatype xsd:string ; sh:maxCount 1 ; dash:readOnly true ; elody:panelWidget true ; elody:teaser false ] ,
+    [ sh:path em:url ; sh:order 2 ; elody:labelKey "metadata.labels.url" ; elody:linkText "metadata.labels.download-link" ; elody:copyToClipboard true ;
+      elody:permitted "read:url:field" ; elody:nonEditable true ; elody:teaser false ] ,
+    [ sh:path em:access ; sh:order 3 ; elody:labelKey "metadata.labels.access" ; elody:valueTranslationKey "access-levels.$value" ; sh:maxCount 1 ; sh:minCount 1 ;
+      sh:datatype xsd:string ; shui:editor shui:TextFieldEditor ; elody:cardEditable true ; elody:cardValidates false ; elody:panelWidget true ] ,
+    [ sh:path em:start ; sh:order 4 ; elody:labelKey "metadata.labels.start" ; elody:unit elody:DatetimeDefault ; elody:panelShowsUnit false ; sh:datatype xsd:dateTime ; sh:maxCount 1 ] ;
+  elody:contextMenu [ elody:action [ sh:order 1 ; elody:alias "editOrder" ; elody:actionKind elody:UpdateMetadataAction ; rdfs:label "contextMenu.edit" ; elody:icon "Update" ;
+                                     elody:showAsButton true ; elody:can "update:note" ] ,
+                      [ sh:order 2 ; elody:alias "primaryThumbnail" ; elody:actionForm "doGeneralAction" ; elody:actionKind elody:SetPrimaryThumbnailAction ; rdfs:label "contextMenu.setPrimaryThumbnail" ; elody:icon "ImageCheck" ] ,
+                      [ sh:order 3 ; elody:alias "refreshData" ; elody:actionForm "doCustomAction" ; elody:actionKind elody:EndpointCallAction ; rdfs:label "contextMenu.refresh-data" ; elody:icon "Bolt" ;
+                        elody:endpointUrl "api/entities/$id/sync-origins" ; elody:endpointMethod "POST" ; elody:can "create:note" ] ] ;
+  elody:form ui:CreateNote ;
+  elody:filter [ sh:order 1 ; elody:alias "number_of_notes" ; rdfs:label "metadata.labels.number-of-notes" ; elody:key "lookup.virtual_relations.hasNote" ; elody:filterKind elody:NumberFilter ; elody:filterAggregation "size" ; elody:displayedByDefault true ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "w" ; elody:panel ui:NoteUi-info , ui:NoteUi-bare , ui:NoteUi-ro ] ] ] .
+
+ui:NoteUi-info a elody:Panel ; elody:alias "info" ; rdfs:label "p" ; sh:order 1 ; elody:panelKind elody:MetadataPanel ;
+  elody:repetitionKey "options" ; elody:displayConditionKey "refOmnibus" ; elody:field em:title , em:url , em:access , em:start .
+ui:NoteUi-ro a elody:Panel ; elody:alias "ro" ; rdfs:label "r" ; sh:order 3 ; elody:panelKind elody:MetadataPanel ; dash:readOnly true ; elody:field em:note .
+ui:NoteUi-bare a elody:Panel ; elody:alias "bare" ; rdfs:label "b" ; sh:order 2 ; elody:editableDefault true ; elody:field em:title .
+
+ui:CreateNote a elody:Form ; elody:queryName "GetNoteCreateForm" ; elody:alias "note" ;
+  elody:submit [ rdfs:label "actions.labels.start-ocr" ; elody:icon "Process" ; elody:alias "submit" ; elody:actionQuery "GenerateOcr" ; elody:submitAction "ocr" ; elody:showsFormErrors true ] ;
+  elody:shape [ sh:property
+    [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ; sh:minCount 1 ; elody:tooltipKey "tooltip.metadata.title" ; elody:virtualKeyboardLayouts ( "Arabic" "Cyrillic" ) ] ,
+    [ sh:path em:status ; sh:order 2 ; sh:datatype xsd:string ; sh:defaultValue "active" ] ,
+    [ sh:path em:field ; sh:order 3 ; elody:labelKey "bulk-operations.delete-labels.mediafiles" ; elody:noWidget true ] ,
+    [ sh:path em:entityPicker ; sh:order 4 ; elody:clientInputField "baseEntityPickerField" ;
+      elody:pickerSearch [ elody:pickerSearchMode "Search" ; elody:keys ( "vlacc:1|properties.name.value" ) ; elody:acceptedTypes "group" ] ] ] .
