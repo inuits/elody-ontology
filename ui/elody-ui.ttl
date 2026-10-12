@@ -1030,8 +1030,8 @@ elody:finalize a owl:ObjectProperty ;
   rdfs:comment "How the flow attaches its result to the host."@en .
 elody:fromStep a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "from step"@en ; rdfs:domain elody:Finalize ; rdfs:range xsd:string ;
-  rdfs:comment "The key of the step whose result is attached."@en .
+  rdfs:label "from step"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Finalize elody:StepScope ) ] ; rdfs:range xsd:string ;
+  rdfs:comment "The key of the step whose result is attached (on elody:Finalize) or whose relation scopes the search (on elody:StepScope, GraphQL step)."@en .
 elody:relationType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "relation type"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
@@ -2307,3 +2307,102 @@ elody:facet a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "facet"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Filter elody:Facet ) ] ; rdfs:range elody:Facet ;
   rdfs:comment "A facet, in sh:order: elody:inputKind and elody:value, or elody:key with elody:lookup nodes, and nested elody:facet nodes."@en .
+
+# ---- 0.3.0, batch 23: what a guided flow and its steps may still say (G-041) -------------------
+
+elody:linear a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "linear"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range xsd:boolean ;
+  rdfs:comment "true runs the steps one after another (linear)."@en .
+elody:startOnFirstStep a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "start on first step"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range xsd:boolean ;
+  rdfs:comment "true opens the flow on its first step (startOnFirstStep)."@en .
+elody:returnsSelection a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "returns selection"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range xsd:boolean ;
+  rdfs:comment "true hands the selection back to where the flow was opened instead of creating relations (returnsSelection)."@en .
+elody:routeToStep a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "route to step"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range xsd:string ;
+  rdfs:comment "The step whose entity the PWA navigates to when the flow finishes (routeToStep)."@en .
+elody:routeToRoute a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "route to route"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range xsd:string ;
+  rdfs:comment "The PWA route the flow navigates to when it finishes (routeToRoute: WemOverview), an open string of the PWA's."@en .
+elody:showBackButton a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show back button"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the step shows a back button (showBackButton)."@en .
+elody:skipSearchIfPriorIsNew a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "skip search if prior is new"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:boolean ;
+  rdfs:comment "true skips the step's search when the prior step created a new entity (skipSearchIfPriorIsNew)."@en .
+elody:pickerFiltersCollapsed a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "picker filters collapsed"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the step's picker starts with its filters collapsed (pickerFiltersCollapsed)."@en .
+elody:metadataOnly a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "metadata only"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:boolean ;
+  rdfs:comment "true makes the step edit only the metadata of the relation to the prior step, without picking or creating an entity (metadataOnly)."@en .
+elody:terminalActionLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "terminal action label"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the action that ends the flow at this step (terminalActionLabel)."@en .
+elody:StepScope a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "step scope"@en ;
+  rdfs:comment "The scope of a step's search: the entities related to what a prior step chose (scopeToRelationOf)."@en .
+elody:scopeToRelationOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "scope to relation of"@en ; rdfs:domain elody:FlowStep ; rdfs:range elody:StepScope ;
+  rdfs:comment "The prior step (elody:fromStep), the relation type and the filter key the search is scoped by."@en .
+elody:filterKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter key"@en ; rdfs:domain elody:StepScope ; rdfs:range xsd:string ;
+  rdfs:comment "The key the scoped search filters on (filterKey)."@en .
+elody:StepRelation a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "step relation"@en ;
+  rdfs:comment "A relation the flow creates from this step's entity to a prior step's (relations)."@en .
+elody:stepRelation a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "step relation"@en ; rdfs:domain elody:FlowStep ; rdfs:range elody:StepRelation ;
+  rdfs:comment "A relation to create, in sh:order: elody:to names the prior step, elody:relationType the relation, elody:createWhen when (always)."@en .
+elody:to a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "to"@en ; rdfs:domain elody:StepRelation ; rdfs:range xsd:string ;
+  rdfs:comment "The key of the step the relation goes to (to)."@en .
+elody:createWhen a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "create when"@en ; rdfs:domain elody:StepRelation ; rdfs:range xsd:string ;
+  rdfs:comment "When the relation is created (createWhen: always), a platform enum value."@en .
+elody:RelationMetadataField a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation metadata field"@en ;
+  rdfs:comment "A form field whose value is stored as metadata on the relation a step creates (metadataFields)."@en .
+elody:metadataField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "metadata field"@en ; rdfs:domain elody:StepRelation ; rdfs:range elody:RelationMetadataField ;
+  rdfs:comment "A field of the step's form copied onto the relation, in sh:order: elody:formMetadataKey names the form field, elody:relationMetadataKey the relation metadata key, elody:asArray stores it as a list."@en .
+elody:formMetadataKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "form metadata key"@en ; rdfs:domain elody:RelationMetadataField ; rdfs:range xsd:string ;
+  rdfs:comment "The key of the form field whose value is copied (formMetadataKey)."@en .
+elody:relationMetadataKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation metadata key"@en ; rdfs:domain elody:RelationMetadataField ; rdfs:range xsd:string ;
+  rdfs:comment "The relation metadata key the value is stored under (relationMetadataKey)."@en .
+elody:asArray a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "as array"@en ; rdfs:domain elody:RelationMetadataField ; rdfs:range xsd:boolean ;
+  rdfs:comment "true stores the value as a list (asArray)."@en .
+elody:CreatableType a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "creatable type"@en ;
+  rdfs:comment "A type a step may create, with the form that creates it (creatableTypes)."@en .
+elody:creatableType a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "creatable type"@en ; rdfs:domain elody:FlowStep ; rdfs:range elody:CreatableType ;
+  rdfs:comment "A type the step may create, in sh:order: elody:labelKey, elody:entityType and the elody:form that creates it."@en .

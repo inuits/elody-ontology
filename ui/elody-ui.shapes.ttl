@@ -496,13 +496,54 @@ meta:FormFieldShape a sh:NodeShape ;
 meta:GuidedFlowShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:step ; sh:minCount 1 ; sh:node meta:FlowStepShape ] ,
-    [ sh:path elody:finalize ; sh:maxCount 1 ] .
+    [ sh:path elody:finalize ; sh:maxCount 1 ] ,
+    [ sh:path elody:linear ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:startOnFirstStep ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:returnsSelection ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:routeToStep ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:routeToRoute ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:StepScopeShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fromStep ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:StepRelationShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:to ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:createWhen ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:metadataField ; sh:node meta:RelationMetadataFieldShape ] .
+
+meta:RelationMetadataFieldShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:formMetadataKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationMetadataKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:asArray ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:CreatableTypeShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:entityType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:form ; sh:minCount 1 ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] .
 
 meta:FlowStepShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ] ,
     [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
     [ sh:path elody:picker ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:showBackButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:skipSearchIfPriorIsNew ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:pickerFiltersCollapsed ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:metadataOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:terminalActionLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:scopeToRelationOf ; sh:maxCount 1 ; sh:node meta:StepScopeShape ] ,
+    [ sh:path elody:stepRelation ; sh:node meta:StepRelationShape ] ,
+    [ sh:path elody:creatableType ; sh:node meta:CreatableTypeShape ] ,
     [ sh:path elody:createForm ; sh:maxCount 0 ; sh:message "elody:createForm is retired: reference the form node with elody:form" ] ,
     [ sh:path elody:pickerQuery ; sh:maxCount 0 ; sh:message "elody:pickerQuery is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFiltersQuery ; sh:maxCount 0 ; sh:message "elody:pickerFiltersQuery is retired: reference the picker node with elody:picker" ] .
