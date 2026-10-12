@@ -1917,7 +1917,7 @@ elody:OptionsInput a owl:Class ;
 elody:optionsInput a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "options input"@en ; rdfs:domain elody:Filter ; rdfs:range elody:OptionsInput ;
-  rdfs:comment "A further input of the option search, in sh:order, rendered between the search on elody:optionsKey and the type input. elody:key and elody:value say what it matches."@en .
+  rdfs:comment "A further input of the option search, in sh:order, rendered between the search on elody:optionsKey and the type input. elody:key and elody:value say what it matches; an input of kind elody:TypeFilter is the type input kept at its place among the others (instead of elody:optionsType)."@en .
 elody:inputKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "input kind"@en ; rdfs:domain elody:OptionsInput ; rdfs:range elody:FilterKind ;
@@ -2256,3 +2256,54 @@ elody:cardShows a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "card shows"@en ; rdfs:domain elody:ValuesFragment ; rdfs:range xsd:string ;
   rdfs:comment "A value (by its alias, else its key) the card twin shows, one per value; without it the card shows every value the fragment reads."@en .
+
+# ---- 0.3.0, batch 22: what a filter and its option search may still say (G-013) ----------------
+
+elody:optionsKeys a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options keys"@en ; rdfs:domain elody:Filter ; rdfs:range rdf:List ;
+  rdfs:comment "Several keys the option search searches (key: [...] on the text input), an RDF list; one key is elody:optionsKey."@en .
+elody:optionsItemTypes a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options item types"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "An entity type the option search is limited to (item_types on the text input), one per value."@en .
+elody:optionsLabelKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options label key"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key labelling the options found (metadata_key_as_label on the text input)."@en .
+elody:itemTypes a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "item types"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "An entity type a relation filter picks from (itemTypes: [...]), one per value."@en .
+elody:defaultMatcher a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "default matcher"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "The matcher a text filter starts with (defaultMatcher: ExactInputMatcher), a Matchers value."@en .
+elody:allowedMatchers a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "allowed matchers"@en ; rdfs:domain elody:Filter ; rdfs:range rdf:List ;
+  rdfs:comment "The matchers a text filter offers (allowedMatchers: [...]), an RDF list of Matchers values."@en .
+elody:lookupResolveToSourceIds a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "lookup resolves to source ids"@en ; rdfs:domain elody:Lookup ; rdfs:range xsd:boolean ;
+  rdfs:comment "true resolves the looked-up documents to the ids of the source entities (resolve_to_source_ids)."@en .
+elody:ValueMapping a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "value mapping"@en ;
+  rdfs:comment "Values a filter's default is mapped from (defaultValueMapping: a list of values and what they map to)."@en .
+elody:valueMapping a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "value mapping"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Filter elody:OptionsInput ) ] ; rdfs:range elody:ValueMapping ;
+  rdfs:comment "A mapping of the default value, in sh:order: elody:value lists the values, elody:mapping what they become."@en .
+elody:mapping a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "mapping"@en ; rdfs:domain elody:ValueMapping ; rdfs:range xsd:string ;
+  rdfs:comment "What the listed values map to (mapping: \"jeugd\")."@en .
+elody:Facet a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "facet"@en ;
+  rdfs:comment "A facet of a filter (facets): a kind and value, or a key reached over lookups, with facets of its own."@en .
+elody:facet a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "facet"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Filter elody:Facet ) ] ; rdfs:range elody:Facet ;
+  rdfs:comment "A facet, in sh:order: elody:inputKind and elody:value, or elody:key with elody:lookup nodes, and nested elody:facet nodes."@en .

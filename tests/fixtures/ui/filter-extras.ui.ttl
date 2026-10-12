@@ -1,0 +1,32 @@
+# 0.3.0 batch 22 (G-013): what a filter and its option search may still say.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:ArmsUi a elody:EntityUi ; elody:graphqlType "Arms" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:filter
+    [ sh:order 1 ; elody:alias "language" ; rdfs:label "metadata.labels.language" ; elody:key "elody:1|relations.hasLanguage.key" ; elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ;
+      elody:optionsKeys ( "vlacc:1|properties.title.value" "vlacc:1|properties.code.value" ) ; elody:optionsLabelKey "metadata.title.value" ; elody:optionsItemTypes "arms" ] ,
+    [ sh:order 2 ; elody:alias "relation" ; elody:key "vliz:1|properties.has_album.value" ; elody:filterKind elody:SelectionFilter ; elody:itemTypes "media" ; sh:defaultValue "" ; dash:hidden true ] ,
+    [ sh:order 3 ; elody:alias "search_terms" ; rdfs:label "metadata.labels.search-terms" ; elody:key "cantook:1|search_terms" ; elody:displayedByDefault true ; elody:filterKind elody:TextFilter ;
+      elody:defaultMatcher "ExactInputMatcher" ; elody:allowedMatchers ( "ExactInputMatcher" "ContainsMatcher" ) ] ,
+    [ sh:order 4 ; elody:alias "is_omnibus" ; elody:key "vlacc:1|properties.is_omnibus.value" ; elody:filterKind elody:TextFilter ; sh:defaultValue true ; dash:hidden true ] ,
+    [ sh:order 5 ; elody:alias "relation2" ; elody:key "vlacc:1|lookup.virtual_relations.ref_related_genres.identifiers" ; elody:filterKind elody:SelectionFilter ; elody:filterOperator "or" ; dash:hidden true ; sh:defaultValue "" ; elody:defaultValueAsList true ;
+      elody:lookup [ elody:lookupFrom "entities_actual" ; elody:lookupLocalField "id" ; elody:lookupForeignField "properties.ref_related_genres.value" ; elody:lookupAs "lookup.virtual_relations.ref_related_genres" ; elody:lookupResolveToSourceIds true ] ] ,
+    [ sh:order 6 ; elody:alias "audience_type" ; elody:key "vlacc:1|properties.audience_type.value" ; elody:filterKind elody:SelectionFilter ; elody:selectionSpread "advancedFilter" ; dash:hidden true ; sh:defaultValue "$entity.relationValues.refTargetAudiences.key" ;
+      elody:valueMapping [ sh:order 1 ; elody:value ( "DG-KQD42TMNG" "DG-UBAM588R0" ) ; elody:mapping "jeugd" ] , [ sh:order 2 ; elody:value ( "DG-34QL78W90" ) ; elody:mapping "volwassenen" ] ;
+      elody:optionsType "genre" ; elody:optionsTypeOperator "and" ;
+      elody:optionsInput [ sh:order 1 ; elody:inputKind elody:SelectionFilter ; elody:key "vlacc:1|properties.audience_type.value" ; elody:value "$entity.relationValues.refTargetAudiences.key" ;
+                           elody:inputDistinctBy "properties.audience_type.value" ; elody:inputMatchExact true ; elody:inputOperator "and" ;
+                           elody:valueMapping [ sh:order 1 ; elody:value ( "DG-KQD42TMNG" ) ; elody:mapping "jeugd" ] ] ] ,
+    [ sh:order 7 ; elody:alias "ref_region" ; rdfs:label "metadata.labels.region" ; elody:key "aicap:1|properties.ref_region.value" ; elody:displayedByDefault true ; elody:filterKind elody:SelectionFilter ; elody:matchersType "selectionForRelation" ;
+      elody:optionsType "region" ; elody:optionsKey "aicap:1|properties.name.value" ; elody:optionsMatchExact false ;
+      elody:facet [ sh:order 1 ; elody:inputKind elody:TypeFilter ; elody:value "area" ;
+        elody:facet [ sh:order 1 ; elody:key "lookup.virtual_relations.ref_region.id" ;
+          elody:lookup [ elody:lookupFrom "regions_actual" ; elody:lookupLocalField "properties.ref_region.value" ; elody:lookupForeignField "id" ; elody:lookupAs "lookup.virtual_relations.ref_region" ] ] ] ] .
