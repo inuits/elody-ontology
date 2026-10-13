@@ -2942,3 +2942,55 @@ elody:fieldsSpreadAfter a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "fields spread after"@en ; rdfs:domain elody:FieldsFragment ; rdfs:range xsd:string ;
   rdfs:comment "The name of a fields fragment spread after this fields fragment's own fields (elody:fieldsSpread spreads before them): a fields fragment composed of others around a field of its own."@en .
+elody:optionsLimit a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options limit"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:integer ;
+  rdfs:comment "How many options a selection filter fetches at most (limitConfig: { optionsLimit: 30 })."@en .
+elody:HiddenValueFrom a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "hidden value from"@en ;
+  rdfs:comment "Where a hidden form field takes its value: a related entity's value (hiddenField(input: { inherited, entityType, relationToExtractKey, keyToExtractValue }))."@en .
+elody:hiddenValueFrom a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "hidden value from"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:HiddenValueFrom ;
+  rdfs:comment "The hidden field's source: elody:entityType (the related entity's type), elody:relationType (relationToExtractKey), elody:key (keyToExtractValue) and elody:inherited."@en .
+elody:inherited a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "inherited"@en ; rdfs:domain elody:HiddenValueFrom ; rdfs:range xsd:boolean ;
+  rdfs:comment "The hidden field's value is inherited from the related entity (inherited: true)."@en .
+elody:CopyValueFromParent a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy value from parent"@en ;
+  rdfs:comment "A button on a form field copying a value from a related entity (copyValueFromParent(input: { label, key, fromRelationType }))."@en .
+elody:copyValueFromParent a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "copy value from parent"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:CopyValueFromParent ;
+  rdfs:comment "The form field's copy button: elody:labelKey, elody:key (the related entity's key) and elody:relationType (fromRelationType)."@en .
+elody:displayConditionValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "display condition value"@en ; rdfs:domain elody:ListElement ; rdfs:range xsd:string ;
+  rdfs:comment "The value the key of elody:displayConditionKey must hold for the list element to show (displayCondition { key(input: ...) value(input: ...) })."@en .
+elody:masked a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "masked"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "The panel shows the value masked (masked(input: true)): a secret."@en .
+elody:revealQuery a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "reveal query"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "The query that reveals a masked value (revealQuery(input: \"GetTokenSecret\"))."@en .
+elody:InfoPanel a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "info panel"@en ;
+  rdfs:comment "An explanation shown next to a field (infoPanel(title: ..., content: ...)): a title key and content, HTML allowed."@en .
+elody:infoPanel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "info panel"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:InfoPanel ;
+  rdfs:comment "The field's info panel: elody:infoTitle and elody:infoContent."@en .
+elody:showLineNumbers a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show line numbers"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether a rich text panel element shows line numbers (wysiwygElementConfiguration { showLineNumbers(input: ...) }); unsaid, the configuration is left out. elody:extensions on the same property shape lists the editor's extensions."@en .
+elody:panelAsField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel as field"@en ; rdfs:domain elody:PanelField ; rdfs:range xsd:boolean ;
+  rdfs:comment "true shows a property that is a panel element elsewhere (a rich text element) as a plain metadata field in this panel alone (a preview's panel reading the value)."@en .
