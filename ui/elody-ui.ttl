@@ -2560,3 +2560,10 @@ elody:flowButtonLabel a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "flow button label"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:string ;
   rdfs:comment "The translation key of the button that opens the flow (guidedFlowButtonLabel)."@en .
+
+# ---- 0.3.0, batch 27: the graph element rendered (G-033) ---------------------------------------
+
+elody:datasetLabels a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "dataset labels"@en ; rdfs:domain elody:GraphElement ; rdfs:range rdf:List ;
+  rdfs:comment "The series to plot, in order (dataset labels: an RDF list of strings, empty for every series); elody:datasetLabel says the same unordered."@en .

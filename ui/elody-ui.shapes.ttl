@@ -818,7 +818,10 @@ meta:GraphElementShape a sh:NodeShape ; sh:targetClass elody:GraphElement ;
     [ sh:path elody:datasource ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
       sh:message "a graph element names its data source" ] ,
     [ sh:path elody:timeUnit ; sh:maxCount 1 ; sh:class elody:TimeUnit ] ,
-    [ sh:path elody:datapoints ; sh:maxCount 1 ; sh:datatype xsd:integer ] .
+    [ sh:path elody:datapoints ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:datasetLabels ; sh:maxCount 1 ] ,
+    [ sh:path elody:datasetFilter ; sh:maxCount 1 ] ,
+    [ sh:path elody:convertTo ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:HierarchyListElementShape a sh:NodeShape ; sh:targetClass elody:HierarchyListElement ;
   sh:property

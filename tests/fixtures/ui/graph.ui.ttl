@@ -1,0 +1,18 @@
+# 0.3.0 batch 27 (G-033): graph elements on a detail page and in a preview.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:QuestionInstanceUi a elody:EntityUi ; elody:graphqlType "QuestionInstance" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:GraphElement ; sh:order 1 ; elody:alias "results" ; rdfs:label "graph-labels.results" ; elody:collapsed false ;
+      elody:graphType elody:BarGraph ; elody:datasource "answers" ; elody:datasetLabels ( "basic=Aandeel (%)" "weighted=Gewogen aandeel (%)" ) ; elody:timeUnit elody:Hour ; elody:datapoints 0 ] ,
+    [ a elody:GraphElement ; sh:order 2 ; elody:alias "demographics" ; rdfs:label "graph-labels.per-demographic" ; elody:collapsed false ;
+      elody:graphType elody:LineGraph ; elody:datasource "demographics" ; elody:datasetLabels ( ) ; elody:datasetFilter [ elody:key "region" ; elody:value "north" , "south" ] ;
+      elody:timeUnit elody:Month ; elody:datapoints 12 ; elody:convertTo "percent" ] ] ] .
