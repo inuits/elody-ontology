@@ -2898,3 +2898,11 @@ elody:menuAfterFields a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "menu after fields"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:boolean ;
   rdfs:comment "true places the card's context menu in its older form (contextMenuActions { ... }) after the card's fields instead of before them. The buttons form (elody:menuInButtons) always follows the fields. Default false."@en .
+elody:withoutBaseEntity a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "without base entity"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true leaves ...minimalBaseEntity out of the listing fragment: the client never spreads the shared base card there (podiumnet minimalMediaFile). An omission of the client, declared rather than corrected. Default false."@en .
+elody:cardLinkText a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card link text"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "true shows the link text (elody:linkText) on the card field as well as in the panel (linkText(input: ...) under teaserMetadata). Default false."@en .
