@@ -1,5 +1,6 @@
-# 0.3.0 batch 31 (G-007): the client's dialect. The app heads its panels with label(input:), the
-# baseGraphql form before panelHeaderContent, and names its detail fragment in its own casing.
+# 0.3.0 batch 31 (G-007) and 32 (G-012): the client's dialect. The app heads its panels with
+# label(input:) and opens bulk modals with formQuery (singular), the baseGraphql forms before
+# panelHeaderContent and formQueries, and names its detail and bulk fragments in its own casing.
 @prefix elody:  <https://elody.eu/ns/ui#> .
 @prefix sh:     <http://www.w3.org/ns/shacl#> .
 @prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
@@ -9,12 +10,19 @@
 @prefix ui:     <urn:fixture:ui#> .
 @prefix em:     <https://elody.io/ns/metadata#> .
 
-ui:FixtureApp a elody:App ; elody:documentName "fixture" ; elody:filePath "queries/fixture.queries.ts" ; elody:panelHeaderLegacy true .
+ui:FixtureApp a elody:App ; elody:documentName "fixture" ; elody:filePath "queries/fixture.queries.ts" ; elody:platformDocument "GetBulkOperations" ;
+  elody:panelHeaderLegacy true ; elody:bulkModalFormQueryLegacy true .
 
-ui:MediaFileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "MediaFile" ; elody:detailName "fullMediafile" ; elody:emit "file" ;
+ui:MediaFileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "MediaFile" ; elody:detailName "fullMediafile" ; elody:bulkFragmentName "mediafileBulkOperations" ; elody:emit "file" ;
+  elody:bulkOperation [ sh:order 1 ; rdfs:label "bulk-operations.create-mediafile" ; elody:icon "Create" ; elody:operationKind elody:CreateEntityOperation ; elody:primary true ;
+    elody:context [ elody:activeViewMode elody:ReadMode ; elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+    elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:GetMediafileCreateForm ; elody:closeConfirmation true ; elody:permission elody:CanCreate ] ] ;
   sh:property [ sh:path em:original_filename ; sh:order 1 ; elody:alias "title" ; elody:source elody:RootSource ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.filename" ] ,
     [ sh:path em:mimetype ; sh:order 2 ; sh:group ui:MediaFileUi-description ; elody:source elody:RootSource ; elody:labelKey "metadata.labels.mimetype" ; elody:detailOnly true ] ;
   elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width30 ;
     elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Metadata" ; elody:panel ui:MediaFileUi-description ] ] ] .
+
+ui:GetMediafileCreateForm a elody:Form ; elody:queryName "GetMediafileCreateForm" ; elody:alias "mediafile" ;
+  elody:shape [ sh:property [ sh:path em:original_filename ; sh:order 1 ; sh:datatype xsd:string ] ] .
 
 ui:MediaFileUi-description a sh:PropertyGroup ; rdfs:label "Description"@en ; sh:order 1 ; elody:alias "omschrijving" ; elody:labelKey "panel-labels.description" ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .

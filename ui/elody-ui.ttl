@@ -2882,3 +2882,11 @@ elody:detailName a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
   rdfs:comment "The detail fragment's own name when the client does not call it full<X> (fullMediafile next to minimalMediaFile): the twin of elody:cardName. A naming override only; the fragment's content is the detail's."@en .
+elody:bulkModalFormQueryLegacy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk modal form query legacy"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true opens a bulk operation's modal with formQuery: \"...\" (singular), the BulkOperationInputModal of baseGraphql before formQueries: [...]: the client runs that version. A dialect of the client; a modal offering several forms is not expressible in it."@en .
+elody:bulkFragmentName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk fragment name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The bulk operations fragment's own name when the client does not call it <x>BulkOperations (mediafileBulkOperations next to minimalMediaFile): a naming override like elody:detailName."@en .
