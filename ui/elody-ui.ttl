@@ -744,7 +744,7 @@ elody:sortOrder a owl:DatatypeProperty ;
   rdfs:comment "The position of the field among the listing's sort options when it differs from sh:order."@en .
 elody:clientInputField a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "client input field"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:label "client input field"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:CreateField ) ] ; rdfs:range xsd:string ;
   rdfs:comment "The input field the client registers itself under this name (customInputFields; inputField(type: keywordTypeField)) for editing this property; the generator uses the name and mints no field. Prefer sh:class, sh:in or an editor, which generate the field."@en .
 elody:colSpan a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -1006,8 +1006,8 @@ elody:step a owl:ObjectProperty ;
   rdfs:comment "A step of the flow."@en .
 elody:entityType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "entity type"@en ; rdfs:domain elody:FlowStep ; rdfs:range xsd:string ;
-  rdfs:comment "The Elody entity type the step creates or picks."@en .
+  rdfs:label "entity type"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:FlowStep elody:Taggable ) ] ; rdfs:range xsd:string ;
+  rdfs:comment "The Elody entity type the step creates or picks; on a taggable, the type tagged."@en .
 elody:picker a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "picker"@en ; rdfs:domain owl:Thing ; rdfs:range elody:Picker ;
@@ -2509,3 +2509,54 @@ elody:panelHeader a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "panel header"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:boolean ;
   rdfs:comment "false renders the panel without a header (no panelHeaderContent): the panels of a metadata preview. Without it the panel is headed with its label."@en .
+
+# ---- 0.3.0, batch 26: the comments element rendered (G-042) ------------------------------------
+
+elody:extensions a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "extensions"@en ; rdfs:domain elody:WysiwygElement ; rdfs:range rdf:List ;
+  rdfs:comment "The editor features switched on, in order (extensions: an RDF list of elody:WysiwygExtension instances); elody:extension says the same unordered."@en .
+elody:editorStyles a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "editor styles"@en ; rdfs:domain elody:WysiwygElement ; rdfs:range xsd:string ;
+  rdfs:comment "CSS classes of the editor (wysiwygElementConfiguration customEditorStyles). Open string: the PWA's."@en .
+elody:CreateField a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "create field"@en ;
+  rdfs:comment "A field filled in when a comment is created, next to its body (createFields): the metadata key, its label, the input field."@en .
+elody:createField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "create field"@en ; rdfs:domain elody:CommentsElement ; rdfs:range elody:CreateField ;
+  rdfs:comment "A field of the comment create form, in sh:order: elody:key, elody:labelKey, elody:clientInputField."@en .
+elody:Taggable a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "taggable"@en ;
+  rdfs:comment "What a rich-text editor can tag (taggableEntityConfiguration): entities of a type, found through a filter key on an inline trigger, or picked through a guided flow."@en .
+elody:taggable a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "taggable"@en ; rdfs:domain elody:WysiwygElement ; rdfs:range elody:Taggable ;
+  rdfs:comment "A taggable of the editor, in sh:order: elody:tag, elody:entityType, elody:relationType, elody:tagFilterKey, elody:triggerCharacter, elody:triggerMinCharacters, elody:flow, elody:flowButtonLabel."@en .
+elody:tag a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tag"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:string ;
+  rdfs:comment "The name of the tag (tag: user, group, entity)."@en .
+elody:tagFilterKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tag filter key"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:string ;
+  rdfs:comment "The metadata key the typed tag content is searched in (metadataFilterForTagContent)."@en .
+elody:triggerCharacter a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "trigger character"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:string ;
+  rdfs:comment "The character that opens tagging inline (inlineTrigger character: @)."@en .
+elody:triggerMinCharacters a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "trigger minimum characters"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:integer ;
+  rdfs:comment "How many characters are typed before suggestions appear (inlineTrigger minCharacters)."@en .
+elody:flow a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "flow"@en ; rdfs:domain elody:Taggable ; rdfs:range elody:GuidedFlow ;
+  rdfs:comment "The guided flow that picks what is tagged (guidedFlowQuery), a declared elody:GuidedFlow."@en .
+elody:flowButtonLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "flow button label"@en ; rdfs:domain elody:Taggable ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the button that opens the flow (guidedFlowButtonLabel)."@en .

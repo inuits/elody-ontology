@@ -845,13 +845,37 @@ meta:WysiwygElementShape a sh:NodeShape ; sh:targetClass elody:WysiwygElement ;
     [ sh:path elody:metadataKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
       sh:message "a rich text element names the metadata key it edits" ] ,
     [ sh:path elody:extension ; sh:class elody:WysiwygExtension ] ,
+    [ sh:path elody:extensions ; sh:maxCount 1 ] ,
+    [ sh:path elody:editorStyles ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:taggable ; sh:node meta:TaggableShape ] ,
     [ sh:path elody:multilingual ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:TaggableShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:tag ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:entityType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:tagFilterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:triggerCharacter ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:triggerMinCharacters ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:flow ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:flowButtonLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:CreateFieldShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:clientInputField ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:CommentsElementShape a sh:NodeShape ; sh:targetClass elody:CommentsElement ;
   sh:property
     [ sh:path elody:composer ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:WysiwygElement ;
       sh:message "a comments element has one rich text composer" ] ,
-    [ sh:path elody:parentFilterKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+    [ sh:path elody:parentFilterKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:createField ; sh:node meta:CreateFieldShape ] .
 
 meta:PropertyGroupShape a sh:NodeShape ; sh:targetClass sh:PropertyGroup ;
   sh:property
