@@ -68,6 +68,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:picker ; sh:node meta:PickerShape ] ,
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:preview ; sh:maxCount 1 ; sh:node meta:PreviewShape ] ,
+    [ sh:path elody:bulkDocument ; sh:node meta:BulkDocumentShape ] ,
     [ sh:path elody:sortDocument ; sh:node meta:SortDocumentShape ] ,
     [ sh:path elody:detail ; sh:maxCount 1 ; sh:node meta:DetailLayoutShape ] ,
     [ sh:path elody:formSource ; sh:node meta:FormSourceShape ] ,
@@ -217,6 +218,9 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:optionsValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:selectionOption ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:keepDefaultValue ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:defaultValueBare ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:includeDefaultsFrom ; sh:datatype xsd:string ] ,
+    [ sh:path elody:matchExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -481,7 +485,8 @@ meta:PickerSearchShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:pickerSearchMode ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:keys ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:keys is an RDF list of key strings" ] ,
-    [ sh:path elody:acceptedTypes ; sh:datatype xsd:string ] .
+    [ sh:path elody:acceptedTypes ; sh:datatype xsd:string ] ,
+    [ sh:path elody:staticFilter ; sh:node meta:OptionsInputShape ] .
 
 meta:FormFieldShape a sh:NodeShape ;
   sh:property
@@ -503,6 +508,7 @@ meta:GuidedFlowShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:step ; sh:minCount 1 ; sh:node meta:FlowStepShape ] ,
     [ sh:path elody:finalize ; sh:maxCount 1 ] ,
+    [ sh:path elody:finalizeStep ; sh:maxCount 1 ; sh:node meta:FlowStepShape ] ,
     [ sh:path elody:linear ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:startOnFirstStep ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:returnsSelection ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -518,7 +524,8 @@ meta:StepScopeShape a sh:NodeShape ;
 meta:StepRelationShape a sh:NodeShape ;
   sh:property
     [ sh:path sh:order ; sh:maxCount 1 ] ,
-    [ sh:path elody:to ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:to ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:toAllOf ; sh:maxCount 1 ] ,
     [ sh:path elody:relationType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:createWhen ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:metadataField ; sh:node meta:RelationMetadataFieldShape ] .
@@ -550,6 +557,7 @@ meta:FlowStepShape a sh:NodeShape ;
     [ sh:path elody:scopeToRelationOf ; sh:maxCount 1 ; sh:node meta:StepScopeShape ] ,
     [ sh:path elody:stepRelation ; sh:node meta:StepRelationShape ] ,
     [ sh:path elody:creatableType ; sh:node meta:CreatableTypeShape ] ,
+    [ sh:path elody:prefillMetadata ; sh:node meta:ConfigEntryShape ] ,
     [ sh:path elody:createForm ; sh:maxCount 0 ; sh:message "elody:createForm is retired: reference the form node with elody:form" ] ,
     [ sh:path elody:pickerQuery ; sh:maxCount 0 ; sh:message "elody:pickerQuery is retired: reference the picker node with elody:picker" ] ,
     [ sh:path elody:pickerFiltersQuery ; sh:maxCount 0 ; sh:message "elody:pickerFiltersQuery is retired: reference the picker node with elody:picker" ] .
@@ -577,6 +585,8 @@ meta:ListQueryShape a sh:NodeShape ;
     [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:facets ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:filtersSpread ; sh:datatype xsd:string ] ,
     # relationValues read on every result, outside the per-type selections
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     # the document declares $userUuid (also derived from a result listing reading the host)
@@ -589,6 +599,8 @@ meta:PickerShape a sh:NodeShape ;
   sh:property
     # no results: the picker's list document is hand-written, only its name (and filters) are declared
     [ sh:path elody:result ; sh:node meta:PickerResultShape ] ,
+    [ sh:path elody:facets ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:filtersSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] ,
@@ -886,3 +898,49 @@ meta:PropertyGroupShape a sh:NodeShape ; sh:targetClass sh:PropertyGroup ;
     [ sh:path sh:order ; sh:maxCount 1 ] ,
     [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:showsUngrouped ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:AppShape a sh:NodeShape ; sh:targetClass elody:App ;
+  sh:property
+    [ sh:path elody:documentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ;
+      sh:message "an App names its document (the base name of queries/<name>.queries.ts)" ] ,
+    [ sh:path elody:filePath ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:platformDocument ; sh:datatype xsd:string ] ,
+    [ sh:path elody:paginationLimit ; sh:maxCount 1 ] ,
+    [ sh:path elody:dropzoneOption ; sh:node meta:DropzoneOptionShape ] ,
+    [ sh:path elody:bulkDeleteSkipsRelated ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:csvExportKeysRequired ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:preferredLanguage ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:readsPermissions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:importJobId ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:filterMatcherQueryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:filterMatcherKeys ; sh:maxCount 1 ] ,
+    [ sh:path elody:filterMatcherLegacy ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:typeEntry ; sh:node meta:TypeEntryShape ] ,
+    [ sh:path elody:bulkDocument ; sh:node meta:BulkDocumentShape ] ,
+    [ sh:path elody:sortOption ; sh:node meta:SortOptionShape ] ,
+    [ sh:path elody:bulkOperation ; sh:node meta:BulkOperationShape ] ,
+    [ sh:path elody:listQuery ; sh:node meta:ListQueryShape ] ,
+    [ sh:path elody:sortDocument ; sh:node meta:SortDocumentShape ] ,
+    [ sh:path elody:customBulkOperations ; sh:node meta:CustomBulkOperationsShape ] ,
+    [ sh:path elody:form ; sh:class elody:Form ; sh:node meta:FormShape ] ,
+    [ sh:path elody:guidedFlow ; sh:node meta:GuidedFlowShape ] .
+
+meta:TypeEntryShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:platformDocument ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:graphqlType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:fragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] ,
+    [ sh:path elody:excluded ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:BulkDocumentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] .
+
+meta:DropzoneOptionShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:labelKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:value ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:icon ; sh:maxCount 1 ; sh:datatype xsd:string ] .

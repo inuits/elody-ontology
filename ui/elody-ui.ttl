@@ -581,7 +581,7 @@ elody:graphqlTypes a owl:ObjectProperty ; elody:directive true ;
 elody:documentName a owl:DatatypeProperty ; elody:directive true ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "document name"@en ;
-  rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range xsd:string ;
   rdfs:comment "Base name of the generated fragments and documents (minimal<Name>, full<Name>, <name>.queries.ts). Defaults to elody:graphqlType; needed when several declarations render the same GraphQL type, such as a showcase on BaseEntity."@en .
 
 elody:emit a owl:DatatypeProperty ; elody:directive true ;
@@ -655,7 +655,7 @@ elody:cardSpread a owl:DatatypeProperty ;
   rdfs:comment "A hand-written fragment on teaserMetadata spread into the card (...vocabTeaserMetadata)."@en .
 elody:filtersSpread a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "filters spread"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:label "filters spread"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:ListQuery elody:Picker ) ] ; rdfs:range xsd:string ;
   rdfs:comment "A hand-written fragment on AdvancedFilters spread into the type's filters (...entityAuditFilters)."@en .
 elody:spread a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -910,7 +910,7 @@ elody:icon a owl:DatatypeProperty ;
 # -- bulk operations -------------------------------------------------------------
 elody:bulkOperation a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "bulk operation"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:BulkOperation ;
+  rdfs:label "bulk operation"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range elody:BulkOperation ;
   rdfs:comment "An operation in the listing's action bar."@en .
 elody:customBulkOperations a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -990,7 +990,7 @@ elody:creationType a owl:DatatypeProperty ;
 # -- guided flows ----------------------------------------------------------------
 elody:guidedFlow a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "guided flow"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:GuidedFlow ;
+  rdfs:label "guided flow"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range elody:GuidedFlow ;
   rdfs:comment "A stepper flow declared for the type. Replaces elody:repetitiveForm."@en .
 elody:repeatable a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -1552,7 +1552,7 @@ elody:validationValue a owl:DatatypeProperty ;
   rdfs:comment "The argument of the validation rule (customValue: \"min_value:1\", the pattern of a regex)."@en .
 elody:readsPermissions a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "reads permissions"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:label "reads permissions"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range xsd:boolean ;
   rdfs:comment "true reads canUpdate and canDelete with the detail page's initial values: the PWA shows the edit and delete actions by them. Default false."@en .
 elody:filtersType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2210,7 +2210,7 @@ elody:fragmentsOnly a owl:DatatypeProperty ;
   rdfs:comment "true declares a file of shared fragments alone (values, panel, filters, fields and elements fragments other types spread): no listing, detail or documents of its own; elody:graphqlType is the anchor type."@en .
 elody:filePath a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "file path"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:label "file path"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range xsd:string ;
   rdfs:comment "The file the documents are written to, relative to src/ (default queries/entities/<name>.queries.ts)."@en .
 elody:PanelFragment a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2419,7 +2419,7 @@ elody:SortDocument a owl:Class ;
   rdfs:comment "A sort options document of its own (EntityTypeSortOptions with its options inline), for a page the type's standard sort options do not serve (GetSortOptionsForComments)."@en .
 elody:sortDocument a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "sort document"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:SortDocument ;
+  rdfs:label "sort document"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range elody:SortDocument ;
   rdfs:comment "A sort options document of the type with options of its own: elody:queryName names it, elody:sortOption lists the options in sh:order."@en .
 elody:SortOption a owl:Class ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2427,7 +2427,7 @@ elody:SortOption a owl:Class ;
   rdfs:comment "An option of a sort options document: elody:labelKey, elody:value (the sort key), elody:primary, elody:icon."@en .
 elody:sortOption a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "sort option"@en ; rdfs:domain elody:SortDocument ; rdfs:range elody:SortOption ;
+  rdfs:label "sort option"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:SortDocument elody:App ) ] ; rdfs:range elody:SortOption ;
   rdfs:comment "An option of the document, in sh:order."@en .
 elody:inputResolveDefaultValueToOptionIds a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2567,3 +2567,110 @@ elody:datasetLabels a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "dataset labels"@en ; rdfs:domain elody:GraphElement ; rdfs:range rdf:List ;
   rdfs:comment "The series to plot, in order (dataset labels: an RDF list of strings, empty for every series); elody:datasetLabel says the same unordered."@en .
+
+# ---- 0.3.0, batch 28: the client's app-level declaration, the platform document (G-001) --------
+
+elody:App a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "app"@en ;
+  rdfs:comment "The client's app-level declaration: the platform document (queries/<client>.queries.ts) rendered from the declared types and these settings. It names the platform documents it carries (elody:platformDocument), the type-wide ones (getEntities, fullEntity, getEntityById, getAdvancedFilters, GetSortOptions, GetBulkOperations, getPreviewComponents, FetchMediafilesOfEntity, getTenants) being derived from the EntityUis; it carries the base sort options and bulk operations, the pagination limits, the dropzone options and the flags the platform documents vary by; like an EntityUi it may declare list queries, sort documents, custom bulk operations, forms and guided flows of the app's own."@en .
+elody:platformDocument a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "platform document"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:App elody:TypeEntry ) ] ; rdfs:range xsd:string ;
+  rdfs:comment "The name of a platform document the app carries: a constant (getDirectories, getFilterOptions, getUserPermissions, mutateEntityValues, ...) or one derived from the declared types (getEntities, fullEntity, ...). The generator renders the ones named."@en .
+elody:paginationLimit a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "pagination limits"@en ; rdfs:domain elody:App ; rdfs:range rdf:List ;
+  rdfs:comment "The page sizes offered (GetPaginationLimitOptions), an RDF list of integers."@en .
+elody:DropzoneOption a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "dropzone option"@en ;
+  rdfs:comment "A type a dropped file creates (GetDropzoneEntityToCreate): elody:labelKey, elody:value, elody:icon."@en .
+elody:dropzoneOption a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "dropzone option"@en ; rdfs:domain elody:App ; rdfs:range elody:DropzoneOption ;
+  rdfs:comment "An option of the dropzone, in sh:order."@en .
+elody:bulkDeleteSkipsRelated a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk delete skips related"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true passes skipItemsWithRelationDuringBulkDelete to bulkDeleteEntities."@en .
+elody:csvExportKeysRequired a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "csv export keys required"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true asks required back on GetBulkOperationCsvExportKeys."@en .
+elody:preferredLanguage a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preferred language"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true passes $preferredLanguage to getEntityById and mutateEntityValues."@en .
+elody:importJobId a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "import job id"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true asks job_id back on postStartImport."@en .
+elody:filterMatcherQueryName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter matcher query name"@en ; rdfs:domain elody:App ; rdfs:range xsd:string ;
+  rdfs:comment "The name of the filter matcher mapping document (getFilterMatcherMapping or GetFilterMatcherMapping)."@en .
+elody:filterMatcherKeys a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter matcher keys"@en ; rdfs:domain elody:App ; rdfs:range rdf:List ;
+  rdfs:comment "The filter kinds whose matchers the mapping document asks for (keys), an RDF list of strings."@en .
+elody:filterMatcherLegacy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "filter matcher legacy"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true asks the mapping back as fields per kind (the old form), without keys."@en .
+elody:TypeEntry a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "type entry"@en ;
+  rdfs:comment "What a type-wide platform document says about one GraphQL type beyond what the types derive: a type the platform declares (Job, SavedSearch, with the platform's fragment), a fragment other than the derived one, or a type left out (elody:excluded)."@en .
+elody:typeEntry a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "type entry"@en ; rdfs:domain elody:App ; rdfs:range elody:TypeEntry ;
+  rdfs:comment "An entry of a type-wide document: elody:platformDocument names the document, elody:graphqlType the type, elody:fragmentName the fragment spread for it, or elody:operation nodes when GetBulkOperations holds the type's options inline (none with elody:excluded true)."@en .
+elody:excluded a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "excluded"@en ; rdfs:domain elody:TypeEntry ; rdfs:range xsd:boolean ;
+  rdfs:comment "true leaves the type out of the document although the declared types would put it in."@en .
+elody:defaultValueBare a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "default value bare"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "true writes the filter's sh:defaultValue unquoted: an enumeration value of the schema (an entity type) rather than a string. A boolean default is bare by itself."@en .
+elody:facets a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "facets"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:ListQuery elody:Picker ) ] ; rdfs:range xsd:boolean ;
+  rdfs:comment "true reads the facets of the search with the entities document (Entities { facets })."@en .
+elody:includeDefaultsFrom a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "include defaults from"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "An initial value of the entity shown whose ids are added to the filter's default (includeDefaultValuesFromIntialValues)."@en .
+elody:staticFilter a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "static filter"@en ; rdfs:domain elody:PickerSearch ; rdfs:range elody:OptionsInput ;
+  rdfs:comment "A filter the picker's search always applies (entityPickerSearchConfig staticFilters), in sh:order: an elody:OptionsInput."@en .
+elody:replaceExisting a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "replace existing"@en ; rdfs:domain elody:Finalize ; rdfs:range xsd:boolean ;
+  rdfs:comment "true replaces the host's existing relations of the type when the flow finishes (finalizeOnHost replaceExisting)."@en .
+elody:BulkDocument a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk operations document"@en ;
+  rdfs:comment "A bulk operations document of its own (BulkOperations(entityType) with options inline, without per-type fragments), for a page the standard one does not serve (GetBulkOperationsForHomePage)."@en .
+elody:bulkDocument a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bulk document"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:EntityUi elody:App ) ] ; rdfs:range elody:BulkDocument ;
+  rdfs:comment "A bulk operations document with operations of its own: elody:queryName names it, elody:operation lists the operations in sh:order (none for an empty list)."@en .
+elody:matchExact a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "match exact"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the filter matches its value exactly (matchExact on the filter itself; elody:optionsMatchExact is the option search's)."@en .
+elody:finalizeStep a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "finalize step"@en ; rdfs:domain elody:GuidedFlow ; rdfs:range elody:FlowStep ;
+  rdfs:comment "The step that ends the flow by creating or picking an entity from what the steps gathered (finalize): a flow step without a key of its own."@en .
+elody:prefillMetadata a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "prefill metadata"@en ; rdfs:domain elody:FlowStep ; rdfs:range elody:ConfigEntry ;
+  rdfs:comment "A metadata value the step's form is prefilled with (prefillMetadata): elody:key and elody:value, in sh:order."@en .
+elody:toAllOf a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "to all of"@en ; rdfs:domain elody:StepRelation ; rdfs:range rdf:List ;
+  rdfs:comment "The keys of the steps the relation goes to, all of them (toAllOf: an RDF list of strings), instead of one elody:to."@en .
