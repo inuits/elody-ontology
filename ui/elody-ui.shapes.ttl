@@ -984,6 +984,7 @@ meta:AppShape a sh:NodeShape ; sh:targetClass elody:App ;
     [ sh:path elody:filterMatcherKeys ; sh:maxCount 1 ] ,
     [ sh:path elody:filterMatcherLegacy ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:typeEntry ; sh:node meta:TypeEntryShape ] ,
+    [ sh:path elody:menuItem ; sh:node meta:MenuItemShape ] ,
     [ sh:path elody:bulkDocument ; sh:node meta:BulkDocumentShape ] ,
     [ sh:path elody:sortOption ; sh:node meta:SortOptionShape ] ,
     [ sh:path elody:bulkOperation ; sh:node meta:BulkOperationShape ] ,
@@ -1005,6 +1006,28 @@ meta:BulkDocumentShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] .
+
+meta:MenuItemShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:entityType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:icon ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:isLoggedIn ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:requiresAuth ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:can ; sh:datatype xsd:string ] ,
+    [ sh:path elody:route ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:modal ; sh:maxCount 1 ] ,
+    [ sh:path elody:subMenu ; sh:maxCount 1 ; sh:node meta:SubMenuShape ] ;
+  # an item links to a route or to a modal, not both
+  sh:or ( [ sh:property [ sh:path elody:modal ; sh:maxCount 0 ] ] [ sh:property [ sh:path elody:route ; sh:maxCount 0 ] ] ) ;
+  sh:message "a menu item links to a route (elody:route) or opens a modal (elody:modal), not both" .
+
+meta:SubMenuShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:menuName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:menuItem ; sh:minCount 1 ; sh:node meta:MenuItemShape ] .
 
 meta:DropzoneOptionShape a sh:NodeShape ;
   sh:property

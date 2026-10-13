@@ -13,18 +13,28 @@ ui:PipelineUi a elody:EntityUi ; elody:graphqlType "Pipeline" ; elody:emit "file
   elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "pipeline" ; elody:filterKind elody:TypeFilter ] ;
   elody:bulkOperation [ sh:order 1 ; rdfs:label "bulk-operations.edit" ; elody:icon "Edit" ; elody:operationKind elody:EditOperation ] ;
   elody:detail [ elody:column [ sh:order 1 ; elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "window-element-labels.info" ; elody:panel ui:PipelineUi-info ] ] ] ;
-  elody:preview [ elody:previewKind elody:ColumnListPreview ; elody:coverage elody:OneListItem ] .
+  elody:preview [ elody:previewKind elody:ColumnListPreview ; elody:coverage elody:OneListItem ] ;
+  elody:form ui:GetPipelineCreateForm .
 ui:PipelineUi-info a sh:PropertyGroup ; rdfs:label "Info"@en ; sh:order 1 ; elody:alias "info" ; elody:panelKind elody:MetadataPanel .
+
+ui:GetPipelineCreateForm a elody:Form ; elody:queryName "GetPipelineCreateForm" ; elody:alias "pipeline" ;
+  elody:shape [ sh:property [ sh:path em:name ; sh:order 1 ; sh:datatype xsd:string ] ] .
 
 ui:TenantUi a elody:EntityUi ; elody:graphqlType "Tenant" ; elody:emit "file" ;
   sh:property [ sh:path em:name ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ] .
 
 # the platform document: the constants it carries, the type-wide documents derived from the types above
 ui:FixtureApp a elody:App ; elody:documentName "fixture" ; elody:filePath "queries/fixture.queries.ts" ;
-  elody:platformDocument "fullEntity" , "getEntities" , "getTenants" , "getEntityById" , "getDirectories" , "getAdvancedFilters" , "getFilterOptions" , "getUserPermissions" ,
+  elody:platformDocument "GetMenu" , "fullEntity" , "getEntities" , "getTenants" , "getEntityById" , "getDirectories" , "getAdvancedFilters" , "getFilterOptions" , "getUserPermissions" ,
     "mutateEntityValues" , "deleteData" , "bulkDeleteEntities" , "CreateEntity" , "BulkAddRelations" , "GetDropzoneEntityToCreate" , "GetSortOptions" , "GetPaginationLimitOptions" ,
     "GetBulkOperations" , "GetEntityPickerForm" , "GetBulkOperationCsvExportKeys" , "getFilterMatcherMapping" , "getPreviewComponents" , "GetPermissionMappingPerEntityType" ,
     "GetPermissionMappingCreate" , "GetPermissionMappingEntityDetail" , "FetchMediafilesOfEntity" , "typePillsIntialValues" , "typePillsTeaserMetadata" ;
+  # the menu: a listing with a sub-menu of create modals, and a route behind a permission
+  elody:menuItem [ sh:order 1 ; elody:alias "pipelines" ; elody:labelKey "navigation.pipelines" ; elody:entityType "pipeline" ; elody:icon "CloudDataConnection" ; elody:requiresAuth true ; elody:route "pipelines" ;
+      elody:subMenu [ elody:menuName "sub-menu-create" ;
+        elody:menuItem [ sh:order 1 ; elody:alias "createPipeline" ; elody:labelKey "navigation.create-pipeline" ; elody:entityType "pipeline" ;
+          elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:GetPipelineCreateForm ; elody:closeConfirmation true ; elody:permission elody:CanCreate ] ] ] ] ,
+    [ sh:order 2 ; elody:alias "tenants" ; elody:labelKey "navigation.tenants" ; elody:entityType "tenant" ; elody:icon "Building" ; elody:isLoggedIn true ; elody:can "read:tenant" ; elody:route "tenants" ] ;
   elody:paginationLimit ( 20 50 100 ) ;
   elody:dropzoneOption [ sh:order 1 ; elody:icon "NoIcon" ; elody:labelKey "navigation.media" ; elody:value "media" ] ;
   elody:bulkDeleteSkipsRelated true ; elody:readsPermissions true ; elody:csvExportKeysRequired true ;

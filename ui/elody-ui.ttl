@@ -950,7 +950,7 @@ elody:tooltipLabel a owl:DatatypeProperty ;
   rdfs:comment "Translation key of the tooltip explaining why the operation is enabled or not. Replaces the string use of the retired elody:tooltip."@en .
 elody:modal a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "modal"@en ; rdfs:domain elody:BulkOperation ; rdfs:range elody:BulkOperationModal ;
+  rdfs:label "modal"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:BulkOperation elody:MenuItem ) ] ; rdfs:range elody:BulkOperationModal ;
   rdfs:comment "The modal the operation opens."@en .
 elody:modalKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -1006,7 +1006,7 @@ elody:step a owl:ObjectProperty ;
   rdfs:comment "A step of the flow."@en .
 elody:entityType a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
-  rdfs:label "entity type"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:FlowStep elody:Taggable ) ] ; rdfs:range xsd:string ;
+  rdfs:label "entity type"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:FlowStep elody:Taggable elody:MenuItem ) ] ; rdfs:range xsd:string ;
   rdfs:comment "The Elody entity type the step creates or picks; on a taggable, the type tagged."@en .
 elody:picker a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
@@ -2839,3 +2839,38 @@ elody:onlyForEntityTypes a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "only for entity types"@en ; rdfs:domain sh:PropertyShape ; rdfs:range rdf:List ;
   rdfs:comment "The entity types a form field is shown for (onlyForEntityTypes), an RDF list of type names."@en .
+
+# ---- 0.3.0, batch 30: the menu (G-001) ----------------------------------------------------------
+
+elody:MenuItem a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu item"@en ;
+  rdfs:comment "An item of the app's menu (GetMenu menuItem): its label, the entity type it lists, its icon, who sees it, where it links (a route, or a modal opening a form or flow), and its sub-menu."@en .
+elody:menuItem a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu item"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:App elody:SubMenu ) ] ; rdfs:range elody:MenuItem ;
+  rdfs:comment "An item of the menu, in sh:order; elody:alias names it. The app's items are the top level; a sub-menu's are nested."@en .
+elody:SubMenu a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sub-menu"@en ;
+  rdfs:comment "The sub-menu an item opens (subMenu): its name and its items."@en .
+elody:subMenu a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sub-menu"@en ; rdfs:domain elody:MenuItem ; rdfs:range elody:SubMenu ;
+  rdfs:comment "The item's sub-menu."@en .
+elody:menuName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu name"@en ; rdfs:domain elody:SubMenu ; rdfs:range xsd:string ;
+  rdfs:comment "The name the PWA asks the sub-menu by (subMenu(name: \"sub-menu-entities\"))."@en .
+elody:isLoggedIn a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "is logged in"@en ; rdfs:domain elody:MenuItem ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the item shows only to a signed-in user (isLoggedIn)."@en .
+elody:requiresAuth a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "requires authentication"@en ; rdfs:domain elody:MenuItem ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the item requires authentication (requiresAuth)."@en .
+elody:route a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "route"@en ; rdfs:domain elody:MenuItem ; rdfs:range xsd:string ;
+  rdfs:comment "The PWA route the item links to (typeLink route destination); an item without it links to a modal (elody:modal)."@en .
