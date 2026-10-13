@@ -2922,3 +2922,11 @@ elody:bare a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "bare"@en ; rdfs:domain elody:TypeEntry ; rdfs:range xsd:boolean ;
   rdfs:comment "true lists the type in the platform document without a fragment: the document reads only its own fields (FetchMediafilesOfEntity reading id alone)."@en .
+elody:DetailCard a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail card"@en ;
+  rdfs:comment "A card (teaserMetadata) read on the detail page as well: the fields it shows (elody:field, property shapes of the type) and its context menu. The PWA reads the entity's card wherever it has one; a client that wants another card on the detail page than in the listing declares it here."@en .
+elody:detailCard a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail card"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:DetailCard ;
+  rdfs:comment "The card the detail fragment carries (teaserMetadata inside full<X>), after its initial values."@en .

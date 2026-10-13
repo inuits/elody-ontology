@@ -61,6 +61,7 @@ meta:EntityUiShape a sh:NodeShape ;
       sh:message "at most one property shape carries a direct LabelRole; use qualified roles with sh:order for precedence" ] ,
     [ sh:path elody:filter ; sh:node meta:FilterShape ] ,
     [ sh:path elody:contextMenu ; sh:maxCount 1 ; sh:node meta:ContextMenuShape ] ,
+    [ sh:path elody:detailCard ; sh:maxCount 1 ; sh:node meta:DetailCardShape ] ,
     [ sh:path elody:bulkOperation ; sh:node meta:BulkOperationShape ] ,
     [ sh:path elody:customBulkOperations ; sh:node meta:CustomBulkOperationsShape ] ,
     [ sh:path elody:form ; sh:class elody:Form ; sh:node meta:FormShape ] ,
@@ -312,6 +313,11 @@ meta:VisibleFilterLabelShape a sh:NodeShape ;
   sh:message "a visible filter carries an rdfs:label" .
 
 # -------------------------------------------------------------- context menu ---
+
+meta:DetailCardShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:field ; sh:nodeKind sh:IRI ] ,
+    [ sh:path elody:contextMenu ; sh:maxCount 1 ; sh:node meta:ContextMenuShape ] .
 
 meta:ContextMenuShape a sh:NodeShape ;
   sh:property
