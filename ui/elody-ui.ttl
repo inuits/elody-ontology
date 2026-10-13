@@ -2906,3 +2906,19 @@ elody:cardLinkText a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "card link text"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
   rdfs:comment "true shows the link text (elody:linkText) on the card field as well as in the panel (linkText(input: ...) under teaserMetadata). Default false."@en .
+elody:relationFormFlatPanel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation form flat panel"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true writes the panel of the bulk-edit relation form (GetBulkOperationsRelationForm) without the ... on WindowElementPanel inline fragment, the form before the panel union. A dialect of the client."@en .
+elody:relationFormField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation form field"@en ; rdfs:domain elody:App ;
+  rdfs:comment "A field of the client's own in the bulk-edit relation form's panel, in sh:order: elody:alias, elody:key, elody:labelKey, elody:clientInputField (digipolis: the owning institution)."@en .
+elody:geoFilterKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "geo filter key"@en ; rdfs:domain elody:App ; rdfs:range xsd:string ;
+  rdfs:comment "The key the map's geo filter buckets on (GetGeoFilterForMap, advancedFilter(type: geo, key: ...)); the document is carried when the app names it."@en .
+elody:bare a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bare"@en ; rdfs:domain elody:TypeEntry ; rdfs:range xsd:boolean ;
+  rdfs:comment "true lists the type in the platform document without a fragment: the document reads only its own fields (FetchMediafilesOfEntity reading id alone)."@en .

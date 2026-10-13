@@ -991,6 +991,9 @@ meta:AppShape a sh:NodeShape ; sh:targetClass elody:App ;
     [ sh:path elody:filterMatcherLegacy ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:panelHeaderLegacy ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:bulkModalFormQueryLegacy ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:relationFormFlatPanel ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:relationFormField ; sh:node meta:RelationFormFieldShape ] ,
+    [ sh:path elody:geoFilterKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:typeEntry ; sh:node meta:TypeEntryShape ] ,
     [ sh:path elody:menuItem ; sh:node meta:MenuItemShape ] ,
     [ sh:path elody:bulkDocument ; sh:node meta:BulkDocumentShape ] ,
@@ -1008,7 +1011,16 @@ meta:TypeEntryShape a sh:NodeShape ;
     [ sh:path elody:graphqlType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:fragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] ,
-    [ sh:path elody:excluded ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+    [ sh:path elody:excluded ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:bare ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:RelationFormFieldShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:clientInputField ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:BulkDocumentShape a sh:NodeShape ;
   sh:property
