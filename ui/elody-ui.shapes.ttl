@@ -69,6 +69,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:detailName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:bulkFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:sortFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:preview ; sh:maxCount 1 ; sh:node meta:PreviewShape ] ,
     [ sh:path elody:bulkDocument ; sh:node meta:BulkDocumentShape ] ,
     [ sh:path elody:sortDocument ; sh:node meta:SortDocumentShape ] ,

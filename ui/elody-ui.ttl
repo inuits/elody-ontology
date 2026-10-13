@@ -2890,3 +2890,7 @@ elody:bulkFragmentName a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "bulk fragment name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
   rdfs:comment "The bulk operations fragment's own name when the client does not call it <x>BulkOperations (mediafileBulkOperations next to minimalMediaFile): a naming override like elody:detailName."@en .
+elody:sortFragmentName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "sort fragment name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The sort options fragment's own name when the client does not call it <x>SortOptions (mediafileEntitySortOptions next to minimalMediafile): a naming override like elody:filtersFragmentName, elody:detailName and elody:bulkFragmentName."@en .
