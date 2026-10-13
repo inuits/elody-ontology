@@ -317,7 +317,8 @@ meta:ContextMenuShape a sh:NodeShape ;
     [ sh:path elody:menuSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:forceShow ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:includeBasicActions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
-    [ sh:path elody:menuInButtons ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+    [ sh:path elody:menuInButtons ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:menuAfterFields ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
 
 meta:ActionShape a sh:NodeShape ;
   sh:property

@@ -14,6 +14,7 @@ ui:FixtureApp a elody:App ; elody:documentName "fixture" ; elody:filePath "queri
   elody:panelHeaderLegacy true ; elody:bulkModalFormQueryLegacy true .
 
 ui:MediaFileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "MediaFile" ; elody:detailName "fullMediafile" ; elody:bulkFragmentName "mediafileBulkOperations" ; elody:sortFragmentName "mediafileEntitySortOptions" ; elody:emit "file" ;
+  elody:contextMenu [ elody:menuAfterFields true ; elody:action [ sh:order 1 ; elody:alias "doLinkAction" ; elody:actionForm "doLinkAction" ; rdfs:label "contextMenu.contextMenuLinkAction.followLink" ; elody:icon "AngleRight" ] ] ;
   elody:bulkOperation [ sh:order 1 ; rdfs:label "bulk-operations.create-mediafile" ; elody:icon "Create" ; elody:operationKind elody:CreateEntityOperation ; elody:primary true ;
     elody:context [ elody:activeViewMode elody:ReadMode ; elody:selection elody:NoneSelected ; elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
     elody:modal [ elody:modalKind elody:DynamicFormModal ; elody:form ui:GetMediafileCreateForm ; elody:closeConfirmation true ; elody:permission elody:CanCreate ] ] ;

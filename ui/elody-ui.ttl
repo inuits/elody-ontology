@@ -2894,3 +2894,7 @@ elody:sortFragmentName a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "sort fragment name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
   rdfs:comment "The sort options fragment's own name when the client does not call it <x>SortOptions (mediafileEntitySortOptions next to minimalMediafile): a naming override like elody:filtersFragmentName, elody:detailName and elody:bulkFragmentName."@en .
+elody:menuAfterFields a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "menu after fields"@en ; rdfs:domain elody:ContextMenu ; rdfs:range xsd:boolean ;
+  rdfs:comment "true places the card's context menu in its older form (contextMenuActions { ... }) after the card's fields instead of before them. The buttons form (elody:menuInButtons) always follows the fields. Default false."@en .
