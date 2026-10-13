@@ -106,6 +106,7 @@ meta:PropertyShapeShape a sh:NodeShape ;
   sh:or ( [ sh:property [ sh:path sh:path ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:key ; sh:minCount 1 ] ] ) ;
   sh:message "a property shape has an sh:path (its metadata key is the local name) or an elody:key" ;
   sh:property
+    [ sh:path elody:onlyForEntityTypes ; sh:maxCount 1 ] ,
     [ sh:path sh:name ; sh:uniqueLang true ;
       sh:or ( [ sh:datatype xsd:string ] [ sh:datatype rdf:langString ] ) ;
       sh:message "sh:name is the label text, at most one per language" ] ,
@@ -423,10 +424,77 @@ meta:FormShape a sh:NodeShape ;
     [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:fieldsSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:copyFromParent ; sh:maxCount 1 ; sh:node meta:CopyFromParentShape ] ,
+    [ sh:path elody:infoLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:modalStyle ; sh:maxCount 1 ; sh:class elody:ModalStyle ;
+      sh:message "a form's modal style is an elody:ModalStyle instance (elody:RightWideModal, ...)" ] ,
+    [ sh:path elody:upload ; sh:maxCount 1 ; sh:node meta:UploadShape ] ,
+    [ sh:path elody:formAction ; sh:node meta:FormActionShape ] ,
+    [ sh:path elody:tab ; sh:node meta:FormTabShape ] ,
     [ sh:path elody:field ; sh:maxCount 0 ; sh:message "fields live on the form's shape as sh:property, not on the form" ] ;
-  # a form holds fields of its own, or spreads a shared fields fragment
-  sh:or ( [ sh:property [ sh:path ( elody:shape sh:property ) ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldsSpread ; sh:minCount 1 ] ] ) ;
-  sh:message "a form holds at least one field or spreads a fields fragment" .
+  # a form holds fields of its own, spreads a shared fields fragment, uploads, or has tabs
+  sh:or ( [ sh:property [ sh:path ( elody:shape sh:property ) ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldsSpread ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:upload ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:tab ; sh:minCount 1 ] ] ) ;
+  sh:message "a form holds at least one field, spreads a fields fragment, uploads, or has tabs" .
+
+meta:FormTabShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:shape ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] ,
+    [ sh:path elody:fieldsSpread ; sh:datatype xsd:string ] ,
+    [ sh:path elody:copyFromParent ; sh:maxCount 1 ; sh:node meta:CopyFromParentShape ] ,
+    [ sh:path elody:upload ; sh:maxCount 1 ; sh:node meta:UploadShape ] ,
+    [ sh:path elody:formAction ; sh:node meta:FormActionShape ] .
+
+meta:UploadShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:uploadFlow ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:UploadFlow ;
+      sh:message "an upload names its flow with an elody:UploadFlow instance (elody:MediafilesOnlyFlow, ...)" ] ,
+    [ sh:path elody:uploadField ; sh:minCount 1 ; sh:node meta:UploadFieldShape ] .
+
+meta:UploadFieldShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:uploadSize ; sh:maxCount 1 ; sh:class elody:UploadSize ] ,
+    [ sh:path elody:uploadKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:UploadKind ] ,
+    [ sh:path elody:uploadInputField ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:uploadRequired ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:dryRun ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:addTypeToEndpoint ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:extractTypeFromKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:templateCsvs ; sh:maxCount 1 ] ,
+    [ sh:path elody:infoLabelUrl ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:extraMediafileType ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:FormActionShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:submitAction ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:actionQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:creationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:showsFormErrors ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:callsEndpoint ; sh:maxCount 1 ; sh:node meta:EndpointShape ] ,
+    [ sh:path elody:progress ; sh:maxCount 1 ; sh:node meta:ProgressShape ] .
+
+meta:EndpointShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:endpointName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:endpointMethod ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:variables ; sh:maxCount 1 ] ,
+    [ sh:path elody:responseAction ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:ProgressShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:progressKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:progressStep ; sh:node meta:ProgressStepShape ] .
+
+meta:ProgressStepShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:stepKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:FieldsFragmentShape a sh:NodeShape ;
   sh:property

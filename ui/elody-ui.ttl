@@ -2674,3 +2674,168 @@ elody:toAllOf a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "to all of"@en ; rdfs:domain elody:StepRelation ; rdfs:range rdf:List ;
   rdfs:comment "The keys of the steps the relation goes to, all of them (toAllOf: an RDF list of strings), instead of one elody:to."@en .
+
+# ---- 0.3.0, batch 29: upload forms, form tabs, form actions (G-018) ----------------------------
+
+elody:FormTab a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "form tab"@en ;
+  rdfs:comment "A further tab of a form (formTab): its fields (elody:shape), spreads, upload, actions and copyFromParent, like the form's own first tab."@en .
+elody:tab a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tab"@en ; rdfs:domain elody:Form ; rdfs:range elody:FormTab ;
+  rdfs:comment "A tab after the form's first, in sh:order; elody:alias names it."@en .
+elody:infoLabel a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "info label"@en ; rdfs:domain elody:Form ; rdfs:range xsd:string ;
+  rdfs:comment "The translation key of the information shown above the form (infoLabel)."@en .
+elody:ModalStyle a owl:Class ; rdfs:label "modal style"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of ModalStyle: where and how wide the modal of a form opens."@en .
+elody:LeftModal a elody:ModalStyle ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:RightModal a elody:ModalStyle ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:CenterModal a elody:ModalStyle ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:CenterWideModal a elody:ModalStyle ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:RightWideModal a elody:ModalStyle ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:modalStyle a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "modal style"@en ; rdfs:domain elody:Form ; rdfs:range elody:ModalStyle ;
+  rdfs:comment "The style of the modal the form opens in (modalStyle)."@en .
+elody:Upload a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload"@en ;
+  rdfs:comment "The upload container of a form tab (uploadContainer): the flow and the upload fields, at its position among the tab's fields and actions (sh:order)."@en .
+elody:upload a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Form elody:FormTab ) ] ; rdfs:range elody:Upload ;
+  rdfs:comment "The tab's upload container."@en .
+elody:UploadFlow a owl:Class ; rdfs:label "upload flow"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of UploadFlow: what the upload creates or updates and from which files."@en .
+elody:UpdateMetadataFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:CsvOnlyFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:ExcelFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MediafilesOnlyFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MediafilesWithRequiredCsvFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MediafilesWithOptionalCsvFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:CsvForReorderingFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MediafilesWithOcrFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:OptionalMediafilesFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:XmlMarcFlow a elody:UploadFlow ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:uploadFlow a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload flow"@en ; rdfs:domain elody:Upload ; rdfs:range elody:UploadFlow ;
+  rdfs:comment "The flow of the upload (uploadFlow)."@en .
+elody:UploadField a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload field"@en ;
+  rdfs:comment "A file input of an upload container (uploadField): what it takes, how big it shows, whether it dry-runs, the CSV templates it offers."@en .
+elody:uploadField a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload field"@en ; rdfs:domain elody:Upload ; rdfs:range elody:UploadField ;
+  rdfs:comment "A file input of the container, in sh:order; elody:alias names it (fileUpload, csvUpload, excelUpload)."@en .
+elody:UploadSize a owl:Class ; rdfs:label "upload field size"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of UploadFieldSize."@en .
+elody:SmallUpload a elody:UploadSize ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:NormalUpload a elody:UploadSize ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:BigUpload a elody:UploadSize ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:uploadSize a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload size"@en ; rdfs:domain elody:UploadField ; rdfs:range elody:UploadSize ;
+  rdfs:comment "How big the field shows (uploadFieldSize)."@en .
+elody:UploadKind a owl:Class ; rdfs:label "upload field kind"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of UploadFieldType: a batch of files, a single file, a CSV reordering entities, a CSV editing metadata."@en .
+elody:BatchUpload a elody:UploadKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:SingleUpload a elody:UploadKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:ReorderEntitiesUpload a elody:UploadKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:EditMetadataWithCsvUpload a elody:UploadKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:uploadKind a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload kind"@en ; rdfs:domain elody:UploadField ; rdfs:range elody:UploadKind ;
+  rdfs:comment "What the field takes (uploadFieldType)."@en .
+elody:uploadInputField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload input field"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:string ;
+  rdfs:comment "The input field the file is taken with (inputField type: baseFileUploadField, baseCsvUploadField, csvUploadField, baseExcelUploadField). Open string: the platform's and the client's."@en .
+elody:uploadRequired a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "upload required"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:boolean ;
+  rdfs:comment "true validates the field as required."@en .
+elody:dryRun a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "dry run"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the file is validated in a dry run before the upload (dryRunUpload)."@en .
+elody:addTypeToEndpoint a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "add type to endpoint"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:boolean ;
+  rdfs:comment "true adds the entity type to the upload endpoint (addTypeToEndpoint)."@en .
+elody:extractTypeFromKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "extract type from key"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:string ;
+  rdfs:comment "The form field whose value is the entity type uploaded (extractTypeFromKey)."@en .
+elody:templateCsvs a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "template CSVs"@en ; rdfs:domain elody:UploadField ; rdfs:range rdf:List ;
+  rdfs:comment "The CSV templates offered for download (templateCsvs), an RDF list of file names."@en .
+elody:infoLabelUrl a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "info label URL"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:string ;
+  rdfs:comment "The URL of the documentation linked next to the field (infoLabelUrl)."@en .
+elody:extraMediafileType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "extra mediafile type"@en ; rdfs:domain elody:UploadField ; rdfs:range xsd:string ;
+  rdfs:comment "A further mediafile type the upload creates (extraMediafileType)."@en .
+elody:formAction a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "form action"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Form elody:FormTab ) ] ; rdfs:range elody:SubmitAction ;
+  rdfs:comment "An action button of the tab beyond the submit (an upload, a download through an endpoint, a CSV reordering), at its position among the tab's fields (sh:order): elody:alias, rdfs:label, elody:icon, elody:submitAction (the actionType), elody:actionQuery, elody:creationType, elody:showsFormErrors, elody:callsEndpoint, elody:progress."@en .
+elody:Endpoint a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "endpoint"@en ;
+  rdfs:comment "The endpoint an action calls (endpointInformation): elody:endpointName, elody:endpointMethod, elody:variables, elody:responseAction."@en .
+elody:callsEndpoint a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "calls endpoint"@en ; rdfs:domain elody:SubmitAction ; rdfs:range elody:Endpoint ;
+  rdfs:comment "The endpoint the action calls (endpointInformation)."@en .
+elody:endpointName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "endpoint name"@en ; rdfs:domain elody:Endpoint ; rdfs:range xsd:string ;
+  rdfs:comment "The path of the endpoint (endpointName)."@en .
+elody:variables a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "variables"@en ; rdfs:domain elody:Endpoint ; rdfs:range rdf:List ;
+  rdfs:comment "The variables passed to the endpoint (variables), an RDF list of names."@en .
+elody:responseAction a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "response action"@en ; rdfs:domain elody:Endpoint ; rdfs:range xsd:string ;
+  rdfs:comment "What the PWA does with the response (responseAction: downloadResponse, notification), a platform enum value."@en .
+elody:Progress a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "progress"@en ;
+  rdfs:comment "How an action shows its progress (actionProgressIndicator): a spinner, or steps."@en .
+elody:progress a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "progress"@en ; rdfs:domain elody:SubmitAction ; rdfs:range elody:Progress ;
+  rdfs:comment "The action's progress indicator."@en .
+elody:progressKind a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "progress kind"@en ; rdfs:domain elody:Progress ; rdfs:range xsd:string ;
+  rdfs:comment "The indicator (type: spinner, progressSteps), a platform enum value."@en .
+elody:ProgressStep a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "progress step"@en ;
+  rdfs:comment "A step of the progress (step): elody:alias, rdfs:label, elody:stepKind."@en .
+elody:progressStep a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "progress step"@en ; rdfs:domain elody:Progress ; rdfs:range elody:ProgressStep ;
+  rdfs:comment "A step shown, in sh:order."@en .
+elody:stepKind a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "step kind"@en ; rdfs:domain elody:ProgressStep ; rdfs:range xsd:string ;
+  rdfs:comment "The kind of the step (stepType: validate, prepare, upload), a platform enum value."@en .
+elody:onlyForEntityTypes a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "only for entity types"@en ; rdfs:domain sh:PropertyShape ; rdfs:range rdf:List ;
+  rdfs:comment "The entity types a form field is shown for (onlyForEntityTypes), an RDF list of type names."@en .
