@@ -67,6 +67,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:guidedFlow ; sh:node meta:GuidedFlowShape ] ,
     [ sh:path elody:picker ; sh:node meta:PickerShape ] ,
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:preview ; sh:maxCount 1 ; sh:node meta:PreviewShape ] ,
     [ sh:path elody:sortDocument ; sh:node meta:SortDocumentShape ] ,
     [ sh:path elody:detail ; sh:maxCount 1 ; sh:node meta:DetailLayoutShape ] ,
     [ sh:path elody:formSource ; sh:node meta:FormSourceShape ] ,
@@ -616,6 +617,27 @@ meta:ThumbnailShape a sh:NodeShape ;
           [ sh:property [ sh:path elody:fromMediafile ; sh:hasValue true ] ] ) ;
   sh:message "a thumbnail reads an initial value (elody:key) or the primary media file (elody:fromMediafile true)" .
 
+meta:PreviewShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:previewKind ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:PreviewKind ;
+      sh:message "a preview's kind is an elody:PreviewKind instance (elody:ColumnListPreview, elody:MediaViewerPreview, ...)" ] ,
+    [ sh:path elody:coverage ; sh:minCount 1 ; sh:maxCount 1 ; sh:class elody:ListItemCoverage ;
+      sh:message "a preview's coverage is an elody:ListItemCoverage instance (elody:OneListItem, elody:AllListItems)" ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    # the fragment's own name when it is not previewFor<X> (previewForMediafile on MediaFileEntity)
+    [ sh:path elody:fragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:openByDefault ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:showCurrentPreviewFlow ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:keepLastActiveItemHighlighted ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:displayOpenDetailPageButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:previewLayout ; sh:maxCount 1 ; sh:node meta:PreviewLayoutShape ] ,
+    [ sh:path elody:metadataPreviewLayout ; sh:maxCount 1 ; sh:node meta:PreviewLayoutShape ] .
+
+meta:PreviewLayoutShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:queryName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:column ; sh:node meta:ColumnShape ] .
+
 meta:ColumnShape a sh:NodeShape ;
   sh:property
     # no alias: the first column is emitted as column, the next ones as column2, column3, ...
@@ -644,6 +666,8 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:listQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:customQueryRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:editButton ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:windowLayout ; sh:maxCount 1 ; sh:class elody:WindowLayout ;
+      sh:message "a window's layout is an elody:WindowLayout instance (elody:VerticalLayout, elody:HorizontalGridLayout)" ] ,
     [ sh:path elody:hideInHistory ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:disableLibraryBar ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:enableNavigation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -695,6 +719,7 @@ meta:PanelShape a sh:NodeShape ;
     [ sh:path elody:panelKind ; sh:maxCount 1 ; sh:class elody:PanelKind ;
       sh:message "a panel's kind is an elody:PanelKind instance (elody:MetadataPanel, ...)" ] ,
     [ sh:path elody:editableDefault ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:panelHeader ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:bulkDataSource ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:panelField ; sh:node meta:PanelFieldShape ] ,
     [ sh:path elody:repetitionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,

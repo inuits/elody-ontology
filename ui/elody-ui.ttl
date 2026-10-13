@@ -2437,3 +2437,75 @@ elody:keepDefaultValue a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "keep default value"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
   rdfs:comment "true keeps the filter's default value when the user changes the filters (doNotOverrideDefaultValue)."@en .
+
+# ---- 0.3.0, batch 25: the preview of a type (G-016) -------------------------------------------
+
+elody:Preview a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preview"@en ;
+  rdfs:comment "How a type is previewed from a list (previewComponent, the previewFor<X> fragment the platform's getPreviewComponents spreads): its kind, how many list items it covers, its title, whether it opens by default, and the layouts it loads."@en .
+elody:preview a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preview"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:Preview ;
+  rdfs:comment "The preview of the type."@en .
+elody:PreviewKind a owl:Class ; rdfs:label "preview kind"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of preview kinds (PreviewTypes): a column of elements, the media viewer, a map, the history."@en .
+elody:ColumnListPreview a elody:PreviewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MediaViewerPreview a elody:PreviewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:MapPreview a elody:PreviewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:HistoryPreview a elody:PreviewKind ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:previewKind a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preview kind"@en ; rdfs:domain elody:Preview ; rdfs:range elody:PreviewKind ;
+  rdfs:comment "The kind of preview (type)."@en .
+elody:ListItemCoverage a owl:Class ; rdfs:label "list item coverage"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of how many list items a preview covers (ListItemCoverageTypes): one, or all of them."@en .
+elody:OneListItem a elody:ListItemCoverage ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:AllListItems a elody:ListItemCoverage ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:coverage a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "coverage"@en ; rdfs:domain elody:Preview ; rdfs:range elody:ListItemCoverage ;
+  rdfs:comment "How many list items the preview covers (listItemsCoverage)."@en .
+elody:openByDefault a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "open by default"@en ; rdfs:domain elody:Preview ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the preview opens by default (openByDefault)."@en .
+elody:showCurrentPreviewFlow a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "show current preview flow"@en ; rdfs:domain elody:Preview ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the preview shows the current preview flow (showCurrentPreviewFlow)."@en .
+elody:keepLastActiveItemHighlighted a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "keep last active item highlighted"@en ; rdfs:domain elody:Preview ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the list keeps the last previewed item highlighted (previewConfiguration keepLastActiveItemHighlighted)."@en .
+elody:displayOpenDetailPageButton a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "display open detail page button"@en ; rdfs:domain elody:Preview ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the preview offers a button opening the detail page (previewConfiguration displayOpenDetailPageButton)."@en .
+elody:PreviewLayout a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preview layout"@en ;
+  rdfs:comment "A document of elements the preview loads (PreviewElement: a column of elements, like the detail layout), named by elody:queryName (GetPreviewInX, GetMetadataPreviewForX)."@en .
+elody:previewLayout a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "preview layout"@en ; rdfs:domain elody:Preview ; rdfs:range elody:PreviewLayout ;
+  rdfs:comment "The layout the preview loads (previewQuery)."@en .
+elody:metadataPreviewLayout a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "metadata preview layout"@en ; rdfs:domain elody:Preview ; rdfs:range elody:PreviewLayout ;
+  rdfs:comment "The layout of metadata the preview shows next to the item (metadataPreviewQuery)."@en .
+elody:WindowLayout a owl:Class ; rdfs:label "window layout"@en ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:comment "Enumeration of window element layouts (WindowElementLayout): the panels below each other, or in a horizontal grid."@en .
+elody:VerticalLayout a elody:WindowLayout ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:HorizontalGridLayout a elody:WindowLayout ; rdfs:isDefinedBy <https://elody.eu/ns/ui> .
+elody:windowLayout a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "window layout"@en ; rdfs:domain elody:WindowElement ; rdfs:range elody:WindowLayout ;
+  rdfs:comment "How the window lays out its panels (layout)."@en .
+elody:panelHeader a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel header"@en ; rdfs:domain elody:Panel ; rdfs:range xsd:boolean ;
+  rdfs:comment "false renders the panel without a header (no panelHeaderContent): the panels of a metadata preview. Without it the panel is headed with its label."@en .
