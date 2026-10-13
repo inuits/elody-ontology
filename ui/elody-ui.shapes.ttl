@@ -43,6 +43,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:interface ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:fieldsFragment ; sh:node meta:FieldsFragmentShape ] ,
     [ sh:path elody:elementsFragment ; sh:node meta:ElementsFragmentShape ] ,
+    [ sh:path elody:windowFragment ; sh:node meta:WindowFragmentShape ] ,
     [ sh:path elody:valuesFragment ; sh:node meta:ValuesFragmentShape ] ,
     [ sh:path elody:listQuery ; sh:node meta:ListQueryShape ] ,
     [ sh:path elody:detailFormatters ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -511,7 +512,14 @@ meta:ProgressStepShape a sh:NodeShape ;
 meta:FieldsFragmentShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:fieldsSpread ; sh:datatype xsd:string ] ,
+    [ sh:path elody:fieldsSpreadAfter ; sh:datatype xsd:string ] ,
     [ sh:path elody:shape ; sh:minCount 1 ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] .
+
+meta:WindowFragmentShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:panel ; sh:minCount 1 ; sh:nodeKind sh:IRI ] .
 
 meta:ElementsFragmentShape a sh:NodeShape ;
   sh:property

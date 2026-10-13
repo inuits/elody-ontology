@@ -2930,3 +2930,15 @@ elody:detailCard a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail card"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:DetailCard ;
   rdfs:comment "The card the detail fragment carries (teaserMetadata inside full<X>), after its initial values."@en .
+elody:WindowFragment a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "window fragment"@en ;
+  rdfs:comment "A named fragment on WindowElement holding panels several types spread into a window (elody:panelSpread): vlacc's identifier panels of the manifestation family."@en .
+elody:windowFragment a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "window fragment"@en ; rdfs:domain elody:EntityUi ; rdfs:range elody:WindowFragment ;
+  rdfs:comment "A window fragment the type's file holds: elody:fragmentName and the elody:panel nodes it carries, which reference the type's property shapes."@en .
+elody:fieldsSpreadAfter a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fields spread after"@en ; rdfs:domain elody:FieldsFragment ; rdfs:range xsd:string ;
+  rdfs:comment "The name of a fields fragment spread after this fields fragment's own fields (elody:fieldsSpread spreads before them): a fields fragment composed of others around a field of its own."@en .

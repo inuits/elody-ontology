@@ -1,0 +1,26 @@
+# 0.3.0 batch 40 (G-045): a window fragment (panels several types spread into a window) and a
+# fields fragment composed of fields fragments around a field of its own.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:ManifestationUi a elody:EntityUi ; elody:graphqlType "Manifestation" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; sh:group ui:ManifestationUi-info ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ,
+    [ sh:path em:isbn ; sh:name "ISBN"@en ; sh:order 2 ; sh:datatype xsd:string ; sh:maxCount 1 ; shui:editor shui:TextFieldEditor ; elody:labelKey "metadata.labels.isbn" ; elody:detailOnly true ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Info" ; elody:panel ui:ManifestationUi-info ; elody:panelSpread "manifestationIsbnGroupPanel" ] ] ] ;
+  elody:windowFragment [ elody:fragmentName "manifestationIsbnGroupPanel" ; elody:panel ui:ManifestationUi-isbn_group ] ;
+  elody:fieldsFragment
+    [ elody:fragmentName "basicCreateManifestationFields" ;
+      elody:fieldsSpread "basicCreateManifestationFieldsBeforeAuthors" ;
+      elody:fieldsSpreadAfter "basicCreateManifestationFieldsAfterAuthors" ;
+      elody:shape [ sh:property [ sh:path em:refAuthors ; sh:name "authors"@en ; sh:order 1 ; elody:labelKey "element-labels.people-corporations-manifestation-element" ; elody:clientInputField "createManifestationAuthorsTypeField" ] ] ] .
+
+ui:ManifestationUi-info a sh:PropertyGroup ; rdfs:label "Info"@en ; sh:order 1 ; elody:alias "info" ; elody:labelKey "panel-labels.info" ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .
+
+ui:ManifestationUi-isbn_group a elody:Panel ; rdfs:label "panel-labels.isbn" ; sh:order 1 ; elody:alias "isbn_group" ; elody:collapsed true ; elody:multipleColumns true ; elody:repetitionKey "isbn_group" ; elody:panelKind elody:MetadataPanel ; elody:field em:isbn .
