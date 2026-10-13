@@ -2874,3 +2874,11 @@ elody:route a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "route"@en ; rdfs:domain elody:MenuItem ; rdfs:range xsd:string ;
   rdfs:comment "The PWA route the item links to (typeLink route destination); an item without it links to a modal (elody:modal)."@en .
+elody:panelHeaderLegacy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "panel header legacy"@en ; rdfs:domain elody:App ; rdfs:range xsd:boolean ;
+  rdfs:comment "true heads every detail panel with label(input: ...), the form of baseGraphql before panelHeaderContent: the client runs that version. A dialect of the client, not a choice per panel."@en .
+elody:detailName a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail name"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:string ;
+  rdfs:comment "The detail fragment's own name when the client does not call it full<X> (fullMediafile next to minimalMediaFile): the twin of elody:cardName. A naming override only; the fragment's content is the detail's."@en .
