@@ -3138,3 +3138,39 @@ elody:matcher a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "matcher"@en ; rdfs:domain elody:MatcherLabel ; rdfs:range xsd:string ;
   rdfs:comment "The Matchers value the label is for (AnyMatcher, NoneMatcher, ...)."@en .
+elody:detailSpreadsListing a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail spreads listing"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true makes the detail fragment spread the listing fragment (...minimal<X>) instead of reading values of its own; the listing's values and relation values serve the detail page."@en .
+elody:asksBack a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "asks back"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:string ;
+  rdfs:comment "A field the filter asks back without passing it (parentKey on a filter without a parent): the client's selection, kept as written."@en .
+elody:useOldWayToFetchOptions a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "use old way to fetch options"@en ; rdfs:domain elody:Filter ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the selection filter fetches its options the older way (useOldWayToFetchOptions)."@en .
+elody:validationFields a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation fields"@en ; rdfs:domain sh:PropertyShape ;
+  rdfs:comment "With elody:validationRule \"has_one_of_required_metadata\": the metadata keys of which elody:validationAmount must be filled (includedMetadataFields), an RDF list."@en .
+elody:conditionVariable a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "condition variable"@en ; rdfs:domain elody:CustomBulkOperations ; rdfs:range xsd:string ;
+  rdfs:comment "The variable the custom bulk operations document takes and passes as the options' condition (options(condition: $work_type, ...))."@en .
+elody:rootType a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "root type"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:queryRoot elody:SingleEntityRoot: the entity type read, fixed in the document (Entity(id: $id, type: \"token\")) instead of a variable; the document then reads id alone before the per-type selections."@en .
+elody:rootCollection a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "root collection"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:string ;
+  rdfs:comment "With elody:rootType: the collection the entity is read from (collection: tokens), an enum value of the API."@en .
+elody:allowCondition a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "allow condition"@en ; rdfs:domain elody:BulkOperation ; rdfs:range xsd:string ;
+  rdfs:comment "A value of the document's condition under which the operation is offered (allowCondition: [\"work_serial\"]), one per value; the condition is the variable of elody:conditionVariable."@en .
+elody:bareResults a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "bare results"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:boolean ;
+  rdfs:comment "true renders the entities document's results alone: no count, limit or __typename, and the results select nothing of their own (no id, uuid, type or inline type conditions); each result's fragments and listing are rendered directly under results (a map overlay reading id and a few values of every site)."@en .

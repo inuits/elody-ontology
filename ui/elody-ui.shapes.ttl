@@ -70,6 +70,7 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:picker ; sh:node meta:PickerShape ] ,
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:withoutBaseEntity ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailSpreadsListing ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:bulkFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -209,6 +210,7 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:validationRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:validationAmount ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:validationMin ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:validationFields ; sh:maxCount 1 ] ,
     [ sh:path elody:validationMax ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:validationExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -247,6 +249,8 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:matcherLabel ; sh:node meta:MatcherLabelShape ] ,
+    [ sh:path elody:asksBack ; sh:datatype xsd:string ] ,
+    [ sh:path elody:useOldWayToFetchOptions ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path elody:optionsLookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path elody:option ; sh:node meta:FilterOptionShape ] ,
@@ -390,6 +394,7 @@ meta:BulkOperationShape a sh:NodeShape ;
     [ sh:path elody:context ; sh:maxCount 1 ; sh:node meta:BulkOperationContextShape ] ,
     [ sh:path elody:modal ; sh:maxCount 1 ; sh:node meta:BulkOperationModalShape ] ,
     [ sh:path elody:primary ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:allowCondition ; sh:datatype xsd:string ] ,
     [ sh:path elody:subOperation ; sh:node meta:BulkOperationShape ] ,
     [ sh:path elody:value ; sh:maxCount 0 ; sh:message "elody:value on a bulk operation is retired: use elody:operationKind" ] .
 
@@ -458,7 +463,8 @@ meta:SurvivorSuggestionShape a sh:NodeShape ;
 meta:CustomBulkOperationsShape a sh:NodeShape ;
   sh:property
     # no operation: the set is declared empty (options(input: []))
-    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] .
+    [ sh:path elody:operation ; sh:node meta:BulkOperationShape ] ,
+    [ sh:path elody:conditionVariable ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 # --------------------------------------------------------------------- forms ---
 
@@ -592,6 +598,7 @@ meta:CopyKeyShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:fromKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:FormFieldsShape a sh:NodeShape ;
@@ -615,6 +622,7 @@ meta:FormFieldShape a sh:NodeShape ;
   sh:property
     [ sh:path sh:name ; sh:uniqueLang true ] ,
     [ sh:path elody:tooltipKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:unit ; sh:maxCount 1 ; sh:class elody:Unit ] ,
     [ sh:path elody:hiddenValueFrom ; sh:maxCount 1 ; sh:node meta:HiddenValueFromShape ] ,
     [ sh:path elody:copyValueFromParent ; sh:maxCount 1 ; sh:node meta:CopyValueFromParentShape ] ,
     [ sh:path elody:infoPanel ; sh:maxCount 1 ; sh:node meta:InfoPanelShape ] ,
@@ -710,9 +718,12 @@ meta:ListQueryShape a sh:NodeShape ;
   sh:property
     [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:queryRoot ; sh:maxCount 1 ; sh:class elody:QueryRoot ] ,
+    [ sh:path elody:rootType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:rootCollection ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:facets ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:bareResults ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:filtersSpread ; sh:datatype xsd:string ] ,
     # relationValues read on every result, outside the per-type selections
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
