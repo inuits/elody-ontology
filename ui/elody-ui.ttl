@@ -3174,3 +3174,19 @@ elody:bareResults a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "bare results"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:boolean ;
   rdfs:comment "true renders the entities document's results alone: no count, limit or __typename, and the results select nothing of their own (no id, uuid, type or inline type conditions); each result's fragments and listing are rendered directly under results (a map overlay reading id and a few values of every site)."@en .
+elody:detailAlone a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail alone"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true renders the detail fragment alone (named by elody:detailName, on elody:graphqlType): no listing fragment of its own. A layout of an overview page that reads several entities at once (vlacc's WEM overview)."@en .
+elody:partial a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "partial"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
+  rdfs:comment "true marks a detail that adds fields to windows and panels another fragment of the same page declares (a literary type on the work's info panel): its columns carry no size, its windows no label, its panels nothing but their fields; GraphQL merges them by alias."@en .
+elody:rootField a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "root field"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:string ;
+  rdfs:comment "A root field of the client's own schema that reads entities by id (WemOverview(id: $id)), rendered in place of Entities: id, uuid, type, the elody:rootValues, then the per-type selections of elody:result."@en .
+elody:rootValues a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "root values"@en ; rdfs:domain elody:ListQuery ; rdfs:range rdf:List ;
+  rdfs:comment "The values read on every result of an elody:rootField document, outside the type conditions (intialValues { canUpdate canDelete }), as a list of field names."@en .

@@ -1,0 +1,148 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <https://example.org/overview-page/ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# Batch 46 fixture: an overview page of the client's own. A root field of the client's schema reads entities by id
+# (elody:rootField, elody:rootValues); each type is laid out by fragments on Entity that carry a detail alone
+# (elody:detailAlone), one of them partial (elody:partial): it adds a field to a panel another fragment declares.
+
+ui:BookUi
+  a elody:EntityUi ;
+  elody:graphqlType "Book" ;
+  elody:emit "file" ;
+  elody:relationValues false ;
+  sh:property
+    [ sh:path em:title ;
+    sh:name "title"@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.title" ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width100 ;
+      elody:element
+        [ a elody:WindowElement ;
+        rdfs:label "window-element-labels.info" ;
+        sh:order 1 ;
+        elody:alias "info" ;
+        elody:panel ui:BookUi-panel ] ] ] .
+
+ui:BookUi-panel
+  a elody:Panel ;
+  rdfs:label "panel-labels.info" ;
+  sh:order 1 ;
+  elody:alias "panel" ;
+  elody:collapsed false ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:title .
+
+ui:OverviewBookUi
+  a elody:EntityUi ;
+  elody:graphqlType "Entity" ;
+  elody:documentName "OverviewBook" ;
+  elody:emit "file" ;
+  elody:detailAlone true ;
+  elody:detailName "overviewBook" ;
+  elody:listQuery ui:GetBookOverview ;
+  sh:property
+    [ sh:path em:title ;
+    sh:name "title"@en ;
+    sh:order 1 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.title" ;
+    elody:detailOnly true ] ,
+    [ sh:path em:refAuthors ;
+    sh:name "authors"@en ;
+    sh:order 2 ;
+    elody:relationType "refAuthors" ;
+    elody:valueLabelKey "name" ;
+    sh:maxCount 1 ;
+    elody:clientInputField "createBookAuthorsTypeField" ;
+    elody:labelKey "metadata.labels.authors" ;
+    elody:detailOnly true ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width100 ;
+      elody:element
+        [ a elody:WindowElement ;
+        rdfs:label "window-element-labels.book" ;
+        sh:order 1 ;
+        elody:alias "bookWindow" ;
+        elody:panel ui:OverviewBookUi-info , ui:OverviewBookUi-relations ] ] ] .
+
+ui:OverviewBookUi-info
+  a elody:Panel ;
+  rdfs:label "panel-labels.meta-data" ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:collapsed false ;
+  elody:multipleColumns true ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:title .
+
+ui:OverviewBookUi-relations
+  a elody:Panel ;
+  rdfs:label "panel-labels.relations" ;
+  sh:order 1 ;
+  elody:alias "relations" ;
+  elody:collapsed false ;
+  elody:multipleColumns false ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:refAuthors .
+
+ui:GetBookOverview
+  a elody:ListQuery ;
+  elody:queryName "GetBookOverview" ;
+  elody:rootField "BookOverview" ;
+  elody:rootValues ( "canUpdate" "canDelete" ) ;
+  elody:result
+    [ elody:graphqlType "Book" ; sh:order 1 ; elody:fragment "overviewBook" ] ,
+    [ elody:graphqlType "Novel" ; sh:order 2 ; elody:fragment "overviewBook" ; elody:fragment "overviewBookGenre" ] .
+
+ui:OverviewBookGenreUi
+  a elody:EntityUi ;
+  elody:graphqlType "Entity" ;
+  elody:documentName "OverviewBookGenre" ;
+  elody:emit "file" ;
+  elody:detailAlone true ;
+  elody:partial true ;
+  elody:detailName "overviewBookGenre" ;
+  elody:relationValues false ;
+  sh:property
+    [ sh:path em:genre ;
+    sh:name "genre"@en ;
+    sh:order 1 ;
+    sh:maxCount 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:clientInputField "genreTypeField" ;
+    elody:labelKey "metadata.labels.genre" ;
+    elody:detailOnly true ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:element
+        [ a elody:WindowElement ;
+        sh:order 1 ;
+        elody:alias "bookWindow" ;
+        elody:panel ui:OverviewBookGenreUi-info ] ] ] .
+
+ui:OverviewBookGenreUi-info
+  a elody:Panel ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:panelHeader false ;
+  elody:collapsed false ;
+  elody:editableDefault true ;
+  elody:field em:genre .

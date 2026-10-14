@@ -71,6 +71,8 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:withoutBaseEntity ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailSpreadsListing ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:detailAlone ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:partial ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:bulkFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:sortFragmentName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -724,6 +726,8 @@ meta:ListQueryShape a sh:NodeShape ;
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:facets ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:bareResults ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:rootField ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:rootValues ; sh:maxCount 1 ] ,
     [ sh:path elody:filtersSpread ; sh:datatype xsd:string ] ,
     # relationValues read on every result, outside the per-type selections
     [ sh:path elody:relationValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
