@@ -64,7 +64,7 @@ version at its `owl:versionIRI`. Until then the namespace IRIs do not resolve.
 ## Using it
 
 Consumers read the files from the installed package (`elody-ontology/ui/…`).
-`elody-generator` depends on a tagged version (`github:inuits/elody-ontology#v0.5.0`);
+`elody-generator` depends on a tagged version (`github:inuits/elody-ontology#v0.6.0`);
 to try an unreleased change it reads a checkout through `ELODY_ONTOLOGY`, or this
 checkout next to it at the root of elody-common.
 
