@@ -1,6 +1,6 @@
 {
   "name": "elody-ontology",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The Elody ontologies: the UI declaration vocabulary (https://elody.eu/ns/ui#, on SHACL 1.2 UI and DASH) with its meta-shapes; the backend object configuration to follow.",
   "license": "MIT",
   "files": ["ui", "README.md", "LICENSE"],

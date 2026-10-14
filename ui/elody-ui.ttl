@@ -34,9 +34,9 @@
 <https://elody.eu/ns/ui> a owl:Ontology ;
   rdfs:label "Elody UI ontology"@en ;
   rdfs:comment "The platform-specific presentation terms of an Elody UI declaration, layered on SHACL 1.2 UI (shui:) and DASH (dash:). The standard subset of a declaration stays readable by any SHACL-UI tool; the elody: subset describes listings, view modes, panels, filters, actions and flows, which the standard has no terms for."@en ;
-  owl:versionInfo "0.4.0" ;
-  owl:versionIRI <https://elody.eu/ns/ui/0.4.0> ;
-  owl:priorVersion <https://elody.eu/ns/ui/0.3.0> ;
+  owl:versionInfo "0.5.0" ;
+  owl:versionIRI <https://elody.eu/ns/ui/0.5.0> ;
+  owl:priorVersion <https://elody.eu/ns/ui/0.4.0> ;
   owl:imports <http://www.w3.org/ns/shacl-ui/> , <http://datashapes.org/dash> ;
   vann:preferredNamespacePrefix "elody" ;
   vann:preferredNamespaceUri "https://elody.eu/ns/ui#" ;
@@ -1134,7 +1134,7 @@ elody:listViewMode a owl:DatatypeProperty ;
 elody:collapsed a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "collapsed"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
-  rdfs:comment "The element or panel starts collapsed."@en .
+  rdfs:comment "The element or panel starts collapsed. Default false: left out, it starts open."@en .
 elody:multipleColumns a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "multiple columns"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:boolean ;
@@ -1176,7 +1176,7 @@ elody:panel a owl:ObjectProperty ;
 elody:labelKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "label translation key"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "The Elody translation key under which the label is shown. The label text itself is sh:name (property shapes) or rdfs:label (property groups), language-tagged; `generate` writes those texts into the client's translation bundles under this key. Without elody:labelKey the generator mints ui.<type>.<key>. No standard term: SHACL carries label texts, not an application's translation keys."@en .
+  rdfs:comment "The Elody translation key under which the label is shown. The label text itself is sh:name (property shapes) or rdfs:label (property groups), language-tagged; `generate` writes those texts into the client's translation bundles under this key. Without elody:labelKey the generator mints ui.<type>.<key>. No standard term: SHACL carries label texts, not an application's translation keys. Left out on a property shape that carries no label text: metadata.labels.<key>, the key in kebab-case (elody:defaultRule in the meta-shapes)."@en .
 elody:panelKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "panel kind"@en ; rdfs:domain elody:Panel ; rdfs:range elody:PanelKind ;
@@ -3191,3 +3191,8 @@ elody:rootValues a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "root values"@en ; rdfs:domain elody:ListQuery ; rdfs:range rdf:List ;
   rdfs:comment "The values read on every result of an elody:rootField document, outside the type conditions (intialValues { canUpdate canDelete }), as a list of field names."@en .
+# ---- 0.5.0, batch 48: defaults ----------------------------------------------------------------
+elody:defaultRule a owl:AnnotationProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "default rule"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "On a meta-shape's property entry: how the value is derived when a declaration leaves the term out, where sh:defaultValue states a constant. The generator applies it; `elody-ui expand` writes it out, so an explicit declaration is always at hand."@en .

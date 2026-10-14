@@ -123,7 +123,8 @@ meta:PropertyShapeShape a sh:NodeShape ;
       sh:message "a property shape belongs to at most one sh:PropertyGroup" ] ,
     [ sh:path rdfs:label ; sh:maxCount 0 ;
       sh:message "rdfs:label on a property shape: use sh:name for the label text, elody:labelKey for an Elody translation key" ] ,
-    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ;
+      elody:defaultRule "metadata.labels.<key>: the sh:path local name in kebab-case (properties.<key>.value reduced to its key), when the shape carries no label text (sh:name)" ] ,
     [ sh:path sh:order ; sh:maxCount 1 ] ,
     [ sh:path shui:viewer ; sh:maxCount 1 ; sh:nodeKind sh:IRI ;
       sh:in ( elody:PillViewer elody:LinkViewer elody:RegexpMatchViewer
@@ -623,6 +624,8 @@ meta:PickerSearchShape a sh:NodeShape ;
 meta:FormFieldShape a sh:NodeShape ;
   sh:property
     [ sh:path sh:name ; sh:uniqueLang true ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ;
+      elody:defaultRule "metadata.labels.<key>: the sh:path local name in kebab-case (properties.<key>.value reduced to its key), when the shape carries no label text (sh:name)" ] ,
     [ sh:path elody:tooltipKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:unit ; sh:maxCount 1 ; sh:class elody:Unit ] ,
     [ sh:path elody:hiddenValueFrom ; sh:maxCount 1 ; sh:node meta:HiddenValueFromShape ] ,
@@ -806,6 +809,7 @@ meta:ColumnShape a sh:NodeShape ;
 
 meta:ElementShape a sh:NodeShape ;
   sh:property
+    [ sh:path elody:collapsed ; sh:maxCount 1 ; sh:datatype xsd:boolean ; sh:defaultValue false ] ,
     [ sh:path rdf:type ; sh:minCount 1 ;
       sh:in ( elody:WindowElement elody:ListElement elody:ShaclShapeElement elody:MarkdownElement
               elody:MediaFileElement elody:SingleMediaFileElement elody:MapElement elody:GraphElement
@@ -872,6 +876,7 @@ meta:ActionsOnResultShape a sh:NodeShape ;
 
 meta:PanelShape a sh:NodeShape ;
   sh:property
+    [ sh:path elody:collapsed ; sh:maxCount 1 ; sh:datatype xsd:boolean ; sh:defaultValue false ] ,
     [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ] ,
     # no panel kind: panelType is left to the platform's default
     [ sh:path elody:panelKind ; sh:maxCount 1 ; sh:class elody:PanelKind ;
