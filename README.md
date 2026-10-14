@@ -6,7 +6,7 @@ looks like. Redmine epic #165964.
 
 | Directory | Ontology | Namespace | Status |
 |---|---|---|---|
-| `ui/` | the **UI declaration vocabulary**: an entity's interface — listings, view modes, panels, forms, filters, actions, flows, linked-data sources, Elody's widgets — layered on W3C SHACL 1.2 UI (`shui:`) and DASH (`dash:`) | `https://elody.eu/ns/ui#` (`elody:`) | 0.6.0 (unreleased) |
+| `ui/` | the **UI declaration vocabulary**: an entity's interface — listings, view modes, panels, forms, filters, actions, flows, linked-data sources, Elody's widgets — layered on W3C SHACL 1.2 UI (`shui:`) and DASH (`dash:`) | `https://elody.eu/ns/ui#` (`elody:`) | 0.6.0 |
 | — | the **backend object configuration**: what collection-api's object configurations say in Python today (CRUD behaviour, validation, hooks, serialisation, storage) | to be chosen | next phase |
 
 Each ontology has its own directory, namespace and version, and comes with
