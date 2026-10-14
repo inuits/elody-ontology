@@ -1,0 +1,30 @@
+@prefix elody: <https://elody.eu/ns/ui#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix shui:  <http://www.w3.org/ns/shacl-ui/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:    <https://example.org/key-labels/ui#> .
+@prefix em:    <https://elody.io/ns/metadata#> .
+
+# Batch 50 fixture: the label key defined once on the key (em:computed_title), inherited by every shape of that
+# key that says none; a shape with its own label key wins (ui:AuthorUi's em:computed_title); a key without one
+# follows the convention (em:isbn -> metadata.labels.isbn).
+
+em:computed_title elody:labelKey "metadata.labels.title" .
+
+ui:BookUi
+  a elody:EntityUi ;
+  elody:graphqlType "Book" ;
+  elody:emit "file" ;
+  sh:property
+    [ sh:path em:computed_title ; sh:order 1 ; shui:propertyRole shui:LabelRole ] ,
+    [ sh:path em:isbn ; sh:order 2 ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .
+
+ui:AuthorUi
+  a elody:EntityUi ;
+  elody:graphqlType "Author" ;
+  elody:emit "file" ;
+  sh:property
+    [ sh:path em:computed_title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.name" ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .

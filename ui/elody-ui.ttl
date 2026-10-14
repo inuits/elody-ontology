@@ -1176,7 +1176,7 @@ elody:panel a owl:ObjectProperty ;
 elody:labelKey a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "label translation key"@en ; rdfs:domain owl:Thing ; rdfs:range xsd:string ;
-  rdfs:comment "The Elody translation key under which the label is shown. The label text itself is sh:name (property shapes) or rdfs:label (property groups), language-tagged; `generate` writes those texts into the client's translation bundles under this key. Without elody:labelKey the generator mints ui.<type>.<key>. No standard term: SHACL carries label texts, not an application's translation keys. Left out on a property shape that carries no label text: metadata.labels.<key>, the key in kebab-case (elody:defaultRule in the meta-shapes)."@en .
+  rdfs:comment "The Elody translation key under which the label is shown. The label text itself is sh:name (property shapes) or rdfs:label (property groups), language-tagged; `generate` writes those texts into the client's translation bundles under this key. Without elody:labelKey the generator mints ui.<type>.<key>. No standard term: SHACL carries label texts, not an application's translation keys. Left out on a property shape that carries no label text: the label key the key itself carries (em:x elody:labelKey, once per client), else metadata.labels.<key>, the key in kebab-case (elody:defaultRule in the meta-shapes)."@en .
 elody:panelKind a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "panel kind"@en ; rdfs:domain elody:Panel ; rdfs:range elody:PanelKind ;
