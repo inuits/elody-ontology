@@ -1,0 +1,37 @@
+@prefix elody: <https://elody.eu/ns/ui#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix shui:  <http://www.w3.org/ns/shacl-ui/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:    <https://example.org/form-fields/ui#> .
+@prefix em:    <https://elody.io/ns/metadata#> .
+
+# Batch 52 fixture: a create form whose fields are a list of the type's properties (elody:fields, elody:fieldsFrom):
+# em:title takes its text field and label from the type's shape; the override on em:isbn makes it required and keeps
+# the inherited input; em:notes names its own editor, so it inherits no input term; em:year is the type's property
+# with a label of its own.
+
+ui:BookUi
+  a elody:EntityUi ;
+  elody:graphqlType "Book" ;
+  elody:emit "file" ;
+  sh:property
+    [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; sh:datatype xsd:string ; sh:maxCount 1 ; elody:labelKey "metadata.labels.book-title" ] ,
+    [ sh:path em:isbn ; sh:order 2 ; sh:datatype xsd:string ; sh:maxCount 1 ] ,
+    [ sh:path em:notes ; sh:order 3 ; shui:editor shui:TextAreaEditor ; sh:maxCount 1 ] ,
+    [ sh:path em:year ; sh:order 4 ; sh:datatype xsd:string ; sh:maxCount 1 ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ;
+  elody:form ui:GetBookCreateForm .
+
+ui:GetBookCreateForm
+  a elody:Form ;
+  rdfs:label "navigation.create-book" ;
+  elody:queryName "GetBookCreateForm" ;
+  elody:fieldsFrom ui:BookUi ;
+  elody:fields (
+    em:title
+    [ sh:path em:isbn ; sh:minCount 1 ]
+    [ sh:path em:notes ; sh:datatype xsd:string ; sh:maxCount 1 ]
+    [ sh:path em:year ; elody:labelKey "metadata.labels.publication-year" ]
+  ) ;
+  elody:submit [ rdfs:label "actions.labels.create" ; elody:actionQuery "CreateEntity" ; elody:creationType "book" ; elody:icon "Create" ; elody:showsFormErrors true ] .

@@ -479,7 +479,10 @@ meta:CustomBulkOperationsShape a sh:NodeShape ;
 # (elody:PlatformForm) are referenced, not declared, and carry no shape
 meta:FormShape a sh:NodeShape ;
   sh:property
-    [ sh:path elody:shape ; sh:minCount 1 ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ;
+    # the fields: a shape, or a list of the type's properties (elody:fields) spelled out as one before parsing
+    [ sh:path elody:fields ; sh:maxCount 1 ] ,
+    [ sh:path elody:fieldsFrom ; sh:maxCount 1 ; sh:class elody:EntityUi ] ,
+    [ sh:path elody:shape ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ;
       sh:message "a form has one elody:shape holding its fields as property shapes" ] ,
     [ sh:path elody:submit ; sh:maxCount 1 ] ,
     [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
@@ -492,14 +495,16 @@ meta:FormShape a sh:NodeShape ;
     [ sh:path elody:formAction ; sh:node meta:FormActionShape ] ,
     [ sh:path elody:tab ; sh:node meta:FormTabShape ] ,
     [ sh:path elody:field ; sh:maxCount 0 ; sh:message "fields live on the form's shape as sh:property, not on the form" ] ;
-  # a form holds fields of its own, spreads a shared fields fragment, uploads, or has tabs
-  sh:or ( [ sh:property [ sh:path ( elody:shape sh:property ) ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldsSpread ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:upload ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:tab ; sh:minCount 1 ] ] ) ;
+  # a form holds fields of its own (a shape, or a list of the type's properties), spreads a shared fields fragment, uploads, or has tabs
+  sh:or ( [ sh:property [ sh:path ( elody:shape sh:property ) ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fields ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:fieldsSpread ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:upload ; sh:minCount 1 ] ] [ sh:property [ sh:path elody:tab ; sh:minCount 1 ] ] ) ;
   sh:message "a form holds at least one field, spreads a fields fragment, uploads, or has tabs" .
 
 meta:FormTabShape a sh:NodeShape ;
   sh:property
     [ sh:path sh:order ; sh:maxCount 1 ] ,
     [ sh:path elody:alias ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:fields ; sh:maxCount 1 ] ,
+    [ sh:path elody:fieldsFrom ; sh:maxCount 1 ; sh:class elody:EntityUi ] ,
     [ sh:path elody:shape ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] ,
     [ sh:path elody:fieldsSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:copyFromParent ; sh:maxCount 1 ; sh:node meta:CopyFromParentShape ] ,
@@ -562,7 +567,9 @@ meta:FieldsFragmentShape a sh:NodeShape ;
     [ sh:path elody:fragmentName ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:fieldsSpread ; sh:datatype xsd:string ] ,
     [ sh:path elody:fieldsSpreadAfter ; sh:datatype xsd:string ] ,
-    [ sh:path elody:shape ; sh:minCount 1 ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] .
+    [ sh:path elody:fields ; sh:maxCount 1 ] ,
+    [ sh:path elody:fieldsFrom ; sh:maxCount 1 ; sh:class elody:EntityUi ] ,
+    [ sh:path elody:shape ; sh:maxCount 1 ; sh:node meta:FormFieldsShape ] .
 
 meta:WindowFragmentShape a sh:NodeShape ;
   sh:property
