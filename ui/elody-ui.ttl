@@ -34,9 +34,9 @@
 <https://elody.eu/ns/ui> a owl:Ontology ;
   rdfs:label "Elody UI ontology"@en ;
   rdfs:comment "The platform-specific presentation terms of an Elody UI declaration, layered on SHACL 1.2 UI (shui:) and DASH (dash:). The standard subset of a declaration stays readable by any SHACL-UI tool; the elody: subset describes listings, view modes, panels, filters, actions and flows, which the standard has no terms for."@en ;
-  owl:versionInfo "0.3.0" ;
-  owl:versionIRI <https://elody.eu/ns/ui/0.3.0> ;
-  owl:priorVersion <https://elody.eu/ns/ui/0.2.0> ;
+  owl:versionInfo "0.4.0" ;
+  owl:versionIRI <https://elody.eu/ns/ui/0.4.0> ;
+  owl:priorVersion <https://elody.eu/ns/ui/0.3.0> ;
   owl:imports <http://www.w3.org/ns/shacl-ui/> , <http://datashapes.org/dash> ;
   vann:preferredNamespacePrefix "elody" ;
   vann:preferredNamespaceUri "https://elody.eu/ns/ui#" ;
@@ -3174,6 +3174,7 @@ elody:bareResults a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "bare results"@en ; rdfs:domain elody:ListQuery ; rdfs:range xsd:boolean ;
   rdfs:comment "true renders the entities document's results alone: no count, limit or __typename, and the results select nothing of their own (no id, uuid, type or inline type conditions); each result's fragments and listing are rendered directly under results (a map overlay reading id and a few values of every site)."@en .
+# ---- 0.4.0, batch 46: an overview page of the client's own (G-019) -----------------------------
 elody:detailAlone a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail alone"@en ; rdfs:domain elody:EntityUi ; rdfs:range xsd:boolean ;
