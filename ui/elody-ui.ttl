@@ -2994,3 +2994,95 @@ elody:panelAsField a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "panel as field"@en ; rdfs:domain elody:PanelField ; rdfs:range xsd:boolean ;
   rdfs:comment "true shows a property that is a panel element elsewhere (a rich text element) as a plain metadata field in this panel alone (a preview's panel reading the value)."@en .
+elody:QueryRoot a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "query root"@en ;
+  rdfs:comment "Enumeration of QueryRoots: what a list query asks the API for."@en .
+elody:EntitiesRoot a elody:QueryRoot ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "entities"@en ;
+  rdfs:comment "A page of entities (Entities(type, limit, skip, searchValue, ...)): the default."@en .
+elody:SingleEntityRoot a elody:QueryRoot ; rdfs:isDefinedBy <https://elody.eu/ns/ui> ; rdfs:label "single entity"@en ;
+  rdfs:comment "One entity by id and type (Entity(id: $id, type: $type)), its results the per-type selections: the document a hierarchy list loads."@en .
+elody:queryRoot a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "query root"@en ; rdfs:domain elody:ListQuery ; rdfs:range elody:QueryRoot ;
+  rdfs:comment "What the list query asks for; unsaid, a page of entities (elody:EntitiesRoot)."@en .
+elody:cardCustomValue a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card custom value"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
+  rdfs:comment "A constant shown on the card in place of the property's value (metaData { label customValue(input: ...) }): a listing's type name on a hierarchy's cards."@en .
+elody:taggingQuery a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tagging query"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( sh:PropertyShape elody:WysiwygElement ) ] ; rdfs:range elody:ListQuery ;
+  rdfs:comment "The list query a rich text element's tagging searches (taggingConfiguration { customQuery(input: ...) })."@en .
+elody:ReplaceCharacters a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "replace characters"@en ;
+  rdfs:comment "A replacement applied to tagged content before it is matched (replaceCharacterFromTagSettings): a regex and what replaces it."@en .
+elody:replaceCharacters a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "replace characters"@en ; rdfs:domain elody:Taggable ; rdfs:range elody:ReplaceCharacters ;
+  rdfs:comment "A replacement on a taggable, in sh:order: elody:regex (as the client writes it, /.../g) and elody:replacement."@en .
+elody:regex a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "regex"@en ; rdfs:domain elody:ReplaceCharacters ; rdfs:range xsd:string ;
+  rdfs:comment "The regular expression of a replacement (replacementCharactersRegex)."@en .
+elody:replacement a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "replacement"@en ; rdfs:domain elody:ReplaceCharacters ; rdfs:range xsd:string ;
+  rdfs:comment "What replaces a match (characterToReplaceWith), the empty string allowed."@en .
+elody:attributeKeys a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "attribute keys"@en ; rdfs:domain [ a owl:Class ; owl:unionOf ( elody:Taggable elody:TagConfigurationByEntity ) ] ;
+  rdfs:comment "The metadata keys set as attributes of the tag (metadataKeysToSetAsAttribute), an RDF list."@en .
+elody:TagConfigurationByEntity a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tag configuration by entity"@en ;
+  rdfs:comment "Tags configured by a related entity (tagConfigurationByEntity): the entity type and relation holding the configuration, the keys of the tag and its colour, the attribute keys, and the attribute deciding the configuration."@en .
+elody:tagConfigurationByEntity a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tag configuration by entity"@en ; rdfs:domain elody:Taggable ; rdfs:range elody:TagConfigurationByEntity ;
+  rdfs:comment "The taggable's configuration entity: elody:entityType, elody:relationType, elody:tagKey, elody:colorKey, elody:attributeKeys, elody:secondaryAttribute."@en .
+elody:tagKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "tag key"@en ; rdfs:domain elody:TagConfigurationByEntity ; rdfs:range xsd:string ;
+  rdfs:comment "The configuration entity's metadata key holding the tag (tagMetadataKey)."@en .
+elody:colorKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "colour key"@en ; rdfs:domain elody:TagConfigurationByEntity ; rdfs:range xsd:string ;
+  rdfs:comment "The configuration entity's metadata key holding the tag's colour (colorMetadataKey)."@en .
+elody:secondaryAttribute a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "secondary attribute"@en ; rdfs:domain elody:TagConfigurationByEntity ; rdfs:range xsd:string ;
+  rdfs:comment "The attribute that decides which configuration applies (secondaryAttributeToDetermineTagConfig)."@en .
+elody:cardCopyToClipboard a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card copy to clipboard"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:boolean ;
+  rdfs:comment "The card field offers copying its value (copyToClipboard(input: true) under teaserMetadata); elody:copyToClipboard is the panel's."@en .
+elody:TransliterationConfig a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "transliteration configuration"@en ;
+  rdfs:comment "How a rich text element transliterates its content (transliterationConfig): switched on by a property, with one item per mapping."@en .
+elody:transliteration a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "transliteration"@en ; rdfs:domain sh:PropertyShape ; rdfs:range elody:TransliterationConfig ;
+  rdfs:comment "The rich text panel element's transliteration: elody:enabledByProperty and elody:transliterationItem nodes."@en .
+elody:enabledByProperty a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "enabled by property"@en ; rdfs:domain elody:TransliterationConfig ; rdfs:range xsd:string ;
+  rdfs:comment "The entity property that switches transliteration on (enabledByProperty)."@en .
+elody:TransliterationItem a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "transliteration item"@en ;
+  rdfs:comment "One transliteration (transliterationConfigItem): its alias, label, mapping key, and whether spaces are inserted."@en .
+elody:transliterationItem a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "transliteration item"@en ; rdfs:domain elody:TransliterationConfig ; rdfs:range elody:TransliterationItem ;
+  rdfs:comment "A transliteration of the configuration, in sh:order: elody:alias, elody:labelKey, elody:mappingKey, elody:insertSpaces."@en .
+elody:mappingKey a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "mapping key"@en ; rdfs:domain elody:TransliterationItem ; rdfs:range xsd:string ;
+  rdfs:comment "The key of the transliteration mapping (mappingKey)."@en .
+elody:insertSpaces a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "insert spaces"@en ; rdfs:domain elody:TransliterationItem ; rdfs:range xsd:boolean ;
+  rdfs:comment "Whether the transliteration inserts spaces (insertSpaces: true)."@en .

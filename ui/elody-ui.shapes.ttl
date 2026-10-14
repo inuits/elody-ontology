@@ -154,6 +154,7 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:colSpan ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:cardLineClamp ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:cardLinkText ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    [ sh:path elody:cardCopyToClipboard ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:listingValueLabelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:technicalOrigin ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:readOnlyUnless ; sh:datatype xsd:string ] ,
@@ -173,6 +174,10 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:extensions ; sh:maxCount 1 ] ,
     [ sh:path elody:showLineNumbers ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:editorStyles ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:taggingQuery ; sh:maxCount 1 ; sh:node meta:ListQueryShape ] ,
+    [ sh:path elody:transliteration ; sh:maxCount 1 ; sh:node meta:TransliterationShape ] ,
+    [ sh:path elody:taggable ; sh:node meta:TaggableShape ] ,
+    [ sh:path elody:cardCustomValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:revealQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:infoPanel ; sh:maxCount 1 ; sh:node meta:InfoPanelShape ] ,
     [ sh:path elody:nonEditable ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -699,6 +704,7 @@ meta:ListQueryShape a sh:NodeShape ;
   sh:message "a list query names its entities document (elody:queryName) or its filters document (elody:filtersQuery)" ;
   sh:property
     [ sh:path elody:queryName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:queryRoot ; sh:maxCount 1 ; sh:class elody:QueryRoot ] ,
     [ sh:path elody:filtersQuery ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:filtersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:facets ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
@@ -956,8 +962,16 @@ meta:GraphElementShape a sh:NodeShape ; sh:targetClass elody:GraphElement ;
 
 meta:HierarchyListElementShape a sh:NodeShape ; sh:targetClass elody:HierarchyListElement ;
   sh:property
-    [ sh:path elody:hierarchyLevel ; sh:minCount 1 ; sh:message "a hierarchy list declares at least one level" ] ,
-    [ sh:path elody:centerCoordinatesKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+    [ sh:path elody:hierarchyLevel ; sh:minCount 1 ; sh:node meta:HierarchyLevelShape ; sh:message "a hierarchy list declares at least one level" ] ,
+    [ sh:path elody:centerEntityType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:centerCoordinatesKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:can ; sh:datatype xsd:string ] .
+
+meta:HierarchyLevelShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:key ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:entityType ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:ManifestViewerElementShape a sh:NodeShape ; sh:targetClass elody:ManifestViewerElement ;
   sh:property
@@ -994,7 +1008,39 @@ meta:TaggableShape a sh:NodeShape ;
     [ sh:path elody:triggerCharacter ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:triggerMinCharacters ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:flow ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
-    [ sh:path elody:flowButtonLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+    [ sh:path elody:flowButtonLabel ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:form ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ] ,
+    [ sh:path elody:replaceCharacters ; sh:node meta:ReplaceCharactersShape ] ,
+    [ sh:path elody:attributeKeys ; sh:maxCount 1 ] ,
+    [ sh:path elody:tagConfigurationByEntity ; sh:maxCount 1 ; sh:node meta:TagConfigurationByEntityShape ] .
+
+meta:TransliterationShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:enabledByProperty ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:transliterationItem ; sh:minCount 1 ; sh:node meta:TransliterationItemShape ] .
+
+meta:TransliterationItemShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:alias ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:mappingKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:insertSpaces ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:ReplaceCharactersShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:regex ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:replacement ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:TagConfigurationByEntityShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:entityType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:relationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:tagKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:colorKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:attributeKeys ; sh:maxCount 1 ] ,
+    [ sh:path elody:secondaryAttribute ; sh:maxCount 1 ; sh:datatype xsd:string ] .
 
 meta:CreateFieldShape a sh:NodeShape ;
   sh:property

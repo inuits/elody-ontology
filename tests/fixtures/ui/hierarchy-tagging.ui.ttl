@@ -1,0 +1,47 @@
+# 0.3.0 batch 42 (G-042): a hierarchy list element loading a single-entity query whose per-type
+# results are inline listings (a card constant, a copy button on the card), and a rich text panel
+# element that tags entities (a tagging query, replacements, attributes, a configuration entity)
+# and transliterates.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:InscriptionUi a elody:EntityUi ; elody:graphqlType "Inscription" ; elody:emit "file" ; elody:form ui:GetWordCreateForm ;
+  sh:property [ sh:path em:title ; sh:order 1 ; sh:group ui:InscriptionUi-info ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ,
+    [ sh:path em:reading ; sh:order 2 ; sh:group ui:InscriptionUi-info ; shui:viewer shui:HTMLViewer ; elody:labelKey "metadata.labels.reading" ; elody:detailOnly true ;
+      elody:extensions ( elody:DocExtension elody:ParagraphExtension ) ; elody:showLineNumbers true ;
+      elody:taggingQuery ui:GetTagEntities ;
+      elody:taggable [ sh:order 1 ; elody:entityType "word" ; elody:relationType "refWords" ; elody:tagFilterKey "aicap:1|properties.original_word.value" ; elody:form ui:GetWordCreateForm ;
+        elody:replaceCharacters [ sh:order 1 ; elody:regex "/<br>/g" ; elody:replacement " " ] ; elody:attributeKeys ( "lemma" ) ;
+        elody:tagConfigurationByEntity [ elody:entityType "epi_doc_tag" ; elody:relationType "refEpiDocTag" ; elody:tagKey "tag" ; elody:colorKey "color" ; elody:attributeKeys ( "type" ) ; elody:secondaryAttribute "type" ] ] ;
+      elody:transliteration [ elody:enabledByProperty "enableTransliteration" ;
+        elody:transliterationItem [ sh:order 1 ; elody:alias "latin" ; elody:labelKey "Latin" ; elody:mappingKey "ArabicToLatin" ] ;
+        elody:transliterationItem [ sh:order 2 ; elody:alias "arabic" ; elody:labelKey "Arabic" ; elody:mappingKey "LatinToArabic" ; elody:insertSpaces true ] ] ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Info" ; elody:panel ui:InscriptionUi-info ] ,
+      [ a elody:HierarchyListElement ; rdfs:label "navigation.hierarchy" ; sh:order 2 ; elody:alias "hierarchyList" ; elody:collapsed false ;
+        elody:hierarchyLevel [ sh:order 1 ; elody:key "refPoint" ; elody:entityType "point" ] ; elody:hierarchyLevel [ sh:order 2 ; elody:key "refSite" ; elody:entityType "site" ] ;
+        elody:listQuery ui:GetEntityForHierarchy ; elody:can "read:gps_coordinates:field" ; elody:centerEntityType "point" ; elody:centerCoordinatesKey "gps_coordinates" ] ] ] .
+
+ui:InscriptionUi-info a sh:PropertyGroup ; rdfs:label "Info"@en ; sh:order 1 ; elody:alias "info" ; elody:labelKey "panel-labels.info" ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .
+
+ui:GetWordCreateForm a elody:Form ; elody:queryName "GetWordCreateForm" ; elody:alias "word" ;
+  elody:shape [ sh:property [ sh:path em:original_word ; sh:order 1 ; sh:datatype xsd:string ; elody:labelKey "metadata.labels.original-word" ] ] .
+
+ui:GetTagEntities a elody:ListQuery ; elody:queryName "GetTagEntities" ;
+  elody:result [ elody:graphqlType "Word" ; sh:order 1 ; elody:fragment "minimalWord" ] .
+
+ui:GetEntityForHierarchy a elody:ListQuery ; elody:queryName "GetEntityForHierarchy" ; elody:queryRoot elody:SingleEntityRoot ;
+  elody:result [ elody:graphqlType "Point" ; sh:order 1 ; elody:fragment "minimalBaseEntity" ; elody:listing ui:PointInGetEntityForHierarchyUi ] .
+
+ui:PointInGetEntityForHierarchyUi a elody:EntityUi ; elody:graphqlType "Point" ; elody:documentName "PointInGetEntityForHierarchy" ; elody:emit "inline" ; elody:relationValues true ;
+  sh:property [ sh:path em:type ; sh:order 1 ; elody:cardCustomValue "Point" ; elody:labelKey "metadata.labels.type" ; elody:readsValue false ] ,
+    [ sh:path em:id ; sh:order 2 ; elody:source elody:RootSource ; elody:labelKey "metadata.labels.id" ; elody:listingOnly true ] ,
+    [ sh:path em:gps_coordinates ; sh:order 3 ; elody:cardCopyToClipboard true ; elody:labelKey "metadata.labels.gps-coordinates" ; elody:listingOnly true ] ,
+    [ sh:path em:id ; sh:order 4 ; elody:alias "title" ; shui:propertyRole shui:LabelRole ; elody:source elody:RootSource ; elody:teaser false ; elody:listingOnly true ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] .
