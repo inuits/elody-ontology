@@ -3200,15 +3200,15 @@ elody:defaultRule a owl:AnnotationProperty ;
 elody:listingFields a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "listing fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
-  rdfs:comment "The property shapes (by sh:path) whose values the listing reads, as a list. With elody:detailFields, the per-property flags follow: a property outside the list is elody:detailOnly, one in it but outside elody:detailFields is elody:listingOnly, one in neither reads no value (elody:readsValue false). Left out: the flags on the properties say it. An explicit flag wins."@en .
+  rdfs:comment "The property shapes (by sh:path) whose values the listing reads, as a list. With elody:detailFields, the per-property flags follow: a property outside the list is elody:detailOnly, one in it but outside elody:detailFields is elody:listingOnly, one in neither reads no value (elody:readsValue false). Left out: the flags on the properties say it. An explicit flag wins. An item is the sh:path IRI, matching the shapes of that path, or the node of a property shape declared by name (sh:property ui:X, two shapes of one key), matching that shape alone."@en .
 elody:detailFields a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "detail fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
-  rdfs:comment "The property shapes (by sh:path) whose values the detail page reads, as a list; see elody:listingFields."@en .
+  rdfs:comment "The property shapes (by sh:path) whose values the detail page reads, as a list; see elody:listingFields. An item is the sh:path IRI, matching the shapes of that path, or the node of a property shape declared by name (sh:property ui:X, two shapes of one key), matching that shape alone."@en .
 elody:cardFields a owl:ObjectProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "card fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
-  rdfs:comment "The property shapes (by sh:path) the card shows (teaserMetadata), as a list: a listed property is on the card, an unlisted one is elody:teaser false. Left out: every property read in the listing is on the card. An explicit elody:teaser wins."@en .
+  rdfs:comment "The property shapes (by sh:path) the card shows (teaserMetadata), as a list: a listed property is on the card, an unlisted one is elody:teaser false. Left out: every property read in the listing is on the card. An explicit elody:teaser wins. An item is the sh:path IRI, matching the shapes of that path, or the node of a property shape declared by name (sh:property ui:X, two shapes of one key), matching that shape alone."@en .
 # The contexts the platform's bulk operations share, as named nodes a declaration references with elody:context.
 elody:ReadModeNoneSelectedContext a elody:BulkOperationContext ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;

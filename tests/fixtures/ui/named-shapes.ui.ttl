@@ -1,0 +1,43 @@
+@prefix elody: <https://elody.eu/ns/ui#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix shui:  <http://www.w3.org/ns/shacl-ui/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:    <https://example.org/named-shapes/ui#> .
+@prefix em:    <https://elody.io/ns/metadata#> .
+
+# Batch 51 fixture: two shapes of one key (a twin): the listing reads the key "name" under the alias "title",
+# the detail page reads "name" as itself. Declared by name (sh:property ui:TenantUi-field-title), the type's
+# lists name one and not the other; a list item that is a path matches the shapes declared inline.
+
+ui:TenantUi
+  a elody:EntityUi ;
+  elody:graphqlType "Tenant" ;
+  elody:emit "file" ;
+  elody:listingFields ( em:id ui:TenantUi-field-title ) ;
+  elody:detailFields ( em:id ui:TenantUi-field-name em:title ) ;
+  elody:cardFields ( ui:TenantUi-field-title ) ;
+  sh:property
+    [ sh:path em:id ; sh:order 1 ] ,
+    ui:TenantUi-field-title ,
+    ui:TenantUi-field-name ,
+    [ sh:path em:title ; sh:order 4 ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ; elody:size elody:Width100 ;
+      elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.info" ; sh:order 1 ; elody:panel ui:TenantUi-info ] ] ] .
+
+ui:TenantUi-info
+  a elody:Panel ;
+  rdfs:label "panel-labels.info" ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:name , em:title .
+
+ui:TenantUi-field-title a sh:PropertyShape ;
+  sh:path em:name ; sh:order 2 ; elody:alias "title" ; shui:propertyRole shui:LabelRole .
+
+ui:TenantUi-field-name a sh:PropertyShape ;
+  sh:path em:name ; sh:order 3 .
