@@ -1,0 +1,30 @@
+# 0.3.0 batch 37 (G-001): the platform document's variants. The bulk-edit relation form flat and
+# with a field of the client's own, the mediafiles read bare, the filters document under its other
+# spelling, the history listing of the types the app lists, and the map's geo filter.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:WorkUi a elody:EntityUi ; elody:graphqlType "Work" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; sh:group ui:WorkUi-info ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Info" ; elody:panel ui:WorkUi-info ] ] ] ;
+  elody:filter [ sh:order 1 ; elody:alias "type" ; dash:hidden true ; sh:defaultValue "work" ; elody:filterKind elody:TypeFilter ] .
+
+ui:WorkUi-info a sh:PropertyGroup ; rdfs:label "Info"@en ; sh:order 1 ; elody:alias "info" ; elody:labelKey "panel-labels.info" ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .
+
+ui:MediaFileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "MediaFile" ; elody:emit "file" ;
+  sh:property [ sh:path em:original_filename ; sh:order 1 ; elody:alias "title" ; elody:source elody:RootSource ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.filename" ] .
+
+ui:FixtureApp a elody:App ; elody:documentName "fixture" ; elody:filePath "queries/fixture.queries.ts" ;
+  elody:platformDocument "GetBulkOperationsRelationForm" , "FetchMediafilesOfEntity" , "GetAdvancedFilters" , "GetHistoryEntities" , "GetGeoFilterForMap" ;
+  elody:relationFormFlatPanel true ;
+  elody:relationFormField [ sh:order 1 ; elody:alias "institution" ; elody:key "owner" ; elody:labelKey "metadata.labels.owner" ; elody:clientInputField "institutionTypeField" ] ;
+  elody:geoFilterKey "gps_coordinates" ;
+  elody:typeEntry [ elody:platformDocument "FetchMediafilesOfEntity" ; elody:graphqlType "MediaFileEntity" ; elody:bare true ] ,
+                  [ elody:platformDocument "GetHistoryEntities" ; elody:graphqlType "Work" ; elody:fragmentName "fullWork" ] .

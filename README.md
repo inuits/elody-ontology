@@ -6,7 +6,7 @@ looks like. Redmine epic #165964.
 
 | Directory | Ontology | Namespace | Status |
 |---|---|---|---|
-| `ui/` | the **UI declaration vocabulary**: an entity's interface — listings, view modes, panels, forms, filters, actions, flows, linked-data sources, Elody's widgets — layered on W3C SHACL 1.2 UI (`shui:`) and DASH (`dash:`) | `https://elody.eu/ns/ui#` (`elody:`) | 0.2.0 |
+| `ui/` | the **UI declaration vocabulary**: an entity's interface — listings, view modes, panels, forms, filters, actions, flows, linked-data sources, Elody's widgets — layered on W3C SHACL 1.2 UI (`shui:`) and DASH (`dash:`) | `https://elody.eu/ns/ui#` (`elody:`) | 0.3.0 |
 | — | the **backend object configuration**: what collection-api's object configurations say in Python today (CRUD behaviour, validation, hooks, serialisation, storage) | to be chosen | next phase |
 
 Each ontology has its own directory, namespace and version, and comes with
@@ -64,7 +64,7 @@ version at its `owl:versionIRI`. Until then the namespace IRIs do not resolve.
 ## Using it
 
 Consumers read the files from the installed package (`elody-ontology/ui/…`).
-`elody-generator` depends on a tagged version (`github:inuits/elody-ontology#v0.2.0`);
+`elody-generator` depends on a tagged version (`github:inuits/elody-ontology#v0.3.0`);
 to try an unreleased change it reads a checkout through `ELODY_ONTOLOGY`, or this
 checkout next to it at the root of elody-common.
 

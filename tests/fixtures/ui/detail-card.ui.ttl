@@ -1,0 +1,20 @@
+# 0.3.0 batch 38 (G-043): a card the detail fragment carries as well (teaserMetadata inside
+# full<X>), with fields of its own and a menu in the buttons form.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:ArchivalCollectionUi a elody:EntityUi ; elody:graphqlType "ArchivalCollection" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; sh:group ui:ArchivalCollectionUi-info ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ,
+    [ sh:path em:externalLink ; sh:order 2 ; elody:labelKey "metadata.labels.external-link" ] ;
+  elody:detailCard [ elody:field em:title ;
+    elody:contextMenu [ elody:menuInButtons true ; elody:action [ sh:order 1 ; elody:alias "doLinkAction" ; elody:actionForm "doLinkAction" ; rdfs:label "contextMenu.contextMenuLinkAction.followLink" ; elody:icon "AngleRight" ] ] ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Info" ; elody:panel ui:ArchivalCollectionUi-info ] ] ] .
+
+ui:ArchivalCollectionUi-info a sh:PropertyGroup ; rdfs:label "Info"@en ; sh:order 1 ; elody:alias "info" ; elody:labelKey "panel-labels.info" ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .

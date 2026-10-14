@@ -1,0 +1,287 @@
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <https://example.org/last-leftovers/ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+# Batch 45 fixture: a unit on a field, a detail that spreads its listing, a filter asking a bare parentKey back and
+# refusing the old option fetch, a one-of validation, a conditional bulk operation set with allowed conditions,
+# a single-entity read with a fixed type and collection, and an entities document reading bare results.
+
+ui:AreaUi
+  a elody:EntityUi ;
+  elody:graphqlType "Area" ;
+  elody:emit "file" ;
+  elody:detailSpreadsListing true ;
+  elody:listQuery ui:GetAreaRefSitesWkt ;
+  sh:property
+    [ sh:path em:name ;
+    sh:name "name"@en ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.name" ;
+    elody:listingOnly true ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width50 ;
+      elody:element
+        [ a elody:MapElement ;
+        rdfs:label "element-labels.map-element" ;
+        sh:order 1 ;
+        elody:collapsed false ;
+        elody:mapType elody:WktMap ;
+        elody:center "gps_coordinates" ;
+        elody:wktKey "map_location" ;
+        elody:config [ elody:key "overlayWkt" ; elody:value [ elody:config [ elody:key "query" ; elody:value "GetAreaRefSitesWkt" ] , [ elody:key "entityType" ; elody:value "site" ] , [ elody:key "wktKey" ; elody:value "map_location" ] ] ] ] ] ] .
+
+ui:GetAreaRefSitesWkt
+  a elody:ListQuery ;
+  elody:queryName "GetAreaRefSitesWkt" ;
+  elody:bareResults true ;
+  elody:result
+    [ elody:graphqlType "Area" ; sh:order 1 ; elody:listing ui:AreaInGetAreaRefSitesWktUi ] .
+
+ui:ExpressionUi
+  a elody:EntityUi ;
+  elody:graphqlType "Expression" ;
+  elody:emit "file" ;
+  elody:relationValues false ;
+  sh:property
+    [ sh:path em:title ;
+    sh:name "title"@en ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.title" ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width50 ;
+      elody:element
+        [ a elody:ListElement ;
+        rdfs:label "element-labels.manifestations" ;
+        sh:order 1 ;
+        elody:alias "manifestations" ;
+        elody:collapsed false ;
+        elody:entityTypes "manifestation" ;
+        elody:relationType "refExpressions" ;
+        elody:fetchDeepRelations [ elody:strategy "useMethodsAndFetch" ; elody:entityTypes "work_serial" ; elody:recursions 2 ; elody:deepRoute [ sh:order 1 ; elody:relation "relationValues.refWork.key" ; elody:keys ( "vlacc:1|identifiers" ) ; elody:entityTypes "work_serial" ] ] ;
+        elody:searchInput elody:AdvancedSearchInput ;
+        elody:customQuery "GetManifestations" ;
+        elody:customBulkOperations ui:GetBulkOperationsForManifestationsInExpression ] ] ] ;
+  elody:customBulkOperations ui:GetBulkOperationsForManifestationsInExpression .
+
+ui:GetBulkOperationsForManifestationsInExpression
+  elody:queryName "GetBulkOperationsForManifestationsInExpression" ;
+  elody:conditionVariable "work_type" ;
+  elody:operation
+    [ rdfs:label "bulk-operations.create-serial" ;
+    sh:order 1 ;
+    elody:icon "PlusCircle" ;
+    elody:operationKind elody:AddRelationOperation ;
+    elody:primary true ;
+    elody:allowCondition "work_serial" ;
+    elody:context
+      [ elody:selection elody:NoneSelected ;
+      elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+    elody:modal
+      [ elody:modalKind elody:DynamicFormModal ;
+      elody:form ui:GetManifestationSerialCreateForm ;
+      elody:formRelationType "refExpressions" ;
+      elody:closeConfirmation true ;
+      elody:permission elody:CanCreate ;
+      elody:navigateAfterCreation "detailPage" ] ] ,
+    [ rdfs:label "bulk-operations.create-map" ;
+    sh:order 2 ;
+    elody:icon "PlusCircle" ;
+    elody:operationKind elody:AddRelationOperation ;
+    elody:primary true ;
+    elody:allowCondition "work_map" ;
+    elody:context
+      [ elody:selection elody:NoneSelected ;
+      elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ] ;
+    elody:modal
+      [ elody:modalKind elody:DynamicFormModal ;
+      elody:form ui:GetManifestationMapCreateForm ;
+      elody:formRelationType "refExpressions" ;
+      elody:closeConfirmation true ;
+      elody:permission elody:CanCreate ;
+      elody:navigateAfterCreation "detailPage" ] ] .
+
+ui:TenantUi
+  a elody:EntityUi ;
+  elody:graphqlType "Tenant" ;
+  elody:emit "file" ;
+  elody:relationValues false ;
+  elody:filtersFragmentName "tenantFilters" ;
+  sh:property
+    [ sh:path em:name ;
+    sh:name "name"@en ;
+    sh:order 1 ;
+    elody:labelKey "metadata.labels.name" ] ,
+    [ sh:path em:dateOfCreation ;
+    sh:name "date-of-creation"@en ;
+    sh:order 2 ;
+    sh:maxCount 1 ;
+    elody:validationRule "has_one_of_required_metadata" ;
+    elody:validationAmount 1 ;
+    elody:validationFields ( "dateOfCreation" "dateOfPublication" ) ;
+    shui:editor shui:DatePickerEditor ;
+    elody:labelKey "metadata.labels.date-of-creation" ;
+    elody:unit elody:DateDefault ;
+    elody:detailOnly true ;
+    elody:readsValue false ] ,
+    [ sh:path em:title ;
+    sh:name "title"@en ;
+    sh:order 3 ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.title" ;
+    elody:detailOnly true ;
+    elody:readsValue false ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width50 ;
+      elody:element
+        [ a elody:WindowElement ;
+        rdfs:label "element-labels.info" ;
+        sh:order 1 ;
+        elody:alias "info" ;
+        elody:panel ui:TenantUi-panel ] ] ] ;
+  elody:filter
+    [ sh:order 1 ;
+    elody:alias "type" ;
+    dash:hidden true ;
+    sh:defaultValue "tenant" ;
+    elody:filterKind elody:TypeFilter ] ,
+    [ rdfs:label "metadata.labels.title" ;
+    sh:order 2 ;
+    elody:alias "title" ;
+    elody:key "dams:1|metadata.title.value" ;
+    elody:displayedByDefault true ;
+    elody:asksBack "parentKey" ;
+    elody:filterKind elody:TextFilter ] ,
+    [ rdfs:label "metadata.labels.relation" ;
+    sh:order 3 ;
+    elody:alias "relation" ;
+    elody:key "isTenantFor" ;
+    elody:parentFilterKey "relations" ;
+    elody:displayedByDefault true ;
+    elody:useOldWayToFetchOptions false ;
+    elody:optionsType "user" ;
+    elody:filterKind elody:SelectionFilter ;
+    elody:keyAsList false ] .
+
+ui:TenantUi-panel
+  a elody:Panel ;
+  rdfs:label "panel-labels.info" ;
+  sh:order 1 ;
+  elody:alias "panel" ;
+  elody:collapsed false ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:dateOfCreation , em:title .
+
+ui:TokenUi
+  a elody:EntityUi ;
+  elody:graphqlType "Token" ;
+  elody:emit "file" ;
+  elody:relationValues false ;
+  elody:listQuery ui:GetTokenSecret ;
+  sh:property
+    [ sh:path em:name ;
+    sh:name "name"@en ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:labelKey "metadata.labels.name" ] ,
+    [ sh:path em:_key ;
+    sh:name "token-key"@en ;
+    sh:order 2 ;
+    elody:copyToClipboard true ;
+    elody:masked true ;
+    elody:revealQuery "GetTokenSecret" ;
+    elody:labelKey "metadata.labels.token-key" ;
+    elody:detailOnly true ;
+    elody:readsValue false ] ,
+    [ sh:path em:last_activity_at ;
+    sh:name "last-activity"@en ;
+    sh:order 3 ;
+    elody:labelKey "metadata.labels.last-activity" ;
+    elody:unit elody:DatetimeDefault ;
+    elody:detailOnly true ;
+    elody:readsValue false ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ;
+      elody:size elody:Width50 ;
+      elody:element
+        [ a elody:WindowElement ;
+        rdfs:label "element-labels.secret" ;
+        sh:order 1 ;
+        elody:alias "secret" ;
+        elody:panel ui:TokenUi-panel ] ] ] .
+
+ui:TokenUi-panel
+  a elody:Panel ;
+  rdfs:label "panel-labels.secret" ;
+  sh:order 1 ;
+  elody:alias "panel" ;
+  elody:collapsed false ;
+  dash:readOnly true ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:_key , em:last_activity_at .
+
+ui:GetTokenSecret
+  a elody:ListQuery ;
+  elody:queryName "GetTokenSecret" ;
+  elody:queryRoot elody:SingleEntityRoot ;
+  elody:rootType "token" ;
+  elody:rootCollection "tokens" ;
+  elody:result
+    [ elody:graphqlType "Token" ; sh:order 1 ; elody:listing ui:TokenInGetTokenSecretUi ] .
+
+ui:TokenInGetTokenSecretUi
+  a elody:EntityUi ;
+  elody:graphqlType "Token" ;
+  elody:documentName "TokenInGetTokenSecret" ;
+  elody:emit "inline" ;
+  sh:property
+    [ sh:path em:_key ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:teaser false ;
+    elody:listingOnly true ] .
+
+ui:AreaInGetAreaRefSitesWktUi
+  a elody:EntityUi ;
+  elody:graphqlType "Area" ;
+  elody:documentName "AreaInGetAreaRefSitesWkt" ;
+  elody:emit "inline" ;
+  elody:idField true ;
+  sh:property
+    [ sh:path em:id ;
+    sh:order 1 ;
+    shui:propertyRole shui:LabelRole ;
+    elody:source elody:RootSource ;
+    elody:teaser false ;
+    elody:listingOnly true ] ,
+    [ sh:path em:name ;
+    sh:order 2 ;
+    elody:teaser false ;
+    elody:listingOnly true ] ,
+    [ sh:path em:map_location ;
+    sh:order 3 ;
+    elody:teaser false ;
+    elody:listingOnly true ] .
+
+# a document declared elsewhere (the platform document, or hand-written)
+ui:GetManifestationSerialCreateForm
+  elody:queryName "GetManifestationSerialCreateForm" .
+
+# a document declared elsewhere (the platform document, or hand-written)
+ui:GetManifestationMapCreateForm
+  elody:queryName "GetManifestationMapCreateForm" .

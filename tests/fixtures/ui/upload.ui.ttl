@@ -1,0 +1,43 @@
+# 0.3.0 batch 29 (G-018): upload forms, form tabs and form actions.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:AssetUi a elody:EntityUi ; elody:graphqlType "Asset" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:form ui:GetUploadEntitiesWithMediafiles , ui:GetReorderMediafilesForm , ui:GetEntityPickerFormWithUpload .
+
+# a CSV with its media files, uploaded with validation, preparation and upload steps
+ui:GetUploadEntitiesWithMediafiles a elody:Form ; elody:queryName "GetUploadEntitiesWithMediafiles" ; elody:alias "upload" ;
+  elody:shape [ ] ;
+  elody:upload [ sh:order 1 ; elody:uploadFlow elody:MediafilesWithRequiredCsvFlow ;
+    elody:uploadField [ sh:order 1 ; elody:alias "csvUpload" ; rdfs:label "upload-fields.labels.csv-upload" ; elody:uploadSize elody:SmallUpload ; elody:dryRun true ; elody:uploadKind elody:BatchUpload ;
+      elody:templateCsvs ( "upload-csv-template-media.csv" "upload-csv-template-map.csv" ) ; elody:infoLabelUrl "https://example.org/csv-import" ; elody:uploadInputField "baseCsvUploadField" ; elody:uploadRequired true ] ,
+    [ sh:order 2 ; elody:alias "fileUpload" ; rdfs:label "upload-fields.labels.file-upload" ; elody:uploadSize elody:NormalUpload ; elody:uploadKind elody:BatchUpload ; elody:uploadInputField "baseFileUploadField" ] ] ;
+  elody:formAction [ sh:order 2 ; elody:alias "uploadAction" ; rdfs:label "actions.labels.upload" ; elody:icon "Upload" ; elody:submitAction "upload" ; elody:showsFormErrors true ;
+    elody:progress [ elody:progressKind "progressSteps" ;
+      elody:progressStep [ sh:order 1 ; elody:alias "validationStep" ; rdfs:label "actions.progress-steps.validate" ; elody:stepKind "validate" ] ,
+                         [ sh:order 2 ; elody:alias "prepareStep" ; rdfs:label "actions.progress-steps.prepare" ; elody:stepKind "prepare" ] ,
+                         [ sh:order 3 ; elody:alias "uploadStep" ; rdfs:label "actions.progress-steps.upload" ; elody:stepKind "upload" ] ] ] .
+
+# a CSV downloaded through an endpoint, reordered and uploaded back
+ui:GetReorderMediafilesForm a elody:Form ; elody:queryName "GetReorderMediafilesForm" ; rdfs:label "navigation.make-reorder" ; elody:alias "formTab" ;
+  elody:shape [ ] ;
+  elody:formAction [ sh:order 1 ; elody:alias "downloadCsvAction" ; rdfs:label "actions.labels.download-csv" ; elody:icon "DownloadAlt" ; elody:submitAction "endpoint" ; elody:showsFormErrors false ;
+    elody:callsEndpoint [ elody:endpointName "/api/download/csv?return_type=mediafile" ; elody:endpointMethod "POST" ; elody:variables ( "parentId" ) ; elody:responseAction "downloadResponse" ] ] ;
+  elody:upload [ sh:order 2 ; elody:uploadFlow elody:CsvForReorderingFlow ;
+    elody:uploadField [ sh:order 1 ; elody:alias "csvUpload" ; rdfs:label "upload-fields.labels.csv-upload" ; elody:uploadSize elody:SmallUpload ; elody:dryRun false ; elody:uploadKind elody:ReorderEntitiesUpload ; elody:uploadInputField "csvUploadField" ; elody:uploadRequired true ] ] ;
+  elody:submit [ elody:alias "uploadCsvAction" ; rdfs:label "actions.labels.upload-csv" ; elody:icon "Upload" ; elody:submitAction "uploadCsvForReordening" ; elody:showsFormErrors true ] .
+
+# a picker with an upload tab, in a wide modal
+ui:GetEntityPickerFormWithUpload a elody:Form ; elody:queryName "GetEntityPickerFormWithUpload" ; elody:alias "import" ; elody:modalStyle elody:RightWideModal ;
+  elody:shape [ sh:property [ sh:path em:entityPicker ; sh:order 1 ; elody:labelKey "metadata.labels.entity-picker" ; elody:clientInputField "baseEntityPickerField" ] ] ;
+  elody:tab [ sh:order 1 ; elody:alias "upload" ; elody:upload [ sh:order 1 ; elody:uploadFlow elody:MediafilesOnlyFlow ;
+      elody:uploadField [ sh:order 1 ; elody:alias "fileUpload" ; rdfs:label "upload-fields.labels.file-upload" ; elody:uploadSize elody:NormalUpload ; elody:uploadKind elody:SingleUpload ; elody:uploadInputField "baseFileUploadField" ] ] ;
+    elody:formAction [ sh:order 2 ; elody:alias "uploadAction" ; rdfs:label "actions.labels.upload" ; elody:icon "Upload" ; elody:submitAction "upload" ; elody:showsFormErrors true ;
+      elody:progress [ elody:progressKind "progressSteps" ; elody:progressStep [ sh:order 1 ; elody:alias "prepareStep" ; rdfs:label "actions.progress-steps.prepare" ; elody:stepKind "prepare" ] , [ sh:order 2 ; elody:alias "uploadStep" ; rdfs:label "actions.progress-steps.upload" ; elody:stepKind "upload" ] ] ] ] .

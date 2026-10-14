@@ -1,0 +1,34 @@
+# 0.3.0 batch 21 (G-020): a file of shared fragments alone, a card twin with a menu, a card menu on a result.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:VlaccFragmentsUi a elody:EntityUi ; elody:graphqlType "Entity" ; elody:documentName "vlaccFragments" ; elody:emit "file" ; elody:fragmentsOnly true ; elody:filePath "queries/entities/vlaccFragments.queries.ts" ;
+  sh:property
+    [ sh:path em:created_at ; sh:order 1 ; elody:key "audit.created.at" ; elody:alias "created_at" ; elody:source elody:RootSource ; elody:labelKey "metadata.labels.created-at" ; elody:unit elody:DatetimeDefault ] ,
+    [ sh:path em:created_by ; sh:order 2 ; elody:key "audit.created.by" ; elody:alias "created_by" ; elody:source elody:RootSource ; elody:labelKey "metadata.labels.created-by" ; shui:viewer elody:LinkViewer ; elody:viewerArgument "user" ] ,
+    [ sh:path em:relation ; sh:order 3 ; elody:source elody:RelationMetadataSource ; elody:relationKey "refRelatedWorks" ; elody:readsHost true ; elody:labelKey "metadata.labels.work-work-relation-type" ; elody:colSpan 2 ; elody:cardField "relationMetaData" ; elody:cardEditable true ; elody:clientInputField "workRelationTypeField" ] ,
+    [ sh:path em:original_headtitle ; sh:order 4 ; elody:labelKey "metadata.labels.original-title" ; elody:colSpan 2 ; elody:readsValue false ] ,
+    [ sh:path em:created_at_panel ; sh:order 5 ; elody:key "created_at" ; elody:labelKey "metadata.labels.created-at" ; elody:unit elody:DatetimeDefault ; elody:readsValue false ] ,
+    [ sh:path em:created_by_panel ; sh:order 6 ; elody:key "created_by" ; elody:labelKey "metadata.labels.created-by" ; elody:readsValue false ] ,
+    [ sh:path em:type ; sh:order 7 ; elody:alias "typePillParent" ; elody:source elody:TypePillLabelSource ; elody:index 0 ; shui:viewer elody:PillViewer ; elody:labelKey "metadata.labels.parent-type" ] ,
+    [ sh:path em:type ; sh:order 8 ; elody:alias "typePillSub" ; elody:source elody:TypePillLabelSource ; elody:index 1 ; shui:viewer elody:PillViewer ; elody:viewerArgument "auto" ; elody:labelKey "metadata.labels.sub-type" ] ;
+  elody:valuesFragment
+    [ elody:fragmentName "entityAuditIntialValues" ; elody:cardFragmentName "entityAuditTeaserMetadata" ; elody:field em:created_at , em:created_by ] ,
+    [ elody:fragmentName "relatedWorksIntialValues" ; elody:cardFragmentName "relatedWorksTeaserMetadata" ; elody:field em:original_headtitle , em:relation ; elody:valuesField "lockedProperties" ;
+      elody:contextMenu [ elody:menuInButtons true ; elody:includeBasicActions true ; elody:menuSpread "linkAndDeleteEntityContextMenuActions" ] ] ,
+    [ elody:fragmentName "typePillsIntialValues" ; elody:cardFragmentName "typePillsTeaserMetadata" ; elody:fieldAlias "typePillParent" , "typePillSub" ; elody:cardShows "typePillSub" ] ;
+  elody:panelFragment [ elody:fragmentName "entityAuditMetadata" ; elody:field em:created_at_panel , em:created_by_panel ] ;
+  elody:filtersFragment [ elody:fragmentName "entityAuditFilters" ;
+    elody:filter [ sh:order 1 ; elody:alias "created_at" ; rdfs:label "metadata.labels.created-at" ; elody:key "vlacc:1|audit.created.at" ; elody:filterKind elody:DateFilter ; elody:showTime true ; elody:displayedByDefault true ; elody:showTooltip true ] ] .
+
+ui:WorkUi a elody:EntityUi ; elody:graphqlType "Work" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:element [ a elody:ListElement ; sh:order 1 ; rdfs:label "l" ; elody:alias "manifestations" ; elody:collapsed false ; elody:entityTypes "manifestation" ; elody:listQuery ui:GetManifestationsInWork ] ] ] .
+ui:GetManifestationsInWork a elody:ListQuery ; elody:queryName "GetManifestationsInWork" ;
+  elody:result [ elody:graphqlType "ManifestationSerial" ; sh:order 1 ; elody:fragment "minimalManifestationSerial" ; elody:cardMenuSpread "linkAndDeleteEntityContextMenuActions" ] .

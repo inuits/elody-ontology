@@ -1,0 +1,44 @@
+# 0.3.0 batch 41 (G-029): field, filter and element extras. A selection filter's options limit, a
+# hidden form field taking its value from a related entity, a copy-from-parent button, an info
+# panel on a field and on a wysiwyg panel element, a masked secret with its reveal query, and a
+# list element shown on a condition.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:TokenUi a elody:EntityUi ; elody:graphqlType "Token" ; elody:emit "file" ; elody:form ui:GetTokenCreateForm ;
+  sh:property [ sh:path em:title ; sh:order 1 ; sh:group ui:TokenUi-secret ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ,
+    [ sh:path em:_key ; sh:order 2 ; sh:group ui:TokenUi-secret ; elody:source elody:RootSource ; elody:labelKey "metadata.labels.token-key" ; elody:masked true ; elody:revealQuery "GetTokenSecret" ; elody:copyToClipboard true ;
+      elody:infoPanel [ elody:infoTitle "info.token-secret-title" ; elody:infoContent "info.token-secret-content" ] ; elody:detailOnly true ] ,
+    [ sh:path em:reading ; sh:order 3 ; sh:group ui:TokenUi-secret ; shui:viewer shui:HTMLViewer ; elody:extensions ( elody:StarterKitExtension ) ; elody:showLineNumbers false ; elody:labelKey "metadata.labels.reading" ;
+      elody:infoPanel [ elody:infoTitle "metadata.labels.editorial-conventions" ; elody:infoContent "<ul>\n  <li>Line one</li>\n</ul>" ] ; elody:detailOnly true ] ;
+  elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Secret" ; elody:panel ui:TokenUi-secret , ui:TokenUi-plain ] ,
+      [ a elody:ListElement ; rdfs:label "element-labels.parts-omnibus" ; sh:order 2 ; elody:alias "OmnibusParts" ; elody:collapsed false ; elody:entityTypes "expression" ; elody:relationType "hasExpression" ;
+        elody:displayConditionKey "is_omnibus" ; elody:displayConditionValue "true" ; elody:searchInput elody:AdvancedSearchInput ;
+        elody:fetchDeepRelations [ elody:strategy "useMethodsAndFetch" ; elody:entityTypes "work_serial" ; elody:entityTypes "work_map" ; elody:recursions 2 ;
+          elody:deepRoute [ sh:order 1 ; elody:relation "relationValues.refWork.key" ; elody:keys ( "vlacc:1|identifiers" ) ; elody:entityTypes "work_serial" ; elody:entityTypes "work_map" ] ] ] ] ] ;
+  elody:filter [ sh:order 1 ; elody:alias "ref_script" ; elody:key "aicap:1|properties.ref_script.value" ; elody:keyAsList true ; rdfs:label "metadata.labels.script" ; elody:matchersType "selectionForRelation" ;
+    elody:selectionOption "checkboxlist" ; elody:displayedByDefault true ; elody:optionsLabel "intialValues.name" ; elody:optionsLimit 30 ; elody:filterKind elody:SelectionFilter ;
+    elody:matcherLabel [ sh:order 1 ; elody:matcher "AnyMatcher" ; elody:labelKey "metadata.labels.yes" ] ; elody:matcherLabel [ sh:order 2 ; elody:matcher "NoneMatcher" ; elody:labelKey "metadata.labels.no" ] ;
+    elody:optionsKey "aicap:1|properties.name.value" ; elody:optionsDistinctBy "properties.name.value" ; elody:optionsMatchExact false ; elody:optionsType "support" ;
+    elody:optionsLookup [ elody:lookupFrom "secondary_entities_actual" ; elody:lookupLocalField "properties.ref_support.value" ; elody:lookupForeignField "id" ; elody:lookupAs "lookup.virtual_relations.ref_support" ] ] .
+
+ui:TokenUi-plain a elody:Panel ; rdfs:label "panel-labels.plain" ; sh:order 2 ; elody:alias "plain" ; elody:collapsed false ; dash:readOnly true ; elody:panelKind elody:MetadataPanel ;
+  elody:field em:reading ; elody:panelField [ elody:field em:reading ; elody:panelAsField true ] .
+
+ui:TokenUi-secret a sh:PropertyGroup ; rdfs:label "Secret"@en ; sh:order 1 ; elody:alias "secret" ; elody:labelKey "panel-labels.secret" ; elody:collapsed false ; dash:readOnly true ; elody:panelKind elody:MetadataPanel .
+
+ui:GetTokenCreateForm a elody:Form ; elody:queryName "GetTokenCreateForm" ; elody:alias "token" ;
+  elody:shape [ sh:property
+    [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ; sh:maxCount 1 ; elody:labelKey "metadata.labels.title" ;
+      elody:copyValueFromParent [ elody:labelKey "bulk-operations.copy-title-from-work" ; elody:key "original_headtitle" ; elody:relationType "refWork" ] ] ,
+    [ sh:path em:refLanguage ; sh:order 2 ; dash:hidden true ; elody:clientInputField "refLanguage" ; elody:labelKey "metadata.labels.language" ;
+      elody:hiddenValueFrom [ elody:entityType "script" ; elody:relationType "refScript" ; elody:key "relationValues.refLanguage.key" ; elody:inherited true ] ] ,
+    [ sh:path em:refLabelGenres ; sh:order 3 ; elody:clientInputField "genresTypeField" ; elody:labelKey "metadata.labels.genres" ;
+      elody:validationRule "has_min_max_amount_of_relations" ; elody:validationRelationType "refLabelGenres" ; elody:validationMin 0 ; elody:validationMax 1 ] ] .

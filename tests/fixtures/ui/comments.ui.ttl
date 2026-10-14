@@ -1,0 +1,26 @@
+# 0.3.0 batch 26 (G-042): a comments element with its composer, create fields and taggables.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:CommentUi a elody:EntityUi ; elody:graphqlType "Comment" ; elody:emit "file" ;
+  sh:property [ sh:path em:body ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.body" ] ;
+  # the comments window other types spread into a column
+  elody:elementsFragment [ elody:fragmentName "vlaccCommentsElement" ;
+    elody:element [ a elody:CommentsElement ; sh:order 1 ; elody:alias "comments" ; rdfs:label "element-labels.comments" ;
+      elody:parentFilterKey "vlacc:1|properties.ref_parent_entity.value" ; dash:readOnly true ;
+      elody:createField [ sh:order 1 ; elody:key "category" ; elody:labelKey "element-labels.comment-category" ; elody:clientInputField "commentCategoryTypeField" ] ;
+      elody:composer [ a elody:WysiwygElement ; rdfs:label "element-labels.comment-body" ; elody:metadataKey "body" ;
+        elody:extensions ( elody:DocExtension elody:ParagraphExtension elody:TextExtension elody:BoldExtension elody:ItalicExtension elody:HardBreakExtension elody:TaggingExtension ) ;
+        elody:editorStyles "min-h-[80px]" ;
+        elody:taggable [ sh:order 1 ; elody:tag "user" ; elody:entityType "user" ; elody:relationType "refTaggedUsers" ; elody:tagFilterKey "vlacc:1|properties.name.value" ; elody:triggerCharacter "@" ; elody:triggerMinCharacters 1 ] ,
+                       [ sh:order 2 ; elody:tag "entity" ; elody:entityType "BaseEntity" ; elody:relationType "refTaggedEntities" ; elody:flow ui:GetTagWemFlow ; elody:flowButtonLabel "tagging.tag-wem" ] ] ] ] ;
+  elody:guidedFlow ui:GetTagWemFlow .
+
+ui:GetTagWemFlow a elody:GuidedFlow ; elody:queryName "GetTagWemFlow" ; rdfs:label "tagging.tag-wem" ; elody:returnsSelection true ;
+  elody:step [ sh:order 1 ; elody:key "work" ; rdfs:label "repetitiveForm.step-work" ; elody:entityType "work" ; elody:acceptedTypes "work" ; elody:maxSelection 1 ] .

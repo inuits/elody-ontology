@@ -1,0 +1,35 @@
+# 0.3.0 batch 25 (G-016): the preview of a type and the layouts it loads.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:AssetUi a elody:EntityUi ; elody:graphqlType "Asset" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  # previewed as a column holding its media files, one list item at a time
+  elody:preview [ elody:previewKind elody:ColumnListPreview ; elody:coverage elody:OneListItem ; elody:labelKey "preview-labels.asset" ;
+    elody:keepLastActiveItemHighlighted true ; elody:displayOpenDetailPageButton true ;
+    elody:previewLayout ui:GetPreviewInAsset ] .
+
+ui:GetPreviewInAsset a elody:PreviewLayout ; elody:queryName "GetPreviewInAsset" ;
+  elody:column [ sh:order 1 ; elody:size elody:Width100 ;
+    elody:element [ a elody:ListElement ; sh:order 1 ; rdfs:label "element-labels.mediafiles-element" ; elody:mediaKind elody:MediaKindMedia ; elody:collapsed false ;
+      elody:entityTypes "mediafile" ; elody:libraryMode "previewBaseLibrary" ; elody:relationType "hasMediafile" ;
+      elody:searchInput elody:AdvancedMediaFilesSearchInput ; elody:customQuery "GetMediafilesAsPreview" ; elody:customQueryRelationType "isMediafileFor" ; elody:customQueryFilters "GetMediafilesInAssetFilters" ] ] .
+
+ui:MediafileUi a elody:EntityUi ; elody:graphqlType "MediaFileEntity" ; elody:documentName "Mediafile" ; elody:emit "file" ;
+  sh:property [ sh:path em:filename ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.filename" ] ,
+              [ sh:path em:original_filename ; sh:order 2 ; elody:labelKey "metadata.labels.original-filename" ; sh:group ui:MediafileUi-info ; elody:teaser false ; elody:readsValue false ] ;
+  # previewed in the media viewer, open by default, its metadata in a horizontal grid next to it
+  elody:preview [ elody:previewKind elody:MediaViewerPreview ; elody:coverage elody:OneListItem ; elody:openByDefault true ; elody:fragmentName "previewForMediaFile" ;
+    elody:metadataPreviewLayout ui:GetMetadataPreviewForMediafile ] .
+
+ui:MediafileUi-info a sh:PropertyGroup ; sh:order 1 ; elody:alias "original_filename" ; elody:panelHeader false ; dash:readOnly true ; elody:collapsed false ; elody:panelKind elody:MetadataPanel .
+
+ui:GetMetadataPreviewForMediafile a elody:PreviewLayout ; elody:queryName "GetMetadataPreviewForMediafile" ;
+  elody:column [ sh:order 1 ; elody:size elody:Width100 ;
+    elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "panel-labels.other-metadata" ; elody:windowLayout elody:HorizontalGridLayout ; elody:panel ui:MediafileUi-info ] ] .

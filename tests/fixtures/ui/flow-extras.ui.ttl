@@ -1,0 +1,34 @@
+# 0.3.0 batch 23 (G-041): what a guided flow and its steps may still say.
+@prefix elody:  <https://elody.eu/ns/ui#> .
+@prefix sh:     <http://www.w3.org/ns/shacl#> .
+@prefix shui:   <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:   <http://datashapes.org/dash#> .
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:     <urn:fixture:ui#> .
+@prefix em:     <https://elody.io/ns/metadata#> .
+
+ui:MuziekwebUi a elody:EntityUi ; elody:graphqlType "Muziekweb" ; elody:emit "file" ;
+  sh:property [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ; elody:labelKey "metadata.labels.title" ] ;
+  elody:guidedFlow ui:GetRepetitiveFormForMuziekweb ;
+  elody:form ui:GetWorkFromMuziekwebCreateForm , ui:GetListeningFromMuziekwebCreateForm , ui:GetReadingFromMuziekwebCreateForm .
+
+ui:GetRepetitiveFormForMuziekweb a elody:GuidedFlow ; elody:queryName "GetRepetitiveFormForMuziekweb" ; rdfs:label "repetitiveForm.linear-title" ;
+  elody:repeatable false ; elody:linear true ; elody:startOnFirstStep true ; elody:returnsSelection false ; elody:routeToStep "manifestation" ; elody:routeToRoute "WemOverview" ;
+  elody:step
+    [ sh:order 1 ; elody:key "work" ; rdfs:label "repetitiveForm.step-work" ; elody:entityType "work" ; elody:form ui:GetWorkFromMuziekwebCreateForm ;
+      elody:pickerFiltersCollapsed false ; elody:acceptedTypes "work" ; elody:maxSelection 1 ; elody:terminalActionLabel "repetitiveForm.tag-this-work" ] ,
+    [ sh:order 2 ; elody:key "expression" ; rdfs:label "repetitiveForm.step-expression" ; elody:entityType "expression" ; elody:showBackButton false ;
+      elody:acceptedTypes "expression" ; elody:skipSearchIfPriorIsNew true ; elody:metadataOnly false ; elody:maxSelection 1 ;
+      elody:scopeToRelationOf [ elody:fromStep "work" ; elody:relationType "refWork" ; elody:filterKey "vlacc:1|properties.ref_work.value" ] ;
+      elody:stepRelation [ sh:order 1 ; elody:to "work" ; elody:relationType "refWork" ; elody:createWhen "always" ;
+        elody:metadataField [ sh:order 1 ; elody:formMetadataKey "function" ; elody:relationMetadataKey "function_indication" ] , [ sh:order 2 ; elody:formMetadataKey "on_label" ; elody:relationMetadataKey "on_label" ; elody:asArray true ] ] ;
+      elody:creatableType [ sh:order 1 ; elody:labelKey "entity-translations.reading" ; elody:entityType "reading" ; elody:form ui:GetReadingFromMuziekwebCreateForm ] ,
+                          [ sh:order 2 ; elody:labelKey "entity-translations.listening" ; elody:entityType "listening" ; elody:form ui:GetListeningFromMuziekwebCreateForm ] ] .
+
+ui:GetWorkFromMuziekwebCreateForm a elody:Form ; elody:queryName "GetWorkFromMuziekwebCreateForm" ; elody:alias "work" ;
+  elody:shape [ sh:property [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ] ] .
+ui:GetListeningFromMuziekwebCreateForm a elody:Form ; elody:queryName "GetListeningFromMuziekwebCreateForm" ; elody:alias "listening" ;
+  elody:shape [ sh:property [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ] ] .
+ui:GetReadingFromMuziekwebCreateForm a elody:Form ; elody:queryName "GetReadingFromMuziekwebCreateForm" ; elody:alias "reading" ;
+  elody:shape [ sh:property [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ] ] .
