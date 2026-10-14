@@ -3196,3 +3196,41 @@ elody:defaultRule a owl:AnnotationProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "default rule"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:string ;
   rdfs:comment "On a meta-shape's property entry: how the value is derived when a declaration leaves the term out, where sh:defaultValue states a constant. The generator applies it; `elody-ui expand` writes it out, so an explicit declaration is always at hand."@en .
+# ---- 0.5.0, batch 49: field lists, context presets, shared operations -------------------------
+elody:listingFields a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "listing fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
+  rdfs:comment "The property shapes (by sh:path) whose values the listing reads, as a list. With elody:detailFields, the per-property flags follow: a property outside the list is elody:detailOnly, one in it but outside elody:detailFields is elody:listingOnly, one in neither reads no value (elody:readsValue false). Left out: the flags on the properties say it. An explicit flag wins."@en .
+elody:detailFields a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "detail fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
+  rdfs:comment "The property shapes (by sh:path) whose values the detail page reads, as a list; see elody:listingFields."@en .
+elody:cardFields a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "card fields"@en ; rdfs:domain elody:EntityUi ; rdfs:range rdf:List ;
+  rdfs:comment "The property shapes (by sh:path) the card shows (teaserMetadata), as a list: a listed property is on the card, an unlisted one is elody:teaser false. Left out: every property read in the listing is on the card. An explicit elody:teaser wins."@en .
+# The contexts the platform's bulk operations share, as named nodes a declaration references with elody:context.
+elody:ReadModeNoneSelectedContext a elody:BulkOperationContext ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "read mode, nothing selected"@en ;
+  elody:activeViewMode elody:ReadMode ; elody:selection elody:NoneSelected ;
+  elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ;
+  rdfs:comment "Offered in read mode while nothing is selected (a create operation), with the platform's tooltip."@en .
+elody:NoneSelectedContext a elody:BulkOperationContext ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "nothing selected"@en ;
+  elody:selection elody:NoneSelected ;
+  elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-noneselected" ;
+  rdfs:comment "Offered in every mode while nothing is selected, with the platform's read-mode tooltip."@en .
+elody:ReadModeSomeSelectedContext a elody:BulkOperationContext ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "read mode, some selected"@en ;
+  elody:activeViewMode elody:ReadMode ; elody:selection elody:SomeSelected ;
+  elody:tooltipLabel "tooltip.bulkOperationsActionBar.readmode-someselected" ;
+  rdfs:comment "Offered in read mode once something is selected (an operation on the selection), with the platform's tooltip."@en .
+elody:SomeSelectedContext a elody:BulkOperationContext ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "some selected"@en ;
+  elody:activeViewMode elody:ReadMode ; elody:selection elody:SomeSelected ;
+  elody:tooltipLabel "tooltip.bulkOperationsActionBar.someselected" ;
+  rdfs:comment "Offered in read mode once something is selected, with the platform's shorter tooltip."@en .

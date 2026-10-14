@@ -1,0 +1,57 @@
+@prefix elody: <https://elody.eu/ns/ui#> .
+@prefix sh:    <http://www.w3.org/ns/shacl#> .
+@prefix shui:  <http://www.w3.org/ns/shacl-ui/> .
+@prefix dash:  <http://datashapes.org/dash#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix ui:    <https://example.org/lists/ui#> .
+@prefix em:    <https://elody.io/ns/metadata#> .
+
+# Batch 49 fixture: what is read and shown as three lists on the type (elody:listingFields, elody:detailFields,
+# elody:cardFields) instead of flags on every property; a bulk operation's context as one of the platform's
+# presets (elody:ReadModeSomeSelectedContext); an operation two types share, declared once (ui:DeleteSelectedOperation).
+
+ui:BookUi
+  a elody:EntityUi ;
+  elody:graphqlType "Book" ;
+  elody:emit "file" ;
+  elody:listingFields ( em:title em:isbn em:summary ) ;
+  elody:detailFields ( em:title em:isbn em:publicationYear ) ;
+  elody:cardFields ( em:title ) ;
+  sh:property
+    [ sh:path em:title ; sh:order 1 ; shui:propertyRole shui:LabelRole ] ,
+    [ sh:path em:isbn ; sh:order 2 ] ,
+    [ sh:path em:summary ; sh:order 3 ] ,
+    [ sh:path em:publicationYear ; sh:order 4 ] ,
+    [ sh:path em:notes ; sh:order 5 ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ;
+  elody:detail
+    [ elody:column
+      [ sh:order 1 ; elody:size elody:Width100 ;
+      elody:element [ a elody:WindowElement ; rdfs:label "window-element-labels.info" ; sh:order 1 ; elody:panel ui:BookUi-info ] ] ] ;
+  elody:bulkOperation ui:DeleteSelectedOperation .
+
+ui:BookUi-info
+  a elody:Panel ;
+  rdfs:label "panel-labels.info" ;
+  sh:order 1 ;
+  elody:alias "info" ;
+  elody:panelKind elody:MetadataPanel ;
+  elody:field em:title , em:publicationYear , em:notes .
+
+ui:AuthorUi
+  a elody:EntityUi ;
+  elody:graphqlType "Author" ;
+  elody:emit "file" ;
+  sh:property
+    [ sh:path em:name ; sh:order 1 ; shui:propertyRole shui:LabelRole ] ;
+  elody:viewMode [ sh:order 1 ; elody:mode elody:ListView ] ;
+  elody:bulkOperation ui:DeleteSelectedOperation .
+
+ui:DeleteSelectedOperation
+  a elody:BulkOperation ;
+  rdfs:label "bulk-operations.delete-selected" ;
+  sh:order 1 ;
+  elody:operationKind elody:DeleteEntitiesOperation ;
+  elody:context elody:ReadModeSomeSelectedContext ;
+  elody:modal [ elody:modalKind elody:DeleteModal ; elody:permission elody:CanDelete ] .

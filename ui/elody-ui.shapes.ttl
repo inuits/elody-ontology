@@ -71,6 +71,10 @@ meta:EntityUiShape a sh:NodeShape ;
     [ sh:path elody:cardName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:withoutBaseEntity ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailSpreadsListing ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
+    # the compact form: what is read and shown as lists instead of flags on every property
+    [ sh:path elody:listingFields ; sh:maxCount 1 ] ,
+    [ sh:path elody:detailFields ; sh:maxCount 1 ] ,
+    [ sh:path elody:cardFields ; sh:maxCount 1 ] ,
     [ sh:path elody:detailAlone ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:partial ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:detailName ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
