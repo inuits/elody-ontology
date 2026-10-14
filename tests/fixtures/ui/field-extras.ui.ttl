@@ -20,9 +20,14 @@ ui:TokenUi a elody:EntityUi ; elody:graphqlType "Token" ; elody:emit "file" ; el
   elody:detail [ elody:column [ sh:order 1 ; elody:size elody:Width70 ;
     elody:element [ a elody:WindowElement ; sh:order 1 ; rdfs:label "Secret" ; elody:panel ui:TokenUi-secret , ui:TokenUi-plain ] ,
       [ a elody:ListElement ; rdfs:label "element-labels.parts-omnibus" ; sh:order 2 ; elody:alias "OmnibusParts" ; elody:collapsed false ; elody:entityTypes "expression" ; elody:relationType "hasExpression" ;
-        elody:displayConditionKey "is_omnibus" ; elody:displayConditionValue "true" ; elody:searchInput elody:AdvancedSearchInput ] ] ] ;
+        elody:displayConditionKey "is_omnibus" ; elody:displayConditionValue "true" ; elody:searchInput elody:AdvancedSearchInput ;
+        elody:fetchDeepRelations [ elody:strategy "useMethodsAndFetch" ; elody:entityTypes "work_serial" ; elody:entityTypes "work_map" ; elody:recursions 2 ;
+          elody:deepRoute [ sh:order 1 ; elody:relation "relationValues.refWork.key" ; elody:keys ( "vlacc:1|identifiers" ) ; elody:entityTypes "work_serial" ; elody:entityTypes "work_map" ] ] ] ] ] ;
   elody:filter [ sh:order 1 ; elody:alias "ref_script" ; elody:key "aicap:1|properties.ref_script.value" ; elody:keyAsList true ; rdfs:label "metadata.labels.script" ; elody:matchersType "selectionForRelation" ;
-    elody:selectionOption "checkboxlist" ; elody:displayedByDefault true ; elody:optionsLabel "intialValues.name" ; elody:optionsLimit 30 ; elody:filterKind elody:SelectionFilter ] .
+    elody:selectionOption "checkboxlist" ; elody:displayedByDefault true ; elody:optionsLabel "intialValues.name" ; elody:optionsLimit 30 ; elody:filterKind elody:SelectionFilter ;
+    elody:matcherLabel [ sh:order 1 ; elody:matcher "AnyMatcher" ; elody:labelKey "metadata.labels.yes" ] ; elody:matcherLabel [ sh:order 2 ; elody:matcher "NoneMatcher" ; elody:labelKey "metadata.labels.no" ] ;
+    elody:optionsKey "aicap:1|properties.name.value" ; elody:optionsDistinctBy "properties.name.value" ; elody:optionsMatchExact false ; elody:optionsType "support" ;
+    elody:optionsLookup [ elody:lookupFrom "secondary_entities_actual" ; elody:lookupLocalField "properties.ref_support.value" ; elody:lookupForeignField "id" ; elody:lookupAs "lookup.virtual_relations.ref_support" ] ] .
 
 ui:TokenUi-plain a elody:Panel ; rdfs:label "panel-labels.plain" ; sh:order 2 ; elody:alias "plain" ; elody:collapsed false ; dash:readOnly true ; elody:panelKind elody:MetadataPanel ;
   elody:field em:reading ; elody:panelField [ elody:field em:reading ; elody:panelAsField true ] .

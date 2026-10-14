@@ -246,7 +246,9 @@ meta:FilterShape a sh:NodeShape ;
     [ sh:path elody:filterOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:showTime ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:matchersType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:matcherLabel ; sh:node meta:MatcherLabelShape ] ,
     [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
+    [ sh:path elody:optionsLookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path elody:option ; sh:node meta:FilterOptionShape ] ,
     [ sh:path elody:selectionSpread ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:keys ; sh:maxCount 1 ; sh:nodeKind sh:BlankNodeOrIRI ; sh:message "elody:keys is an RDF list of key strings" ] ,
@@ -417,6 +419,7 @@ meta:OptionsInputShape a sh:NodeShape ;
     [ sh:path elody:inputOperator ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:bareValues ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:valueMapping ; sh:node meta:ValueMappingShape ] ,
+    [ sh:path elody:lookup ; sh:maxCount 1 ; sh:node meta:LookupShape ] ,
     [ sh:path sh:order ; sh:maxCount 1 ] .
 
 meta:MetadataMatchShape a sh:NodeShape ;
@@ -809,6 +812,7 @@ meta:ElementShape a sh:NodeShape ;
     [ sh:path elody:enableNavigation ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path elody:displayConditionKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:displayConditionValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:fetchDeepRelations ; sh:maxCount 1 ; sh:node meta:DeepRelationsShape ] ,
     [ sh:path elody:libraryMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:listViewMode ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mediaKind ; sh:maxCount 1 ; sh:class elody:MediaElementKind ] ,
@@ -1028,6 +1032,26 @@ meta:TransliterationItemShape a sh:NodeShape ;
     [ sh:path elody:labelKey ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:mappingKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:insertSpaces ; sh:maxCount 1 ; sh:datatype xsd:boolean ] .
+
+meta:MatcherLabelShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:matcher ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:labelKey ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+meta:DeepRelationsShape a sh:NodeShape ;
+  sh:property
+    [ sh:path elody:strategy ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:entityTypes ; sh:datatype xsd:string ] ,
+    [ sh:path elody:recursions ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:deepRoute ; sh:node meta:DeepRelationRouteShape ] .
+
+meta:DeepRelationRouteShape a sh:NodeShape ;
+  sh:property
+    [ sh:path sh:order ; sh:maxCount 1 ] ,
+    [ sh:path elody:relation ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
+    [ sh:path elody:keys ; sh:maxCount 1 ] ,
+    [ sh:path elody:entityTypes ; sh:datatype xsd:string ] .
 
 meta:ReplaceCharactersShape a sh:NodeShape ;
   sh:property

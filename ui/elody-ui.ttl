@@ -3094,3 +3094,47 @@ elody:validationMax a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "validation maximum"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
   rdfs:comment "With elody:validationRule \"has_min_max_amount_of_relations\": the most related entities allowed (has_min_max_amount_of_relations.max)."@en .
+elody:optionsLookup a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "options lookup"@en ; rdfs:domain elody:Filter ; rdfs:range elody:Lookup ;
+  rdfs:comment "The join the option search needs before it can match (lookup on the first input of advancedFilterInputForRetrievingOptions); elody:lookup on an elody:OptionsInput is a further input's."@en .
+elody:DeepRelations a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "deep relations"@en ;
+  rdfs:comment "How a list element fetches entities through several relations (fetchDeepRelations): a strategy, the types it reaches, the routes it follows, how deep it recurses."@en .
+elody:fetchDeepRelations a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "fetch deep relations"@en ; rdfs:domain elody:ListElement ; rdfs:range elody:DeepRelations ;
+  rdfs:comment "The list element's deep relations: elody:strategy, elody:entityTypes, elody:deepRoute nodes and elody:recursions."@en .
+elody:strategy a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "strategy"@en ; rdfs:domain elody:DeepRelations ; rdfs:range xsd:string ;
+  rdfs:comment "The fetch strategy (deepRelationsFetchStrategy), an enum value of the PWA (useMethodsAndFetch)."@en .
+elody:recursions a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "recursions"@en ; rdfs:domain elody:DeepRelations ; rdfs:range xsd:integer ;
+  rdfs:comment "How deep the fetch recurses (amountOfRecursions)."@en .
+elody:DeepRelationRoute a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "deep relation route"@en ;
+  rdfs:comment "One route of a deep fetch (routeConfig): the relation followed, the keys matched, the entity types reached."@en .
+elody:deepRoute a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "deep route"@en ; rdfs:domain elody:DeepRelations ; rdfs:range elody:DeepRelationRoute ;
+  rdfs:comment "A route of the deep fetch, in sh:order: elody:relation, elody:keys (an RDF list) and elody:entityTypes."@en .
+elody:relation a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "relation"@en ; rdfs:domain elody:DeepRelationRoute ; rdfs:range xsd:string ;
+  rdfs:comment "The relation path a deep route follows (relation: \"relationValues.refWork.key\")."@en .
+elody:MatcherLabel a owl:Class ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "matcher label"@en ;
+  rdfs:comment "The label a filter shows for one of its matchers (matcherLabels: [{ matcher: AnyMatcher, label: ... }])."@en .
+elody:matcherLabel a owl:ObjectProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "matcher label"@en ; rdfs:domain elody:Filter ; rdfs:range elody:MatcherLabel ;
+  rdfs:comment "A matcher's label on the filter, in sh:order: elody:matcher (the Matchers value as written, AnyMatcher) and elody:labelKey."@en .
+elody:matcher a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "matcher"@en ; rdfs:domain elody:MatcherLabel ; rdfs:range xsd:string ;
+  rdfs:comment "The Matchers value the label is for (AnyMatcher, NoneMatcher, ...)."@en .
