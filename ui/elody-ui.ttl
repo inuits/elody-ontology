@@ -3086,3 +3086,11 @@ elody:insertSpaces a owl:DatatypeProperty ;
   rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
   rdfs:label "insert spaces"@en ; rdfs:domain elody:TransliterationItem ; rdfs:range xsd:boolean ;
   rdfs:comment "Whether the transliteration inserts spaces (insertSpaces: true)."@en .
+elody:validationMin a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation minimum"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
+  rdfs:comment "With elody:validationRule \"has_min_max_amount_of_relations\": the least related entities allowed (has_min_max_amount_of_relations.min), the relation in elody:validationRelationType."@en .
+elody:validationMax a owl:DatatypeProperty ;
+  rdfs:isDefinedBy <https://elody.eu/ns/ui> ;
+  rdfs:label "validation maximum"@en ; rdfs:domain sh:PropertyShape ; rdfs:range xsd:integer ;
+  rdfs:comment "With elody:validationRule \"has_min_max_amount_of_relations\": the most related entities allowed (has_min_max_amount_of_relations.max)."@en .

@@ -34,4 +34,6 @@ ui:GetTokenCreateForm a elody:Form ; elody:queryName "GetTokenCreateForm" ; elod
     [ sh:path em:title ; sh:order 1 ; sh:datatype xsd:string ; sh:maxCount 1 ; elody:labelKey "metadata.labels.title" ;
       elody:copyValueFromParent [ elody:labelKey "bulk-operations.copy-title-from-work" ; elody:key "original_headtitle" ; elody:relationType "refWork" ] ] ,
     [ sh:path em:refLanguage ; sh:order 2 ; dash:hidden true ; elody:clientInputField "refLanguage" ; elody:labelKey "metadata.labels.language" ;
-      elody:hiddenValueFrom [ elody:entityType "script" ; elody:relationType "refScript" ; elody:key "relationValues.refLanguage.key" ; elody:inherited true ] ] ] .
+      elody:hiddenValueFrom [ elody:entityType "script" ; elody:relationType "refScript" ; elody:key "relationValues.refLanguage.key" ; elody:inherited true ] ] ,
+    [ sh:path em:refLabelGenres ; sh:order 3 ; elody:clientInputField "genresTypeField" ; elody:labelKey "metadata.labels.genres" ;
+      elody:validationRule "has_min_max_amount_of_relations" ; elody:validationRelationType "refLabelGenres" ; elody:validationMin 0 ; elody:validationMax 1 ] ] .

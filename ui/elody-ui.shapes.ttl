@@ -208,6 +208,8 @@ meta:PropertyShapeShape a sh:NodeShape ;
     [ sh:path elody:validationValue ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:validationRelationType ; sh:maxCount 1 ; sh:datatype xsd:string ] ,
     [ sh:path elody:validationAmount ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:validationMin ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
+    [ sh:path elody:validationMax ; sh:maxCount 1 ; sh:datatype xsd:integer ] ,
     [ sh:path elody:validationExact ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:hidden ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
     [ sh:path dash:readOnly ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ,
